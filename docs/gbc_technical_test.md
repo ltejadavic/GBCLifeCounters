@@ -1,30 +1,22 @@
 # GBC Technical Test
 
-This is the first Game Boy Color build milestone from the project planning. It
+This was the first Game Boy Color build milestone from the project planning. It
 validates the GBDK-2020 toolchain, CGB cartridge header, text output, joypad
 input, frame loop, and signed life-total updates.
+
+The active build has moved to the structured one-player counter documented in
+`docs/gbc_one_player.md`.
 
 It is intentionally a one-player technical test, not the Commander rules engine
 port and not the multiplayer MVP.
 
-## Build
+## Historical milestone
 
-From the repository root:
+The active `Makefile` now builds the one-player iteration. This technical-test
+source remains available in Git history; use `docs/gbc_one_player.md` for the
+current build and verification commands.
 
-```text
-make setup-toolchain
-make verify
-```
-
-The toolchain setup script downloads the pinned official GBDK-2020 4.5.0
-archive for macOS or Linux and verifies its SHA-256 checksum. An existing GBDK
-installation can be used instead:
-
-```text
-make verify GBDK_HOME=/absolute/path/to/gbdk
-```
-
-Generated ROM:
+Historical ROM name:
 
 ```text
 build/commander_gbc_technical_test.gbc

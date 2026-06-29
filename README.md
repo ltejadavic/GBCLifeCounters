@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-GBC technical test ROM implemented after the completed Python prototype
+Structured GBC one-player counter implemented after the technical test
 
 Planned development order:
 
@@ -50,11 +50,11 @@ The Python rules engine is the source of truth. The terminal program is a thin
 interactive client over that engine. The multiplayer rules engine has not yet
 been ported to C/GBDK.
 
-Game Boy Color Technical Test
+Game Boy Color Prototype
 
-The first C/GBDK milestone is an interactive one-player life display. It proves
-that the toolchain, CGB cartridge header, text rendering, joypad input, frame
-loop, signed life values, and reset control work before the multiplayer port.
+The current C/GBDK milestone is a structured one-player life counter. It uses
+separate fixed-size data model, action, rule, and UI modules prepared for the
+future eight-player port.
 
 Build and verify it from the repository root:
 
@@ -66,7 +66,7 @@ make verify
 Generated ROM:
 
 ```text
-build/commander_gbc_technical_test.gbc
+build/commander_gbc_one_player.gbc
 ```
 
 Controls:
@@ -76,7 +76,9 @@ Controls:
 * B / A: -10 / +10 life
 * Start: reset to 40 life
 
-See `docs/gbc_technical_test.md` for build details and expected behavior.
+The screen shows `LOW LIFE` at 5 or less and `MAY LOSE` at 0 or less without
+automatic elimination. See `docs/gbc_one_player.md` for the complete emulator
+test checklist and expected behavior.
 
 ⸻
 
