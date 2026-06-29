@@ -27,6 +27,20 @@ static const palette_color_t loss_palette[] = {
     RGB8(54, 24, 30),
 };
 
+static void configure_background_attributes(void) {
+    if (DEVICE_SUPPORTS_COLOR) {
+        VBK_REG = VBK_ATTRIBUTES;
+        fill_bkg_rect(
+            0u,
+            0u,
+            DEVICE_SCREEN_WIDTH,
+            DEVICE_SCREEN_HEIGHT,
+            BKGF_CGB_PAL0
+        );
+        VBK_REG = VBK_TILES;
+    }
+}
+
 static void draw_static_screen(void) {
     gotoxy(3, 1);
     printf("COMMANDER GBC");
@@ -44,6 +58,13 @@ static void draw_static_screen(void) {
     printf("B/A        -/+10");
     gotoxy(1, 15);
     printf("START       RESET");
+
+    gotoxy(1, 17);
+    if (DEVICE_SUPPORTS_COLOR) {
+        printf("CGB COLOR: ACTIVE");
+    } else {
+        printf("CGB COLOR: OFF   ");
+    }
 }
 
 static void draw_status(LifeStatus status) {
@@ -61,8 +82,9 @@ static void draw_status(LifeStatus status) {
 }
 
 void ui_initialize(void) {
-    set_bkg_palette(0, 1, normal_palette);
     draw_static_screen();
+    configure_background_attributes();
+    set_bkg_palette(BKGF_CGB_PAL0, 1u, normal_palette);
     SHOW_BKG;
     DISPLAY_ON;
 }
@@ -70,8 +92,10 @@ void ui_initialize(void) {
 void ui_refresh_player(const GameState *game, uint8_t player_id) {
     const Player *player = &game->players[player_id];
 
+    gotoxy(6, 5);
+    printf("        ");
     gotoxy(8, 5);
-    printf("%-8s", player->name);
+    printf("%s", player->name);
     gotoxy(7, 8);
     printf("%6d", player->life);
     draw_status(rules_check_life(player));

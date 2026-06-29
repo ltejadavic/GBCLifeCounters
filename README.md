@@ -77,8 +77,9 @@ Controls:
 * Start: reset to 40 life
 
 The screen shows `LOW LIFE` at 5 or less and `MAY LOSE` at 0 or less without
-automatic elimination. See `docs/gbc_one_player.md` for the complete emulator
-test checklist and expected behavior.
+automatic elimination. It also displays whether the emulator is actually
+running in CGB color mode. See `docs/gbc_one_player.md` for the complete
+emulator test checklist and expected behavior.
 
 ⸻
 

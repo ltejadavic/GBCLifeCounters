@@ -26,16 +26,22 @@ build/commander_gbc_one_player.gbc
 
 1. Boot the ROM in Game Boy Color mode.
 2. Confirm the title reads `COMMANDER GBC` and `1 PLAYER COUNTER`.
-3. Confirm the player is `P1`, life starts at `40`, and status is `OK`.
-4. Press Left and Right once. Life must change by -1 and +1 exactly once.
-5. Press Down and Up once. Life must change by -5 and +5 exactly once.
-6. Press B and A once. Life must change by -10 and +10 exactly once.
-7. Reduce life to `5`. Status must become `LOW LIFE` and the palette must turn
+3. Confirm the bottom diagnostic reads `CGB COLOR: ACTIVE`. If it reads `OFF`,
+   configure the emulator to use a Game Boy Color model before continuing.
+4. Confirm the player is `P1` with no formatting characters around it, life
+   starts at `40`, and status is `OK`.
+5. Press Left and Right once. Life must change by -1 and +1 exactly once.
+6. Press Down and Up once. Life must change by -5 and +5 exactly once.
+7. Press B and A once. Life must change by -10 and +10 exactly once.
+8. Reduce life to `5`. Status must become `LOW LIFE` and the palette must turn
    amber.
-8. Reduce life to `0`, then below zero. Status must become `MAY LOSE`, the
+9. Reduce life to `0`, then below zero. Status must become `MAY LOSE`, the
    palette must turn red, and the negative value must remain visible.
-9. Press Start. Life must return to `40`, status to `OK`, and the palette to
+10. Press Start. Life must return to `40`, status to `OK`, and the palette to
    green.
+
+If `CGB COLOR: ACTIVE` appears but all three states remain monochrome, check the
+emulator's video settings for a forced DMG/monochrome palette.
 
 The ROM must not freeze, apply repeated changes from one quick press, or mark
 the player eliminated automatically.
