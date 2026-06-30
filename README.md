@@ -130,6 +130,12 @@ records. ROM names are ASCII and limited to 28 characters; each record has one
 compact primary-archetype ID. Regeneration requires internet access, but the ROM
 itself remains fully offline.
 
+From player detail, selecting `CMDR` opens an on-screen keyboard with three
+live substring suggestions. Queries ignore punctuation and spaces. Commander
+selection can be changed at any time, displays an eight-character name preview,
+and assigns one of twelve 8x8 archetype symbols visible in player detail and the
+multiplayer overview.
+
 ⸻
 
 Important Technical Note

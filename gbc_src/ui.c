@@ -4,6 +4,8 @@
 #include <stdio.h>
 
 #include "navigation.h"
+#include "archetype_assets.h"
+#include "commander_db.h"
 #include "rules.h"
 #include "splash_assets.h"
 #include "text_format.h"
@@ -277,6 +279,13 @@ static void draw_player_row(
     printf("P");
     gotoxy(12u, row);
     printf("%s", poison_text);
+    if (player->commander_id != NO_COMMANDER_ID) {
+        uint8_t tile = (uint8_t)(
+            ARCHETYPE_TILE_FIRST
+            + commander_db_get_archetype(player->commander_id)
+        );
+        set_bkg_tiles(15u, row, 1u, 1u, &tile);
+    }
     gotoxy(16u, row);
     if (player->eliminated) {
         printf("OUT ");
@@ -365,6 +374,13 @@ static void draw_detail_fields(
     char life_text[LIFE_TEXT_BUFFER_SIZE];
     char poison_text[COUNTER_TEXT_BUFFER_SIZE];
     char commander_text[COUNTER_TEXT_BUFFER_SIZE];
+    char commander_name[COMMANDER_DETAIL_NAME_MAX + 1u];
+
+    commander_db_copy_name(
+        player->commander_id,
+        commander_name,
+        COMMANDER_DETAIL_NAME_MAX
+    );
 
     format_life_total(player->life, life_text);
     format_counter_value(player->poison, poison_text);
@@ -372,6 +388,22 @@ static void draw_detail_fields(
         rules_get_highest_commander_damage(game, player->player_id),
         commander_text
     );
+
+    gotoxy(0u, 2u);
+    printf("                    ");
+    gotoxy(0u, 2u);
+    printf(selected_field == DETAIL_FIELD_COMMANDER ? ">" : " ");
+    gotoxy(2u, 2u);
+    printf("CMDR");
+    gotoxy(8u, 2u);
+    printf("%s", commander_name);
+    if (player->commander_id != NO_COMMANDER_ID) {
+        uint8_t tile = (uint8_t)(
+            ARCHETYPE_TILE_FIRST
+            + commander_db_get_archetype(player->commander_id)
+        );
+        set_bkg_tiles(19u, 2u, 1u, 1u, &tile);
+    }
 
     gotoxy(0u, 3u);
     printf("                    ");
@@ -659,6 +691,11 @@ void ui_show_setup(
 
     load_game_palettes();
     prepare_screen();
+    set_bkg_data(
+        ARCHETYPE_TILE_FIRST,
+        ARCHETYPE_TILE_COUNT,
+        archetype_tiles
+    );
     format_counter_value(player_count, player_count_text);
     format_life_total(starting_life, life_text);
 
@@ -814,6 +851,47 @@ void ui_refresh_commander_damage(
         );
     }
     draw_commander_controls(adjustment_step);
+}
+
+void ui_show_commander_search(
+    const Player *player,
+    const char *query,
+    const uint16_t suggestions[3],
+    uint8_t selected_suggestion,
+    uint8_t keyboard_index,
+    uint8_t list_focus
+) BANKED {
+    static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ '";
+    uint8_t index;
+
+    prepare_screen();
+    gotoxy(1u, 0u);
+    printf("SELECT CMDR FOR ");
+    printf("%s", player->name);
+    gotoxy(1u, 2u);
+    printf("QUERY: ");
+    printf("%-8s", query);
+    for (index = 0u; index < 3u; index++) {
+        char name[17u];
+        commander_db_copy_name(suggestions[index], name, 16u);
+        gotoxy(0u, (uint8_t)(4u + index));
+        printf((list_focus && (index == selected_suggestion)) ? ">" : " ");
+        printf("%-16s", name);
+    }
+    for (index = 0u; index < 28u; index++) {
+        uint8_t x = (uint8_t)(3u + (index % 7u) * 2u);
+        uint8_t y = (uint8_t)(9u + (index / 7u));
+        gotoxy(x, y);
+        printf((!list_focus && (index == keyboard_index)) ? ">" : " ");
+        printf("%c", keyboard[index]);
+    }
+    gotoxy(1u, 14u);
+    printf("SELECT LIST/KEYS");
+    gotoxy(1u, 15u);
+    printf("A TYPE  START PICK");
+    gotoxy(1u, 16u);
+    printf("B DELETE/BACK");
+    draw_color_diagnostic();
 }
 
 void ui_draw_reset_prompt(void) BANKED {

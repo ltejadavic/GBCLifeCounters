@@ -20,6 +20,14 @@ static char upper_ascii(char value) {
     return value;
 }
 
+static uint8_t is_search_character(char value) {
+    value = upper_ascii(value);
+    return (
+        ((value >= 'A') && (value <= 'Z'))
+        || ((value >= '0') && (value <= '9'))
+    );
+}
+
 static uint8_t contains_query(const char *name, const char *query) {
     uint8_t name_start;
 
@@ -28,14 +36,37 @@ static uint8_t contains_query(const char *name, const char *query) {
     }
     for (name_start = 0u; name[name_start] != '\0'; name_start++) {
         uint8_t query_index = 0u;
-        while (
-            (query[query_index] != '\0')
-            && (name[name_start + query_index] != '\0')
-            && (
-                upper_ascii(name[name_start + query_index])
-                == upper_ascii(query[query_index])
-            )
-        ) {
+        uint8_t name_index = name_start;
+
+        if (!is_search_character(name[name_start])) {
+            continue;
+        }
+        while (query[query_index] != '\0') {
+            while (
+                (name[name_index] != '\0')
+                && !is_search_character(name[name_index])
+            ) {
+                name_index++;
+            }
+            while (
+                (query[query_index] != '\0')
+                && !is_search_character(query[query_index])
+            ) {
+                query_index++;
+            }
+            if (query[query_index] == '\0') {
+                return 1u;
+            }
+            if (
+                (name[name_index] == '\0')
+                || (
+                    upper_ascii(name[name_index])
+                    != upper_ascii(query[query_index])
+                )
+            ) {
+                break;
+            }
+            name_index++;
             query_index++;
         }
         if (query[query_index] == '\0') {
@@ -85,6 +116,7 @@ uint8_t commander_db_find_matches(
 ) BANKED {
     uint16_t commander_id;
     uint8_t count = 0u;
+    uint8_t matched_count;
 
     for (
         commander_id = 0u;
@@ -97,9 +129,10 @@ uint8_t commander_db_find_matches(
             count++;
         }
     }
+    matched_count = count;
     while (count < COMMANDER_SUGGESTION_COUNT) {
         results[count] = NO_COMMANDER_ID;
         count++;
     }
-    return count;
+    return matched_count;
 }

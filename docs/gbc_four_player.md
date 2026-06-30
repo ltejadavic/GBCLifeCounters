@@ -202,6 +202,28 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
     background music or continuous sound; only brief event effects are active.
 12. Confirm all visual behavior from Tests 8–12 remains unchanged.
 
+## Test 14: commander selection and archetypes
+
+1. Open P1 detail. A new `CMDR` row must show `--`; select it and press A.
+2. Confirm the commander search shows an eight-character query, three live
+   suggestions, and a 7x4 on-screen keyboard.
+3. Use the D-Pad to move over letters and A to type `ATRAXA`. Suggestions must
+   update after every character and include `Atraxa, Praetors' Voice`.
+4. Press Select to focus the suggestion list, use Up/Down to choose, then A or
+   Start to assign it. B must delete one query character; with an empty query,
+   B must return without changing the commander.
+5. Return to P1 detail. The commander name must be shown using at most eight
+   characters with its 8x8 Counters archetype symbol.
+6. Return to overview. A miniature version of the same archetype symbol must
+   appear in P1's row without covering poison or warning state.
+7. Assign a different commander to P1 and confirm both name and symbol change.
+8. Assign different commanders to P2–P4. Each player must retain an independent
+   selection, including after scrolling in games with 5–8 players.
+9. Search `TCHALLA` without an apostrophe. Punctuation-insensitive matching must
+   still suggest `T'Challa, the Black Panther`.
+10. Reset the game. Every player commander must return to `--` and every
+    archetype symbol must disappear.
+
 ## Full regression checklist
 
 1. Boot in Game Boy Color mode and confirm four rows appear: P1 through P4,

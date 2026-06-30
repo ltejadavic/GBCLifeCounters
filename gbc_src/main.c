@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include "actions.h"
+#include "commander_db.h"
 #include "constants.h"
 #include "game_state.h"
 #include "navigation.h"
@@ -18,6 +19,7 @@
 #define SCREEN_ELIMINATION_CONFIRMATION 5u
 #define SCREEN_SPLASH 6u
 #define SCREEN_DEVELOPER_CREDIT 7u
+#define SCREEN_COMMANDER_SEARCH 8u
 #define PROMPT_BLINK_FRAMES 30u
 
 static GameState game;
@@ -34,6 +36,13 @@ static uint8_t adjustment_step = LIFE_STEP_SMALL;
 static uint8_t screen_state = SCREEN_SPLASH;
 static uint8_t prompt_blink_frames = 0u;
 static uint8_t prompt_is_visible = 1u;
+static char commander_query[COMMANDER_QUERY_MAX + 1u];
+static uint8_t commander_query_length = 0u;
+static uint8_t commander_keyboard_index = 0u;
+static uint8_t commander_suggestion = 0u;
+static uint8_t commander_list_focus = 0u;
+static uint8_t commander_match_count = 0u;
+static uint16_t commander_suggestions[COMMANDER_SUGGESTION_COUNT];
 
 static void update_player_window(void) {
     first_visible_player = navigation_update_window_start(
@@ -60,6 +69,129 @@ static void refresh_overview(void) {
         first_visible_player,
         adjustment_step
     );
+}
+
+static void refresh_commander_search(void) {
+    commander_match_count = commander_db_find_matches(
+        commander_query,
+        commander_suggestions
+    );
+    if (
+        (commander_match_count == 0u)
+        || (commander_suggestion >= commander_match_count)
+    ) {
+        commander_suggestion = 0u;
+    }
+    ui_show_commander_search(
+        &game.players[selected_player],
+        commander_query,
+        commander_suggestions,
+        commander_suggestion,
+        commander_keyboard_index,
+        commander_list_focus
+    );
+}
+
+static void open_commander_search(void) {
+    commander_query_length = 0u;
+    commander_query[0] = '\0';
+    commander_keyboard_index = 0u;
+    commander_suggestion = 0u;
+    commander_list_focus = 0u;
+    screen_state = SCREEN_COMMANDER_SEARCH;
+    refresh_commander_search();
+}
+
+static void handle_commander_search_input(uint8_t pressed) {
+    static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ '";
+
+    if (pressed & J_SELECT) {
+        commander_list_focus = (uint8_t)(!commander_list_focus);
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if (commander_list_focus && (pressed & J_UP)) {
+        if (commander_match_count > 0u) {
+            commander_suggestion = commander_suggestion == 0u
+                ? (uint8_t)(commander_match_count - 1u)
+                : (uint8_t)(commander_suggestion - 1u);
+        }
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if (commander_list_focus && (pressed & J_DOWN)) {
+        if (commander_match_count > 0u) {
+            commander_suggestion = (uint8_t)(
+                (commander_suggestion + 1u) % commander_match_count
+            );
+        }
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if (!commander_list_focus && (pressed & J_LEFT)) {
+        commander_keyboard_index = commander_keyboard_index == 0u
+            ? 27u
+            : (uint8_t)(commander_keyboard_index - 1u);
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if (!commander_list_focus && (pressed & J_RIGHT)) {
+        commander_keyboard_index = (uint8_t)(
+            (commander_keyboard_index + 1u) % 28u
+        );
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if (!commander_list_focus && (pressed & J_UP)) {
+        commander_keyboard_index = (uint8_t)(
+            (commander_keyboard_index + 21u) % 28u
+        );
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if (!commander_list_focus && (pressed & J_DOWN)) {
+        commander_keyboard_index = (uint8_t)(
+            (commander_keyboard_index + 7u) % 28u
+        );
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
+    } else if ((pressed & J_A) && !commander_list_focus) {
+        if (commander_query_length < COMMANDER_QUERY_MAX) {
+            commander_query[commander_query_length] = keyboard[
+                commander_keyboard_index
+            ];
+            commander_query_length++;
+            commander_query[commander_query_length] = '\0';
+            commander_suggestion = 0u;
+            sound_play_effect(SOUND_EFFECT_CONFIRM);
+        } else {
+            sound_play_effect(SOUND_EFFECT_CANCEL);
+        }
+    } else if (
+        ((pressed & J_START) || ((pressed & J_A) && commander_list_focus))
+        && (commander_match_count > 0u)
+    ) {
+        action_set_commander(
+            &game,
+            selected_player,
+            commander_suggestions[commander_suggestion]
+        );
+        sound_play_effect(SOUND_EFFECT_CONFIRM);
+        screen_state = SCREEN_PLAYER_DETAIL;
+        ui_show_player_detail(
+            &game,
+            selected_player,
+            selected_field,
+            adjustment_step
+        );
+        return;
+    } else if (pressed & J_B) {
+        if (commander_query_length > 0u) {
+            commander_query_length--;
+            commander_query[commander_query_length] = '\0';
+            commander_suggestion = 0u;
+        } else {
+            screen_state = SCREEN_PLAYER_DETAIL;
+            ui_show_player_detail(
+                &game,
+                selected_player,
+                selected_field,
+                adjustment_step
+            );
+            return;
+        }
+        sound_play_effect(SOUND_EFFECT_CANCEL);
+    } else {
+        return;
+    }
+    refresh_commander_search();
 }
 
 static void play_value_feedback(
@@ -421,6 +553,13 @@ static void handle_detail_input(uint8_t pressed) {
         return;
     } else if (pressed & J_A) {
         if (
+            (selected_field == DETAIL_FIELD_COMMANDER)
+            && !game.players[selected_player].eliminated
+        ) {
+            sound_play_effect(SOUND_EFFECT_CONFIRM);
+            open_commander_search();
+            return;
+        } else if (
             (selected_field == DETAIL_FIELD_COMMANDER_DAMAGE)
             && !game.players[selected_player].eliminated
         ) {
@@ -638,6 +777,8 @@ void main(void) {
             handle_detail_input(pressed);
         } else if (screen_state == SCREEN_COMMANDER_DAMAGE) {
             handle_commander_damage_input(pressed);
+        } else if (screen_state == SCREEN_COMMANDER_SEARCH) {
+            handle_commander_search_input(pressed);
         } else {
             handle_overview_input(pressed);
         }

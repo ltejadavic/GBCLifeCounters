@@ -55,6 +55,14 @@ void ui_refresh_commander_damage(
     uint8_t first_visible_source,
     uint8_t adjustment_step
 ) BANKED;
+void ui_show_commander_search(
+    const Player *player,
+    const char *query,
+    const uint16_t suggestions[3],
+    uint8_t selected_suggestion,
+    uint8_t keyboard_index,
+    uint8_t list_focus
+) BANKED;
 void ui_draw_reset_prompt(void) BANKED;
 void ui_draw_elimination_prompt(const Player *player) BANKED;
 

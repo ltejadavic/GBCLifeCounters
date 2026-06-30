@@ -93,6 +93,10 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     assert(navigation_next_life_step(LIFE_STEP_SMALL) == LIFE_STEP_MEDIUM);
     assert(navigation_next_life_step(LIFE_STEP_MEDIUM) == LIFE_STEP_LARGE);
     assert(navigation_next_life_step(LIFE_STEP_LARGE) == LIFE_STEP_SMALL);
+    assert(
+        navigation_next_detail_field(DETAIL_FIELD_COMMANDER)
+        == DETAIL_FIELD_LIFE
+    );
     assert(navigation_next_detail_field(DETAIL_FIELD_LIFE) == DETAIL_FIELD_POISON);
     assert(
         navigation_next_detail_field(DETAIL_FIELD_POISON)
