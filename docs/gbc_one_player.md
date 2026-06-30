@@ -1,8 +1,12 @@
 # GBC One-Player Counter
 
-This iteration replaces the monolithic technical test with the first structured
-GBDK application. The ROM still exposes one player, while the underlying model
-uses the planned fixed-size structures for up to eight players.
+This historical iteration replaced the monolithic technical test with the
+first structured GBDK application. The ROM still exposes one player, while the
+underlying model uses the planned fixed-size structures for up to eight
+players.
+
+The active build has moved to the four-player overview documented in
+`docs/gbc_four_player.md`.
 
 ## Build and verify
 

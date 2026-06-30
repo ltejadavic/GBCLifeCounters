@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Structured GBC one-player counter implemented after the technical test
+First four-player GBC life-overview iteration implemented
 
 Planned development order:
 
@@ -52,9 +52,9 @@ been ported to C/GBDK.
 
 Game Boy Color Prototype
 
-The current C/GBDK milestone is a structured one-player life counter. It uses
-separate fixed-size data model, action, rule, and UI modules prepared for the
-future eight-player port.
+The current C/GBDK milestone displays four independent players using the
+fixed-size data model, action, rule, navigation, and UI modules. It is the first
+iteration of the four-player Commander MVP.
 
 Build and verify it from the repository root:
 
@@ -66,20 +66,19 @@ make verify
 Generated ROM:
 
 ```text
-build/commander_gbc_one_player.gbc
+build/commander_gbc_four_player.gbc
 ```
 
 Controls:
 
-* Left / Right: -1 / +1 life
-* Down / Up: -5 / +5 life
-* B / A: -10 / +10 life
-* Start: reset to 40 life
+* Up / Down: select a player
+* Left / Right: decrease / increase the selected player's life
+* Select: cycle adjustment step through 1, 5, and 10
+* Start: open reset confirmation; A confirms and B cancels
 
-The screen shows `LOW LIFE` at 5 or less and `MAY LOSE` at 0 or less without
-automatic elimination. It also displays whether the emulator is actually
-running in CGB color mode. See `docs/gbc_one_player.md` for the complete
-emulator test checklist and expected behavior.
+Each row shows `LOW` at 5 or less and `LOSS` at 0 or less without automatic
+elimination. See `docs/gbc_four_player.md` for the complete emulator test
+checklist and expected behavior.
 
 ⸻
 
