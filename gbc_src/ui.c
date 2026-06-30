@@ -12,6 +12,7 @@
 #define NORMAL_PALETTE 0u
 #define WARNING_PALETTE 1u
 #define LOSS_PALETTE 2u
+#define ELIMINATED_PALETTE 3u
 
 static const uint8_t player_rows[OVERVIEW_PLAYER_LIMIT] = {3u, 5u, 7u, 9u};
 
@@ -28,6 +29,10 @@ static const palette_color_t background_palettes[] = {
     RGB8(239, 129, 106),
     RGB8(155, 51, 52),
     RGB8(54, 24, 30),
+    RGB8(232, 235, 239),
+    RGB8(158, 171, 183),
+    RGB8(75, 88, 103),
+    RGB8(25, 31, 40),
 };
 
 static void set_region_palette(
@@ -133,7 +138,9 @@ static void draw_player_row(
     gotoxy(12u, row);
     printf("%s", poison_text);
     gotoxy(16u, row);
-    if (player_status == RULE_STATUS_POSSIBLE_LOSS) {
+    if (player->eliminated) {
+        printf("OUT ");
+    } else if (player_status == RULE_STATUS_POSSIBLE_LOSS) {
         printf("LOSS");
     } else if (
         ((life_status == RULE_STATUS_WARNING) ? 1u : 0u)
@@ -156,8 +163,22 @@ static void draw_player_row(
         row,
         DEVICE_SCREEN_WIDTH,
         1u,
-        palette_for_status(player_status)
+        player->eliminated
+            ? ELIMINATED_PALETTE
+            : palette_for_status(player_status)
     );
+}
+
+static void draw_winner(const GameState *game) {
+    int8_t winner = rules_check_winner(game);
+
+    gotoxy(0u, 16u);
+    printf("                    ");
+    if (winner != NO_PLAYER) {
+        gotoxy(3u, 16u);
+        printf("WINNER: ");
+        printf("%s", game->players[(uint8_t)winner].name);
+    }
 }
 
 static void draw_overview_controls(uint8_t life_step) {
@@ -221,13 +242,19 @@ static void draw_detail_fields(
     gotoxy(9u, 3u);
     printf("%s", life_text);
     gotoxy(16u, 3u);
-    print_status_word(life_status);
+    if (player->eliminated) {
+        printf("OUT ");
+    } else {
+        print_status_word(life_status);
+    }
     set_region_palette(
         0u,
         3u,
         DEVICE_SCREEN_WIDTH,
         1u,
-        palette_for_status(life_status)
+        player->eliminated
+            ? ELIMINATED_PALETTE
+            : palette_for_status(life_status)
     );
 
     gotoxy(0u, 5u);
@@ -239,13 +266,19 @@ static void draw_detail_fields(
     gotoxy(12u, 5u);
     printf("%s", poison_text);
     gotoxy(16u, 5u);
-    print_status_word(poison_status);
+    if (player->eliminated) {
+        printf("OUT ");
+    } else {
+        print_status_word(poison_status);
+    }
     set_region_palette(
         0u,
         5u,
         DEVICE_SCREEN_WIDTH,
         1u,
-        palette_for_status(poison_status)
+        player->eliminated
+            ? ELIMINATED_PALETTE
+            : palette_for_status(poison_status)
     );
 
     gotoxy(0u, 7u);
@@ -257,17 +290,26 @@ static void draw_detail_fields(
     gotoxy(12u, 7u);
     printf("%s", commander_text);
     gotoxy(16u, 7u);
-    print_status_word(commander_status);
+    if (player->eliminated) {
+        printf("OUT ");
+    } else {
+        print_status_word(commander_status);
+    }
     set_region_palette(
         0u,
         7u,
         DEVICE_SCREEN_WIDTH,
         1u,
-        palette_for_status(commander_status)
+        player->eliminated
+            ? ELIMINATED_PALETTE
+            : palette_for_status(commander_status)
     );
 }
 
-static void draw_detail_controls(uint8_t adjustment_step) {
+static void draw_detail_controls(
+    uint8_t adjustment_step,
+    uint8_t player_is_eliminated
+) {
     clear_help_area();
     gotoxy(1u, 11u);
     printf("UP/DOWN FIELD");
@@ -282,7 +324,11 @@ static void draw_detail_controls(uint8_t adjustment_step) {
         printf("SELECT STEP: 10");
     }
     gotoxy(1u, 14u);
-    printf("A CMD SOURCES");
+    if (player_is_eliminated) {
+        printf("START RESTORE");
+    } else {
+        printf("A CMD  START OUT");
+    }
     gotoxy(1u, 15u);
     printf("B BACK");
 }
@@ -355,7 +401,7 @@ static void draw_commander_controls(uint8_t adjustment_step) {
 }
 
 void ui_initialize(void) {
-    set_bkg_palette(BKGF_CGB_PAL0, 3u, background_palettes);
+    set_bkg_palette(BKGF_CGB_PAL0, 4u, background_palettes);
     SHOW_BKG;
     DISPLAY_ON;
 }
@@ -390,6 +436,7 @@ void ui_refresh_overview(
         );
     }
     draw_overview_controls(life_step);
+    draw_winner(game);
 }
 
 void ui_show_player_detail(
@@ -415,7 +462,10 @@ void ui_refresh_player_detail(
     uint8_t adjustment_step
 ) {
     draw_detail_fields(game, &game->players[player_id], selected_field);
-    draw_detail_controls(adjustment_step);
+    draw_detail_controls(
+        adjustment_step,
+        game->players[player_id].eliminated
+    );
 }
 
 void ui_show_commander_damage(
@@ -458,6 +508,20 @@ void ui_draw_reset_prompt(void) {
     clear_help_area();
     gotoxy(1u, 12u);
     printf("RESET ALL PLAYERS?");
+    gotoxy(3u, 14u);
+    printf("A YES    B NO");
+}
+
+void ui_draw_elimination_prompt(const Player *player) {
+    clear_help_area();
+    gotoxy(2u, 12u);
+    if (player->eliminated) {
+        printf("RESTORE ");
+    } else {
+        printf("ELIMINATE ");
+    }
+    printf("%s", player->name);
+    printf("?");
     gotoxy(3u, 14u);
     printf("A YES    B NO");
 }

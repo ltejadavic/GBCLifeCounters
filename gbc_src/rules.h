@@ -26,5 +26,7 @@ uint8_t rules_get_highest_commander_damage(
     uint8_t target_player
 );
 RuleStatus rules_check_player(const GameState *game, uint8_t player_id);
+uint8_t rules_get_active_player_count(const GameState *game);
+int8_t rules_check_winner(const GameState *game);
 
 #endif

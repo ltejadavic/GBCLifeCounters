@@ -41,5 +41,6 @@ void ui_refresh_commander_damage(
     uint8_t adjustment_step
 );
 void ui_draw_reset_prompt(void);
+void ui_draw_elimination_prompt(const Player *player);
 
 #endif

@@ -102,6 +102,57 @@ bool action_set_commander_damage(
     return true;
 }
 
+static int8_t find_next_active_player(
+    const GameState *game,
+    uint8_t eliminated_player
+) {
+    uint8_t offset;
+
+    for (offset = 1u; offset <= game->player_count; offset++) {
+        uint8_t candidate = (uint8_t)(
+            (eliminated_player + offset) % game->player_count
+        );
+        if (!game->players[candidate].eliminated) {
+            return (int8_t)candidate;
+        }
+    }
+    return NO_PLAYER;
+}
+
+bool action_eliminate_player(GameState *game, uint8_t player_id) {
+    Player *player;
+
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+    player = &game->players[player_id];
+    player->eliminated = 1u;
+    player->is_monarch = 0u;
+    player->has_initiative = 0u;
+
+    if (game->monarch_player == (int8_t)player_id) {
+        game->monarch_player = NO_PLAYER;
+    }
+    if (game->initiative_player == (int8_t)player_id) {
+        game->initiative_player = NO_PLAYER;
+    }
+    if (game->active_player == (int8_t)player_id) {
+        game->active_player = find_next_active_player(game, player_id);
+    }
+    return true;
+}
+
+bool action_restore_player(GameState *game, uint8_t player_id) {
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+    game->players[player_id].eliminated = 0u;
+    if (game->active_player == NO_PLAYER) {
+        game->active_player = (int8_t)player_id;
+    }
+    return true;
+}
+
 bool action_reset_player(GameState *game, uint8_t player_id) {
     if (!is_valid_player(game, player_id)) {
         return false;

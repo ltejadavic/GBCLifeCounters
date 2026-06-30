@@ -24,6 +24,8 @@ bool action_set_commander_damage(
     uint8_t commander_slot,
     uint8_t value
 );
+bool action_eliminate_player(GameState *game, uint8_t player_id);
+bool action_restore_player(GameState *game, uint8_t player_id);
 bool action_reset_player(GameState *game, uint8_t player_id);
 
 #endif

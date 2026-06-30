@@ -122,3 +122,31 @@ RuleStatus rules_check_player(const GameState *game, uint8_t player_id) {
 
     return commander_status > highest_status ? commander_status : highest_status;
 }
+
+uint8_t rules_get_active_player_count(const GameState *game) {
+    uint8_t player_id;
+    uint8_t active_count = 0u;
+
+    for (player_id = 0u; player_id < game->player_count; player_id++) {
+        if (!game->players[player_id].eliminated) {
+            active_count++;
+        }
+    }
+    return active_count;
+}
+
+int8_t rules_check_winner(const GameState *game) {
+    uint8_t player_id;
+    int8_t winner = NO_PLAYER;
+
+    if (rules_get_active_player_count(game) != 1u) {
+        return NO_PLAYER;
+    }
+    for (player_id = 0u; player_id < game->player_count; player_id++) {
+        if (!game->players[player_id].eliminated) {
+            winner = (int8_t)player_id;
+            break;
+        }
+    }
+    return winner;
+}

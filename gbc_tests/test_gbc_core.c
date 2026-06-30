@@ -185,6 +185,43 @@ static void test_eight_player_capacity_and_game_reset(void) {
     assert(game.turn_number == 1u);
 }
 
+static void test_manual_elimination_restore_and_winner(void) {
+    GameState game;
+
+    game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
+    assert(action_set_life(&game, 0u, 0));
+    assert(rules_check_player(&game, 0u) == RULE_STATUS_POSSIBLE_LOSS);
+    assert(game.players[0].eliminated == 0u);
+    assert(rules_check_winner(&game) == NO_PLAYER);
+
+    assert(action_eliminate_player(&game, 0u));
+    assert(game.active_player == 1);
+    assert(action_eliminate_player(&game, 1u));
+    assert(action_eliminate_player(&game, 2u));
+    assert(rules_get_active_player_count(&game) == 1u);
+    assert(rules_check_winner(&game) == 3);
+
+    assert(action_restore_player(&game, 1u));
+    assert(rules_get_active_player_count(&game) == 2u);
+    assert(rules_check_winner(&game) == NO_PLAYER);
+
+    assert(action_eliminate_player(&game, 1u));
+    assert(action_eliminate_player(&game, 3u));
+    assert(rules_get_active_player_count(&game) == 0u);
+    assert(rules_check_winner(&game) == NO_PLAYER);
+    assert(game.active_player == NO_PLAYER);
+
+    assert(action_restore_player(&game, 2u));
+    assert(game.active_player == 2);
+    assert(rules_check_winner(&game) == 2);
+    assert(!action_eliminate_player(&game, 4u));
+    assert(!action_restore_player(&game, 4u));
+
+    game_state_reset(&game);
+    assert(rules_get_active_player_count(&game) == 4u);
+    assert(rules_check_winner(&game) == NO_PLAYER);
+}
+
 static void assert_life_text(int16_t value, const char *expected) {
     char output[LIFE_TEXT_BUFFER_SIZE];
 
@@ -224,6 +261,7 @@ int main(void) {
     test_poison_actions_and_rules_are_independent();
     test_commander_damage_is_separate_by_source_and_slot();
     test_eight_player_capacity_and_game_reset();
+    test_manual_elimination_restore_and_winner();
     test_life_text_replaces_the_entire_field();
     test_counter_text_replaces_the_entire_field();
     printf("GBC core tests passed.\n");

@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Four-player GBC life, poison, and commander-damage iteration implemented
+Four-player Commander MVP with manual elimination and winner detection
 
 Planned development order:
 
@@ -54,7 +54,8 @@ Game Boy Color Prototype
 
 The current C/GBDK milestone tracks independent life, poison, and commander
 damage for four players. Commander damage remains separate by target, source,
-and commander slot.
+and commander slot. Possible losses require manual elimination confirmation,
+and a winner appears only when exactly one player remains active.
 
 Build and verify it from the repository root:
 
@@ -78,9 +79,10 @@ Controls:
 * Start: open reset confirmation; A confirms and B cancels
 
 Player detail includes `CMD MAX`; selecting it and pressing A opens damage by
-source commander. Each row shows a combined warning/loss state without
-automatic elimination. See `docs/gbc_four_player.md` for the complete emulator
-test checklist and expected behavior.
+source commander. Start in player detail confirms elimination or restoration.
+Each row shows a combined warning/loss state without automatic elimination. See
+`docs/gbc_four_player.md` for the complete emulator test checklist and expected
+behavior.
 
 ⸻
 

@@ -35,6 +35,8 @@ On the player detail screen:
 - Left / Right: change the selected value using the displayed step.
 - Select: cycle the adjustment step through 1, 5, and 10.
 - A while `CMD MAX` is selected: open commander damage by source.
+- Start: request manual elimination, or restoration if the player is already
+  eliminated.
 - B: return to the overview.
 
 On the commander damage screen:
@@ -79,7 +81,19 @@ On the commander damage screen:
 18. Reduce commander damage below zero. It must clamp to 0 without affecting
     other source rows.
 19. Confirm reset restores all commander damage, poison, and life values.
-20. Confirm the bottom line reads `CGB COLOR: ACTIVE`.
+20. Put P1 at a possible loss value and confirm it remains active until manually
+    eliminated.
+21. In P1 detail press Start, then B. The prompt must cancel without changing
+    P1. Repeat with Start, then A: P1 must remain visible as `OUT`.
+22. Try to edit an `OUT` player from overview and detail. Its values must not
+    change.
+23. Open the `OUT` player's detail, press Start, then A. The player must be
+    restored with its previous values.
+24. Eliminate P1, P2, and P3. The overview must show `WINNER: P4`.
+25. Restore P2. The winner label must disappear because two players are active.
+26. Eliminate all players. No winner may be shown when zero players are active.
+27. Confirm reset restores all players and removes every `OUT` and winner label.
+28. Confirm the bottom line reads `CGB COLOR: ACTIVE`.
 
 No input should alter more than one player or apply more than once per button
 press.
@@ -87,5 +101,5 @@ press.
 ## Current limits
 
 The UI currently edits the main commander slot only. The second partner slot is
-kept separate in the model and rules but is not exposed yet. Manual elimination,
-winner detection, player setup, and sound are also not exposed yet.
+kept separate in the model and rules but is not exposed yet. Player setup and
+sound are also not exposed yet.
