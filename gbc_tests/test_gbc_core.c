@@ -22,6 +22,7 @@ static void test_four_player_initial_state(void) {
         assert(game.players[player_id].life == DEFAULT_STARTING_LIFE);
         assert(game.players[player_id].name[0] == 'P');
         assert(game.players[player_id].name[1] == (char)('1' + player_id));
+        assert(game.players[player_id].commander_id == NO_COMMANDER_ID);
     }
     assert(game.turn_number == 1u);
     assert(game.active_player == 0);
@@ -72,6 +73,11 @@ static void test_validation_and_life_bounds(void) {
     assert(action_set_life(&game, 0u, MIN_LIFE_TOTAL));
     assert(action_change_life(&game, 0u, -10));
     assert(game.players[0].life == MIN_LIFE_TOTAL);
+    assert(action_set_commander(&game, 0u, 42u));
+    assert(game.players[0].commander_id == 42u);
+    assert(!action_set_commander(&game, 4u, 42u));
+    assert(action_reset_player(&game, 0u));
+    assert(game.players[0].commander_id == NO_COMMANDER_ID);
 }
 
 static void test_navigation_wraps_and_cycles_steps(void) {

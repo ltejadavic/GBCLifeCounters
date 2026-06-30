@@ -62,6 +62,18 @@ bool action_set_poison(GameState *game, uint8_t player_id, uint8_t value) {
     return true;
 }
 
+bool action_set_commander(
+    GameState *game,
+    uint8_t player_id,
+    uint16_t commander_id
+) {
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+    game->players[player_id].commander_id = commander_id;
+    return true;
+}
+
 bool action_change_commander_damage(
     GameState *game,
     uint8_t target_player,

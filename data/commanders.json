@@ -1,0 +1,2445 @@
+{
+  "generated": {
+    "date": "2026-06-30",
+    "version": "5.3.0+20260630"
+  },
+  "popular_limit": 100,
+  "max_rom_name": 28,
+  "archetypes": [
+    "CONTROL",
+    "ARTIFACTS",
+    "COUNTERS",
+    "ENCHANTMENTS",
+    "GRAVEYARD",
+    "LANDS",
+    "LIFEGAIN",
+    "SACRIFICE",
+    "SPELLS",
+    "TOKENS",
+    "TYPAL",
+    "VOLTRON"
+  ],
+  "commanders": [
+    {
+      "name": "Abaddon the Despoiler",
+      "full_name": "Abaddon the Despoiler",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8538,
+      "id": 0
+    },
+    {
+      "name": "Adeline, Resplendent Cathar",
+      "full_name": "Adeline, Resplendent Cathar",
+      "archetype": "TOKENS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 506,
+      "id": 1
+    },
+    {
+      "name": "Admiral Brass, Unsinkable",
+      "full_name": "Admiral Brass, Unsinkable",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7194,
+      "id": 2
+    },
+    {
+      "name": "Adrix and Nev, Twincasters",
+      "full_name": "Adrix and Nev, Twincasters",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 1410,
+      "id": 3
+    },
+    {
+      "name": "Aesi, Tyrant of Gyre Strait",
+      "full_name": "Aesi, Tyrant of Gyre Strait",
+      "archetype": "LANDS",
+      "precon": true,
+      "popular": true,
+      "edhrec_rank": 847,
+      "id": 4
+    },
+    {
+      "name": "Alexios, Deimos of Kosmos",
+      "full_name": "Alexios, Deimos of Kosmos",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1244,
+      "id": 5
+    },
+    {
+      "name": "Aminatou, the Fateshifter",
+      "full_name": "Aminatou, the Fateshifter",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4661,
+      "id": 6
+    },
+    {
+      "name": "Aminatou, Veil Piercer",
+      "full_name": "Aminatou, Veil Piercer",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5054,
+      "id": 7
+    },
+    {
+      "name": "Anhelo, the Painter",
+      "full_name": "Anhelo, the Painter",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11365,
+      "id": 8
+    },
+    {
+      "name": "Anikthea, Hand of Erebos",
+      "full_name": "Anikthea, Hand of Erebos",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5077,
+      "id": 9
+    },
+    {
+      "name": "Anim Pakal, Thousandth Moon",
+      "full_name": "Anim Pakal, Thousandth Moon",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1049,
+      "id": 10
+    },
+    {
+      "name": "Anje Falkenrath",
+      "full_name": "Anje Falkenrath",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8374,
+      "id": 11
+    },
+    {
+      "name": "Anowon, the Ruin Thief",
+      "full_name": "Anowon, the Ruin Thief",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9137,
+      "id": 12
+    },
+    {
+      "name": "Arahbo, Roar of the World",
+      "full_name": "Arahbo, Roar of the World",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7799,
+      "id": 13
+    },
+    {
+      "name": "Arasta of the Endless Web",
+      "full_name": "Arasta of the Endless Web",
+      "archetype": "ENCHANTMENTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1007,
+      "id": 14
+    },
+    {
+      "name": "Ashaya, Soul of the Wild",
+      "full_name": "Ashaya, Soul of the Wild",
+      "archetype": "LANDS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 811,
+      "id": 15
+    },
+    {
+      "name": "Ashling, the Limitless",
+      "full_name": "Ashling, the Limitless",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5987,
+      "id": 16
+    },
+    {
+      "name": "Atarka, World Render",
+      "full_name": "Atarka, World Render",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 1307,
+      "id": 17
+    },
+    {
+      "name": "Atraxa, Praetors' Voice",
+      "full_name": "Atraxa, Praetors' Voice",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2457,
+      "id": 18
+    },
+    {
+      "name": "Auntie Ool, Cursewretch",
+      "full_name": "Auntie Ool, Cursewretch",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6827,
+      "id": 19
+    },
+    {
+      "name": "Aurelia, the Warleader",
+      "full_name": "Aurelia, the Warleader",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 825,
+      "id": 20
+    },
+    {
+      "name": "Avacyn, Angel of Hope",
+      "full_name": "Avacyn, Angel of Hope",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 768,
+      "id": 21
+    },
+    {
+      "name": "Ayara, First of Locthwain",
+      "full_name": "Ayara, First of Locthwain",
+      "archetype": "SACRIFICE",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 823,
+      "id": 22
+    },
+    {
+      "name": "Azusa, Lost but Seeking",
+      "full_name": "Azusa, Lost but Seeking",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 316,
+      "id": 23
+    },
+    {
+      "name": "Bello, Bard of the Brambles",
+      "full_name": "Bello, Bard of the Brambles",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3398,
+      "id": 24
+    },
+    {
+      "name": "Birgi, God of Storytelling /",
+      "full_name": "Birgi, God of Storytelling // Harnfel, Horn of Bounty",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 488,
+      "id": 25
+    },
+    {
+      "name": "Boromir, Warden of the Tower",
+      "full_name": "Boromir, Warden of the Tower",
+      "archetype": "SACRIFICE",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 824,
+      "id": 26
+    },
+    {
+      "name": "Braids, Arisen Nightmare",
+      "full_name": "Braids, Arisen Nightmare",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 289,
+      "id": 27
+    },
+    {
+      "name": "Breena, the Demagogue",
+      "full_name": "Breena, the Demagogue",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 1896,
+      "id": 28
+    },
+    {
+      "name": "Breya, Etherium Shaper",
+      "full_name": "Breya, Etherium Shaper",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5803,
+      "id": 29
+    },
+    {
+      "name": "Bright-Palm, Soul Awakener",
+      "full_name": "Bright-Palm, Soul Awakener",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9208,
+      "id": 30
+    },
+    {
+      "name": "Brimaz, Blight of Oreskos",
+      "full_name": "Brimaz, Blight of Oreskos",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7368,
+      "id": 31
+    },
+    {
+      "name": "Bristly Bill, Spine Sower",
+      "full_name": "Bristly Bill, Spine Sower",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 903,
+      "id": 32
+    },
+    {
+      "name": "Caesar, Legion's Emperor",
+      "full_name": "Caesar, Legion's Emperor",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2710,
+      "id": 33
+    },
+    {
+      "name": "Captain America, Team Leader",
+      "full_name": "Captain America, Team Leader",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 19088,
+      "id": 34
+    },
+    {
+      "name": "Captain Lannery Storm",
+      "full_name": "Captain Lannery Storm",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1147,
+      "id": 35
+    },
+    {
+      "name": "Captain N'ghathrod",
+      "full_name": "Captain N'ghathrod",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4382,
+      "id": 36
+    },
+    {
+      "name": "Chatterfang, Squirrel Genera",
+      "full_name": "Chatterfang, Squirrel General",
+      "archetype": "SACRIFICE",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 985,
+      "id": 37
+    },
+    {
+      "name": "Chishiro, the Shattered Blad",
+      "full_name": "Chishiro, the Shattered Blade",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5704,
+      "id": 38
+    },
+    {
+      "name": "Clavileno, First of the Bles",
+      "full_name": "Clavileno, First of the Blessed",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3439,
+      "id": 39
+    },
+    {
+      "name": "Cloud, Ex-SOLDIER",
+      "full_name": "Cloud, Ex-SOLDIER",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4839,
+      "id": 40
+    },
+    {
+      "name": "Commodore Guff",
+      "full_name": "Commodore Guff",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7765,
+      "id": 41
+    },
+    {
+      "name": "Danitha Capashen, Paragon",
+      "full_name": "Danitha Capashen, Paragon",
+      "archetype": "ENCHANTMENTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 790,
+      "id": 42
+    },
+    {
+      "name": "Daretti, Scrap Savant",
+      "full_name": "Daretti, Scrap Savant",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 1892,
+      "id": 43
+    },
+    {
+      "name": "Davros, Dalek Creator",
+      "full_name": "Davros, Dalek Creator",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7537,
+      "id": 44
+    },
+    {
+      "name": "Daxos the Returned",
+      "full_name": "Daxos the Returned",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9097,
+      "id": 45
+    },
+    {
+      "name": "Delney, Streetwise Lookout",
+      "full_name": "Delney, Streetwise Lookout",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 853,
+      "id": 46
+    },
+    {
+      "name": "Derevi, Empyrial Tactician",
+      "full_name": "Derevi, Empyrial Tactician",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2844,
+      "id": 47
+    },
+    {
+      "name": "Dihada, Binder of Wills",
+      "full_name": "Dihada, Binder of Wills",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3317,
+      "id": 48
+    },
+    {
+      "name": "Dina, Essence Brewer",
+      "full_name": "Dina, Essence Brewer",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7519,
+      "id": 49
+    },
+    {
+      "name": "Disa the Restless",
+      "full_name": "Disa the Restless",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8527,
+      "id": 50
+    },
+    {
+      "name": "Doctor Doom, King of Latveri",
+      "full_name": "Doctor Doom, King of Latveria",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 15781,
+      "id": 51
+    },
+    {
+      "name": "Dogmeat, Ever Loyal",
+      "full_name": "Dogmeat, Ever Loyal",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8902,
+      "id": 52
+    },
+    {
+      "name": "Dr. Madison Li",
+      "full_name": "Dr. Madison Li",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6673,
+      "id": 53
+    },
+    {
+      "name": "Drakuseth, Maw of Flames",
+      "full_name": "Drakuseth, Maw of Flames",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1093,
+      "id": 54
+    },
+    {
+      "name": "Edgar Markov",
+      "full_name": "Edgar Markov",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3096,
+      "id": 55
+    },
+    {
+      "name": "Elas il-Kor, Sadistic Pilgri",
+      "full_name": "Elas il-Kor, Sadistic Pilgrim",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 596,
+      "id": 56
+    },
+    {
+      "name": "Elenda, the Dusk Rose",
+      "full_name": "Elenda, the Dusk Rose",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1218,
+      "id": 57
+    },
+    {
+      "name": "Elesh Norn, Grand Cenobite",
+      "full_name": "Elesh Norn, Grand Cenobite",
+      "archetype": "TYPAL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 815,
+      "id": 58
+    },
+    {
+      "name": "Elesh Norn, Mother of Machin",
+      "full_name": "Elesh Norn, Mother of Machines",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 993,
+      "id": 59
+    },
+    {
+      "name": "Ellivere of the Wild Court",
+      "full_name": "Ellivere of the Wild Court",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5998,
+      "id": 60
+    },
+    {
+      "name": "Emmara, Soul of the Accord",
+      "full_name": "Emmara, Soul of the Accord",
+      "archetype": "LIFEGAIN",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6585,
+      "id": 61
+    },
+    {
+      "name": "Emry, Lurker of the Loch",
+      "full_name": "Emry, Lurker of the Loch",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 607,
+      "id": 62
+    },
+    {
+      "name": "Eowyn, Shieldmaiden",
+      "full_name": "Eowyn, Shieldmaiden",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4480,
+      "id": 63
+    },
+    {
+      "name": "Eshki, Temur's Roar",
+      "full_name": "Eshki, Temur's Roar",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5544,
+      "id": 64
+    },
+    {
+      "name": "Esika, God of the Tree // Th",
+      "full_name": "Esika, God of the Tree // The Prismatic Bridge",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2507,
+      "id": 65
+    },
+    {
+      "name": "Estrid, the Masked",
+      "full_name": "Estrid, the Masked",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11036,
+      "id": 66
+    },
+    {
+      "name": "Etali, Primal Conqueror // E",
+      "full_name": "Etali, Primal Conqueror // Etali, Primal Sickness",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 767,
+      "id": 67
+    },
+    {
+      "name": "Etali, Primal Storm",
+      "full_name": "Etali, Primal Storm",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 260,
+      "id": 68
+    },
+    {
+      "name": "Ezuri, Claw of Progress",
+      "full_name": "Ezuri, Claw of Progress",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5724,
+      "id": 69
+    },
+    {
+      "name": "Faldorn, Dread Wolf Herald",
+      "full_name": "Faldorn, Dread Wolf Herald",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3888,
+      "id": 70
+    },
+    {
+      "name": "Felothar the Steadfast",
+      "full_name": "Felothar the Steadfast",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4345,
+      "id": 71
+    },
+    {
+      "name": "Firkraag, Cunning Instigator",
+      "full_name": "Firkraag, Cunning Instigator",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5719,
+      "id": 72
+    },
+    {
+      "name": "Freyalise, Llanowar's Fury",
+      "full_name": "Freyalise, Llanowar's Fury",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2692,
+      "id": 73
+    },
+    {
+      "name": "Frodo, Adventurous Hobbit",
+      "full_name": "Frodo, Adventurous Hobbit",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4905,
+      "id": 74
+    },
+    {
+      "name": "Galadriel, Elven-Queen",
+      "full_name": "Galadriel, Elven-Queen",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11060,
+      "id": 75
+    },
+    {
+      "name": "Galea, Kindler of Hope",
+      "full_name": "Galea, Kindler of Hope",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11953,
+      "id": 76
+    },
+    {
+      "name": "Gavi, Nest Warden",
+      "full_name": "Gavi, Nest Warden",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 13871,
+      "id": 77
+    },
+    {
+      "name": "Ghalta, Primal Hunger",
+      "full_name": "Ghalta, Primal Hunger",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 473,
+      "id": 78
+    },
+    {
+      "name": "Ghalta, Stampede Tyrant",
+      "full_name": "Ghalta, Stampede Tyrant",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1066,
+      "id": 79
+    },
+    {
+      "name": "Ghave, Guru of Spores",
+      "full_name": "Ghave, Guru of Spores",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9416,
+      "id": 80
+    },
+    {
+      "name": "Ghired, Conclave Exile",
+      "full_name": "Ghired, Conclave Exile",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11724,
+      "id": 81
+    },
+    {
+      "name": "Gimbal, Gremlin Prodigy",
+      "full_name": "Gimbal, Gremlin Prodigy",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 14933,
+      "id": 82
+    },
+    {
+      "name": "Gisa and Geralf",
+      "full_name": "Gisa and Geralf",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3818,
+      "id": 83
+    },
+    {
+      "name": "Gisela, Blade of Goldnight",
+      "full_name": "Gisela, Blade of Goldnight",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1125,
+      "id": 84
+    },
+    {
+      "name": "Gisela, the Broken Blade // ",
+      "full_name": "Gisela, the Broken Blade // Brisela, Voice of Nightmares",
+      "archetype": "LIFEGAIN",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2575,
+      "id": 85
+    },
+    {
+      "name": "Go-Shintai of Life's Origin",
+      "full_name": "Go-Shintai of Life's Origin",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4985,
+      "id": 86
+    },
+    {
+      "name": "Gonti, Canny Acquisitor",
+      "full_name": "Gonti, Canny Acquisitor",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7851,
+      "id": 87
+    },
+    {
+      "name": "Goreclaw, Terror of Qal Sism",
+      "full_name": "Goreclaw, Terror of Qal Sisma",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 677,
+      "id": 88
+    },
+    {
+      "name": "Hakbal of the Surging Soul",
+      "full_name": "Hakbal of the Surging Soul",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3665,
+      "id": 89
+    },
+    {
+      "name": "Hazel of the Rootbloom",
+      "full_name": "Hazel of the Rootbloom",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2955,
+      "id": 90
+    },
+    {
+      "name": "Hearthhull, the Worldseed",
+      "full_name": "Hearthhull, the Worldseed",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3693,
+      "id": 91
+    },
+    {
+      "name": "Heliod, Sun-Crowned",
+      "full_name": "Heliod, Sun-Crowned",
+      "archetype": "ENCHANTMENTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1021,
+      "id": 92
+    },
+    {
+      "name": "Henzie Toolbox Torre",
+      "full_name": "Henzie Toolbox Torre",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6959,
+      "id": 93
+    },
+    {
+      "name": "Heroes in a Half Shell",
+      "full_name": "Heroes in a Half Shell",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9356,
+      "id": 94
+    },
+    {
+      "name": "Inalla, Archmage Ritualist",
+      "full_name": "Inalla, Archmage Ritualist",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8429,
+      "id": 95
+    },
+    {
+      "name": "Inquisitor Greyfax",
+      "full_name": "Inquisitor Greyfax",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9608,
+      "id": 96
+    },
+    {
+      "name": "Inspirit, Flagship Vessel",
+      "full_name": "Inspirit, Flagship Vessel",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4102,
+      "id": 97
+    },
+    {
+      "name": "Invisible Woman",
+      "full_name": "Invisible Woman",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 21292,
+      "id": 98
+    },
+    {
+      "name": "Isperia, Supreme Judge",
+      "full_name": "Isperia, Supreme Judge",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9929,
+      "id": 99
+    },
+    {
+      "name": "Ixhel, Scion of Atraxa",
+      "full_name": "Ixhel, Scion of Atraxa",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5730,
+      "id": 100
+    },
+    {
+      "name": "Jaheira, Friend of the Fores",
+      "full_name": "Jaheira, Friend of the Forest",
+      "archetype": "TOKENS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 878,
+      "id": 101
+    },
+    {
+      "name": "Jared Carthalion",
+      "full_name": "Jared Carthalion",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9001,
+      "id": 102
+    },
+    {
+      "name": "Jeleva, Nephalia's Scourge",
+      "full_name": "Jeleva, Nephalia's Scourge",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 14055,
+      "id": 103
+    },
+    {
+      "name": "Jhoira, Weatherlight Captain",
+      "full_name": "Jhoira, Weatherlight Captain",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1075,
+      "id": 104
+    },
+    {
+      "name": "Jirina Kudro",
+      "full_name": "Jirina Kudro",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11961,
+      "id": 105
+    },
+    {
+      "name": "Junji, the Midnight Sky",
+      "full_name": "Junji, the Midnight Sky",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1214,
+      "id": 106
+    },
+    {
+      "name": "K'rrik, Son of Yawgmoth",
+      "full_name": "K'rrik, Son of Yawgmoth",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1065,
+      "id": 107
+    },
+    {
+      "name": "Kaalia of the Vast",
+      "full_name": "Kaalia of the Vast",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3386,
+      "id": 108
+    },
+    {
+      "name": "Kadena, Slinking Sorcerer",
+      "full_name": "Kadena, Slinking Sorcerer",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11770,
+      "id": 109
+    },
+    {
+      "name": "Kalamax, the Stormsire",
+      "full_name": "Kalamax, the Stormsire",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9406,
+      "id": 110
+    },
+    {
+      "name": "Kalemne, Disciple of Iroas",
+      "full_name": "Kalemne, Disciple of Iroas",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8342,
+      "id": 111
+    },
+    {
+      "name": "Kambal, Profiteering Mayor",
+      "full_name": "Kambal, Profiteering Mayor",
+      "archetype": "TOKENS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1138,
+      "id": 112
+    },
+    {
+      "name": "Kamiz, Obscura Oculus",
+      "full_name": "Kamiz, Obscura Oculus",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7812,
+      "id": 113
+    },
+    {
+      "name": "Kardur, Doomscourge",
+      "full_name": "Kardur, Doomscourge",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": true,
+      "edhrec_rank": 974,
+      "id": 114
+    },
+    {
+      "name": "Karlach, Fury of Avernus",
+      "full_name": "Karlach, Fury of Avernus",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1033,
+      "id": 115
+    },
+    {
+      "name": "Kasla, the Broken Halo",
+      "full_name": "Kasla, the Broken Halo",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 13431,
+      "id": 116
+    },
+    {
+      "name": "Kathril, Aspect Warper",
+      "full_name": "Kathril, Aspect Warper",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 14369,
+      "id": 117
+    },
+    {
+      "name": "Kaust, Eyes of the Glade",
+      "full_name": "Kaust, Eyes of the Glade",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 16174,
+      "id": 118
+    },
+    {
+      "name": "Kediss, Emberclaw Familiar",
+      "full_name": "Kediss, Emberclaw Familiar",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1148,
+      "id": 119
+    },
+    {
+      "name": "Kiki-Jiki, Mirror Breaker",
+      "full_name": "Kiki-Jiki, Mirror Breaker",
+      "archetype": "SACRIFICE",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1195,
+      "id": 120
+    },
+    {
+      "name": "Killian, Decisive Mentor",
+      "full_name": "Killian, Decisive Mentor",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8575,
+      "id": 121
+    },
+    {
+      "name": "Kitt Kanto, Mayhem Diva",
+      "full_name": "Kitt Kanto, Mayhem Diva",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11330,
+      "id": 122
+    },
+    {
+      "name": "Kodama of the East Tree",
+      "full_name": "Kodama of the East Tree",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 955,
+      "id": 123
+    },
+    {
+      "name": "Kodama of the West Tree",
+      "full_name": "Kodama of the West Tree",
+      "archetype": "LANDS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 822,
+      "id": 124
+    },
+    {
+      "name": "Kogla, the Titan Ape",
+      "full_name": "Kogla, the Titan Ape",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1191,
+      "id": 125
+    },
+    {
+      "name": "Kotori, Pilot Prodigy",
+      "full_name": "Kotori, Pilot Prodigy",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6167,
+      "id": 126
+    },
+    {
+      "name": "Kozilek, Butcher of Truth",
+      "full_name": "Kozilek, Butcher of Truth",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1107,
+      "id": 127
+    },
+    {
+      "name": "Krenko, Mob Boss",
+      "full_name": "Krenko, Mob Boss",
+      "archetype": "TOKENS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1100,
+      "id": 128
+    },
+    {
+      "name": "Krenko, Tin Street Kingpin",
+      "full_name": "Krenko, Tin Street Kingpin",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 865,
+      "id": 129
+    },
+    {
+      "name": "Kutzil, Malamet Exemplar",
+      "full_name": "Kutzil, Malamet Exemplar",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 385,
+      "id": 130
+    },
+    {
+      "name": "Kynaios and Tiro of Meletis",
+      "full_name": "Kynaios and Tiro of Meletis",
+      "archetype": "LANDS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7341,
+      "id": 131
+    },
+    {
+      "name": "Lathliss, Dragon Queen",
+      "full_name": "Lathliss, Dragon Queen",
+      "archetype": "TOKENS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1059,
+      "id": 132
+    },
+    {
+      "name": "Lathril, Blade of the Elves",
+      "full_name": "Lathril, Blade of the Elves",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2281,
+      "id": 133
+    },
+    {
+      "name": "Leinore, Autumn Sovereign",
+      "full_name": "Leinore, Autumn Sovereign",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5880,
+      "id": 134
+    },
+    {
+      "name": "Liberator, Urza's Battlethop",
+      "full_name": "Liberator, Urza's Battlethopter",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1240,
+      "id": 135
+    },
+    {
+      "name": "Loot, Exuberant Explorer",
+      "full_name": "Loot, Exuberant Explorer",
+      "archetype": "LANDS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 939,
+      "id": 136
+    },
+    {
+      "name": "Loran of the Third Path",
+      "full_name": "Loran of the Third Path",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 352,
+      "id": 137
+    },
+    {
+      "name": "Lord Windgrace",
+      "full_name": "Lord Windgrace",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5975,
+      "id": 138
+    },
+    {
+      "name": "Lotho, Corrupt Shirriff",
+      "full_name": "Lotho, Corrupt Shirriff",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 409,
+      "id": 139
+    },
+    {
+      "name": "Lumra, Bellow of the Woods",
+      "full_name": "Lumra, Bellow of the Woods",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1181,
+      "id": 140
+    },
+    {
+      "name": "Mahadi, Emporium Master",
+      "full_name": "Mahadi, Emporium Master",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1243,
+      "id": 141
+    },
+    {
+      "name": "Mangara, the Diplomat",
+      "full_name": "Mangara, the Diplomat",
+      "archetype": "LIFEGAIN",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 621,
+      "id": 142
+    },
+    {
+      "name": "Marath, Will of the Wild",
+      "full_name": "Marath, Will of the Wild",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 15171,
+      "id": 143
+    },
+    {
+      "name": "Marvin, Murderous Mimic",
+      "full_name": "Marvin, Murderous Mimic",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1153,
+      "id": 144
+    },
+    {
+      "name": "Meren of Clan Nel Toth",
+      "full_name": "Meren of Clan Nel Toth",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 1462,
+      "id": 145
+    },
+    {
+      "name": "Millicent, Restless Revenant",
+      "full_name": "Millicent, Restless Revenant",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10550,
+      "id": 146
+    },
+    {
+      "name": "Mirko, Obsessive Theorist",
+      "full_name": "Mirko, Obsessive Theorist",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7753,
+      "id": 147
+    },
+    {
+      "name": "Mishra, Eminent One",
+      "full_name": "Mishra, Eminent One",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9704,
+      "id": 148
+    },
+    {
+      "name": "Mizzix of the Izmagnus",
+      "full_name": "Mizzix of the Izmagnus",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6257,
+      "id": 149
+    },
+    {
+      "name": "Mondrak, Glory Dominus",
+      "full_name": "Mondrak, Glory Dominus",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 415,
+      "id": 150
+    },
+    {
+      "name": "Moraug, Fury of Akoum",
+      "full_name": "Moraug, Fury of Akoum",
+      "archetype": "LANDS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 998,
+      "id": 151
+    },
+    {
+      "name": "Morophon, the Boundless",
+      "full_name": "Morophon, the Boundless",
+      "archetype": "TYPAL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 1506,
+      "id": 152
+    },
+    {
+      "name": "Morska, Undersea Sleuth",
+      "full_name": "Morska, Undersea Sleuth",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8427,
+      "id": 153
+    },
+    {
+      "name": "Ms. Bumbleflower",
+      "full_name": "Ms. Bumbleflower",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3168,
+      "id": 154
+    },
+    {
+      "name": "Muldrotha, the Gravetide",
+      "full_name": "Muldrotha, the Gravetide",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1108,
+      "id": 155
+    },
+    {
+      "name": "Nahiri, the Lithomancer",
+      "full_name": "Nahiri, the Lithomancer",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8915,
+      "id": 156
+    },
+    {
+      "name": "Nalia de'Arnise",
+      "full_name": "Nalia de'Arnise",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8259,
+      "id": 157
+    },
+    {
+      "name": "Neheb, the Eternal",
+      "full_name": "Neheb, the Eternal",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1170,
+      "id": 158
+    },
+    {
+      "name": "Nelly Borca, Impulsive Accus",
+      "full_name": "Nelly Borca, Impulsive Accuser",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4875,
+      "id": 159
+    },
+    {
+      "name": "Neyali, Suns' Vanguard",
+      "full_name": "Neyali, Suns' Vanguard",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3262,
+      "id": 160
+    },
+    {
+      "name": "Nezahal, Primal Tide",
+      "full_name": "Nezahal, Primal Tide",
+      "archetype": "SPELLS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1072,
+      "id": 161
+    },
+    {
+      "name": "Niv-Mizzet, Parun",
+      "full_name": "Niv-Mizzet, Parun",
+      "archetype": "SPELLS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 733,
+      "id": 162
+    },
+    {
+      "name": "Ob Nixilis of the Black Oath",
+      "full_name": "Ob Nixilis of the Black Oath",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9218,
+      "id": 163
+    },
+    {
+      "name": "Obuun, Mul Daya Ancestor",
+      "full_name": "Obuun, Mul Daya Ancestor",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10342,
+      "id": 164
+    },
+    {
+      "name": "Ojer Taq, Deepest Foundation",
+      "full_name": "Ojer Taq, Deepest Foundation // Temple of Civilization",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 837,
+      "id": 165
+    },
+    {
+      "name": "Okaun, Eye of Chaos // Okaun",
+      "full_name": "Okaun, Eye of Chaos // Okaun, Eye of Chaos",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7120,
+      "id": 166
+    },
+    {
+      "name": "Old Gnawbone",
+      "full_name": "Old Gnawbone",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 898,
+      "id": 167
+    },
+    {
+      "name": "Olivia, Opulent Outlaw",
+      "full_name": "Olivia, Opulent Outlaw",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4578,
+      "id": 168
+    },
+    {
+      "name": "Oloro, Ageless Ascetic",
+      "full_name": "Oloro, Ageless Ascetic",
+      "archetype": "LIFEGAIN",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6308,
+      "id": 169
+    },
+    {
+      "name": "Omnath, Locus of Rage",
+      "full_name": "Omnath, Locus of Rage",
+      "archetype": "LANDS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 945,
+      "id": 170
+    },
+    {
+      "name": "Omo, Queen of Vesuva",
+      "full_name": "Omo, Queen of Vesuva",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4783,
+      "id": 171
+    },
+    {
+      "name": "Osgir, the Reconstructor",
+      "full_name": "Osgir, the Reconstructor",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7779,
+      "id": 172
+    },
+    {
+      "name": "Otrimi, the Ever-Playful",
+      "full_name": "Otrimi, the Ever-Playful",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9780,
+      "id": 173
+    },
+    {
+      "name": "Padeem, Consul of Innovation",
+      "full_name": "Padeem, Consul of Innovation",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 904,
+      "id": 174
+    },
+    {
+      "name": "Pantlaza, Sun-Favored",
+      "full_name": "Pantlaza, Sun-Favored",
+      "archetype": "LANDS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2409,
+      "id": 175
+    },
+    {
+      "name": "Peregrin Took",
+      "full_name": "Peregrin Took",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 774,
+      "id": 176
+    },
+    {
+      "name": "Perrie, the Pulverizer",
+      "full_name": "Perrie, the Pulverizer",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 15951,
+      "id": 177
+    },
+    {
+      "name": "Prosper, Tome-Bound",
+      "full_name": "Prosper, Tome-Bound",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2224,
+      "id": 178
+    },
+    {
+      "name": "Prossh, Skyraider of Kher",
+      "full_name": "Prossh, Skyraider of Kher",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9280,
+      "id": 179
+    },
+    {
+      "name": "Purphoros, God of the Forge",
+      "full_name": "Purphoros, God of the Forge",
+      "archetype": "ENCHANTMENTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 655,
+      "id": 180
+    },
+    {
+      "name": "Quintorius, History Chaser",
+      "full_name": "Quintorius, History Chaser",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10827,
+      "id": 181
+    },
+    {
+      "name": "Ragavan, Nimble Pilferer",
+      "full_name": "Ragavan, Nimble Pilferer",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 270,
+      "id": 182
+    },
+    {
+      "name": "Ranar the Ever-Watchful",
+      "full_name": "Ranar the Ever-Watchful",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11582,
+      "id": 183
+    },
+    {
+      "name": "Riku of Two Reflections",
+      "full_name": "Riku of Two Reflections",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11733,
+      "id": 184
+    },
+    {
+      "name": "Rin and Seri, Inseparable //",
+      "full_name": "Rin and Seri, Inseparable // Rin and Seri, Inseparable",
+      "archetype": "LIFEGAIN",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5566,
+      "id": 185
+    },
+    {
+      "name": "Rishkar, Peema Renegade",
+      "full_name": "Rishkar, Peema Renegade",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 817,
+      "id": 186
+    },
+    {
+      "name": "Rootha, Mastering the Moment",
+      "full_name": "Rootha, Mastering the Moment",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 12467,
+      "id": 187
+    },
+    {
+      "name": "Rose Tyler",
+      "full_name": "Rose Tyler",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 16512,
+      "id": 188
+    },
+    {
+      "name": "Rosie Cotton of South Lane",
+      "full_name": "Rosie Cotton of South Lane",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1235,
+      "id": 189
+    },
+    {
+      "name": "Saheeli, Radiant Creator",
+      "full_name": "Saheeli, Radiant Creator",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10016,
+      "id": 190
+    },
+    {
+      "name": "Saheeli, the Gifted",
+      "full_name": "Saheeli, the Gifted",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9617,
+      "id": 191
+    },
+    {
+      "name": "Sai, Master Thopterist",
+      "full_name": "Sai, Master Thopterist",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 809,
+      "id": 192
+    },
+    {
+      "name": "Sakashima of a Thousand Face",
+      "full_name": "Sakashima of a Thousand Faces",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1088,
+      "id": 193
+    },
+    {
+      "name": "Sam, Loyal Attendant",
+      "full_name": "Sam, Loyal Attendant",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6491,
+      "id": 194
+    },
+    {
+      "name": "Sarah Jane Smith",
+      "full_name": "Sarah Jane Smith",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8986,
+      "id": 195
+    },
+    {
+      "name": "Saryth, the Viper's Fang",
+      "full_name": "Saryth, the Viper's Fang",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1221,
+      "id": 196
+    },
+    {
+      "name": "Saskia the Unyielding",
+      "full_name": "Saskia the Unyielding",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10386,
+      "id": 197
+    },
+    {
+      "name": "Satya, Aetherflux Genius",
+      "full_name": "Satya, Aetherflux Genius",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6031,
+      "id": 198
+    },
+    {
+      "name": "Sauron, Lord of the Rings",
+      "full_name": "Sauron, Lord of the Rings",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5313,
+      "id": 199
+    },
+    {
+      "name": "Sefris of the Hidden Ways",
+      "full_name": "Sefris of the Hidden Ways",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8109,
+      "id": 200
+    },
+    {
+      "name": "Selvala, Heart of the Wilds",
+      "full_name": "Selvala, Heart of the Wilds",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 440,
+      "id": 201
+    },
+    {
+      "name": "Sevinne, the Chronoclasm",
+      "full_name": "Sevinne, the Chronoclasm",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 19601,
+      "id": 202
+    },
+    {
+      "name": "Shalai, Voice of Plenty",
+      "full_name": "Shalai, Voice of Plenty",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1183,
+      "id": 203
+    },
+    {
+      "name": "Sheoldred, the Apocalypse",
+      "full_name": "Sheoldred, the Apocalypse",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 461,
+      "id": 204
+    },
+    {
+      "name": "Sheoldred, Whispering One",
+      "full_name": "Sheoldred, Whispering One",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 697,
+      "id": 205
+    },
+    {
+      "name": "Shiko and Narset, Unified",
+      "full_name": "Shiko and Narset, Unified",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8380,
+      "id": 206
+    },
+    {
+      "name": "Sidar Jabari of Zhalfir",
+      "full_name": "Sidar Jabari of Zhalfir",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7058,
+      "id": 207
+    },
+    {
+      "name": "Six",
+      "full_name": "Six",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 558,
+      "id": 208
+    },
+    {
+      "name": "Skrelv, Defector Mite",
+      "full_name": "Skrelv, Defector Mite",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1130,
+      "id": 209
+    },
+    {
+      "name": "Sliver Gravemother",
+      "full_name": "Sliver Gravemother",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6127,
+      "id": 210
+    },
+    {
+      "name": "Solphim, Mayhem Dominus",
+      "full_name": "Solphim, Mayhem Dominus",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 873,
+      "id": 211
+    },
+    {
+      "name": "Sram, Senior Edificer",
+      "full_name": "Sram, Senior Edificer",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 460,
+      "id": 212
+    },
+    {
+      "name": "Stella Lee, Wild Card",
+      "full_name": "Stella Lee, Wild Card",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4603,
+      "id": 213
+    },
+    {
+      "name": "Strefan, Maurer Progenitor",
+      "full_name": "Strefan, Maurer Progenitor",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7287,
+      "id": 214
+    },
+    {
+      "name": "Syr Konrad, the Grim",
+      "full_name": "Syr Konrad, the Grim",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 252,
+      "id": 215
+    },
+    {
+      "name": "Sythis, Harvest's Hand",
+      "full_name": "Sythis, Harvest's Hand",
+      "archetype": "ENCHANTMENTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 940,
+      "id": 216
+    },
+    {
+      "name": "Szarekh, the Silent King",
+      "full_name": "Szarekh, the Silent King",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9969,
+      "id": 217
+    },
+    {
+      "name": "T'Challa, the Black Panther",
+      "full_name": "T'Challa, the Black Panther",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 21869,
+      "id": 218
+    },
+    {
+      "name": "Talrand, Sky Summoner",
+      "full_name": "Talrand, Sky Summoner",
+      "archetype": "SPELLS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 744,
+      "id": 219
+    },
+    {
+      "name": "Tatyova, Benthic Druid",
+      "full_name": "Tatyova, Benthic Druid",
+      "archetype": "LANDS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 465,
+      "id": 220
+    },
+    {
+      "name": "Teferi, Temporal Archmage",
+      "full_name": "Teferi, Temporal Archmage",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4265,
+      "id": 221
+    },
+    {
+      "name": "Tegwyll, Duke of Splendor",
+      "full_name": "Tegwyll, Duke of Splendor",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3755,
+      "id": 222
+    },
+    {
+      "name": "Temmet, Naktamun's Will",
+      "full_name": "Temmet, Naktamun's Will",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5427,
+      "id": 223
+    },
+    {
+      "name": "Terra, Herald of Hope",
+      "full_name": "Terra, Herald of Hope",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5750,
+      "id": 224
+    },
+    {
+      "name": "Teval, the Balanced Scale",
+      "full_name": "Teval, the Balanced Scale",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2799,
+      "id": 225
+    },
+    {
+      "name": "The Fourth Doctor",
+      "full_name": "The Fourth Doctor",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9736,
+      "id": 226
+    },
+    {
+      "name": "The Gitrog Monster",
+      "full_name": "The Gitrog Monster",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 896,
+      "id": 227
+    },
+    {
+      "name": "The Mimeoplasm",
+      "full_name": "The Mimeoplasm",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 7617,
+      "id": 228
+    },
+    {
+      "name": "The Reality Chip",
+      "full_name": "The Reality Chip",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1018,
+      "id": 229
+    },
+    {
+      "name": "The Swarmlord",
+      "full_name": "The Swarmlord",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 13023,
+      "id": 230
+    },
+    {
+      "name": "The Tenth Doctor",
+      "full_name": "The Tenth Doctor",
+      "archetype": "LANDS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6374,
+      "id": 231
+    },
+    {
+      "name": "The Thirteenth Doctor",
+      "full_name": "The Thirteenth Doctor",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4906,
+      "id": 232
+    },
+    {
+      "name": "The Ur-Dragon",
+      "full_name": "The Ur-Dragon",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2583,
+      "id": 233
+    },
+    {
+      "name": "The Wise Mothman",
+      "full_name": "The Wise Mothman",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3605,
+      "id": 234
+    },
+    {
+      "name": "Tidus, Yuna's Guardian",
+      "full_name": "Tidus, Yuna's Guardian",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4058,
+      "id": 235
+    },
+    {
+      "name": "Titania, Protector of Argoth",
+      "full_name": "Titania, Protector of Argoth",
+      "archetype": "GRAVEYARD",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1126,
+      "id": 236
+    },
+    {
+      "name": "Torbran, Thane of Red Fell",
+      "full_name": "Torbran, Thane of Red Fell",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 992,
+      "id": 237
+    },
+    {
+      "name": "Toski, Bearer of Secrets",
+      "full_name": "Toski, Bearer of Secrets",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 378,
+      "id": 238
+    },
+    {
+      "name": "Ulalek, Fused Atrocity",
+      "full_name": "Ulalek, Fused Atrocity",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4289,
+      "id": 239
+    },
+    {
+      "name": "Urza, Chief Artificer",
+      "full_name": "Urza, Chief Artificer",
+      "archetype": "ARTIFACTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 4690,
+      "id": 240
+    },
+    {
+      "name": "Urza, Lord High Artificer",
+      "full_name": "Urza, Lord High Artificer",
+      "archetype": "ARTIFACTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 800,
+      "id": 241
+    },
+    {
+      "name": "Valgavoth, Harrower of Souls",
+      "full_name": "Valgavoth, Harrower of Souls",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2265,
+      "id": 242
+    },
+    {
+      "name": "Veyran, Voice of Duality",
+      "full_name": "Veyran, Voice of Duality",
+      "archetype": "SPELLS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 792,
+      "id": 243
+    },
+    {
+      "name": "Vilis, Broker of Blood",
+      "full_name": "Vilis, Broker of Blood",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1101,
+      "id": 244
+    },
+    {
+      "name": "Vito, Thorn of the Dusk Rose",
+      "full_name": "Vito, Thorn of the Dusk Rose",
+      "archetype": "LIFEGAIN",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 492,
+      "id": 245
+    },
+    {
+      "name": "Vorinclex, Monstrous Raider",
+      "full_name": "Vorinclex, Monstrous Raider",
+      "archetype": "CONTROL",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1224,
+      "id": 246
+    },
+    {
+      "name": "Vrondiss, Rage of Ancients",
+      "full_name": "Vrondiss, Rage of Ancients",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10645,
+      "id": 247
+    },
+    {
+      "name": "Wilhelt, the Rotcleaver",
+      "full_name": "Wilhelt, the Rotcleaver",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2646,
+      "id": 248
+    },
+    {
+      "name": "Willowdusk, Essence Seer",
+      "full_name": "Willowdusk, Essence Seer",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 10315,
+      "id": 249
+    },
+    {
+      "name": "Winter, Cynical Opportunist",
+      "full_name": "Winter, Cynical Opportunist",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9075,
+      "id": 250
+    },
+    {
+      "name": "Wyleth, Soul of Steel",
+      "full_name": "Wyleth, Soul of Steel",
+      "archetype": "ENCHANTMENTS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6607,
+      "id": 251
+    },
+    {
+      "name": "Xenagos, God of Revels",
+      "full_name": "Xenagos, God of Revels",
+      "archetype": "ENCHANTMENTS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1196,
+      "id": 252
+    },
+    {
+      "name": "Y'shtola, Night's Blessed",
+      "full_name": "Y'shtola, Night's Blessed",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2893,
+      "id": 253
+    },
+    {
+      "name": "Yahenni, Undying Partisan",
+      "full_name": "Yahenni, Undying Partisan",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1009,
+      "id": 254
+    },
+    {
+      "name": "Yasmin Khan",
+      "full_name": "Yasmin Khan",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 15004,
+      "id": 255
+    },
+    {
+      "name": "Yawgmoth, Thran Physician",
+      "full_name": "Yawgmoth, Thran Physician",
+      "archetype": "COUNTERS",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 819,
+      "id": 256
+    },
+    {
+      "name": "Yidris, Maelstrom Wielder",
+      "full_name": "Yidris, Maelstrom Wielder",
+      "archetype": "LANDS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8867,
+      "id": 257
+    },
+    {
+      "name": "Yuma, Proud Protector",
+      "full_name": "Yuma, Proud Protector",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8496,
+      "id": 258
+    },
+    {
+      "name": "Zada, Hedron Grinder",
+      "full_name": "Zada, Hedron Grinder",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3404,
+      "id": 259
+    },
+    {
+      "name": "Zaffai, Thunder Conductor",
+      "full_name": "Zaffai, Thunder Conductor",
+      "archetype": "SPELLS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11054,
+      "id": 260
+    },
+    {
+      "name": "Zedruu the Greathearted",
+      "full_name": "Zedruu the Greathearted",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 8551,
+      "id": 261
+    },
+    {
+      "name": "Zhulodok, Void Gorger",
+      "full_name": "Zhulodok, Void Gorger",
+      "archetype": "LANDS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 2773,
+      "id": 262
+    },
+    {
+      "name": "Zimone, Infinite Analyst",
+      "full_name": "Zimone, Infinite Analyst",
+      "archetype": "COUNTERS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 9237,
+      "id": 263
+    },
+    {
+      "name": "Zimone, Mystery Unraveler",
+      "full_name": "Zimone, Mystery Unraveler",
+      "archetype": "GRAVEYARD",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 5791,
+      "id": 264
+    },
+    {
+      "name": "Zinnia, Valley's Voice",
+      "full_name": "Zinnia, Valley's Voice",
+      "archetype": "TOKENS",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 6393,
+      "id": 265
+    },
+    {
+      "name": "Zndrsplt, Eye of Wisdom // Z",
+      "full_name": "Zndrsplt, Eye of Wisdom // Zndrsplt, Eye of Wisdom",
+      "archetype": "CONTROL",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 11090,
+      "id": 266
+    },
+    {
+      "name": "Zopandrel, Hunger Dominus",
+      "full_name": "Zopandrel, Hunger Dominus",
+      "archetype": "SACRIFICE",
+      "precon": false,
+      "popular": true,
+      "edhrec_rank": 1161,
+      "id": 267
+    },
+    {
+      "name": "Zurgo Stormrender",
+      "full_name": "Zurgo Stormrender",
+      "archetype": "SACRIFICE",
+      "precon": true,
+      "popular": false,
+      "edhrec_rank": 3128,
+      "id": 268
+    }
+  ]
+}

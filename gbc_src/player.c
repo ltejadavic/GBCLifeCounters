@@ -19,6 +19,7 @@ void player_reset(Player *player, int16_t starting_life) {
     player->energy = 0u;
     player->experience = 0u;
     player->ticket = 0u;
+    player->commander_id = NO_COMMANDER_ID;
     player->eliminated = 0u;
     player->is_monarch = 0u;
     player->has_initiative = 0u;

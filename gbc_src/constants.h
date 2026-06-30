@@ -21,5 +21,6 @@
 #define MAX_LIFE_TOTAL 32767
 
 #define NO_PLAYER (-1)
+#define NO_COMMANDER_ID 65535u
 
 #endif

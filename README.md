@@ -122,6 +122,14 @@ confirm/cancel, Start, value increase/decrease, possible-loss, and manual
 elimination feedback. The audio system disables the sound hardware while idle
 instead of streaming external samples.
 
+Commander metadata is generated offline with
+`tools/generate_commander_db.py`. The checked-in 2026-06-30 database combines
+171 unique face commanders from MTGJSON Commander Deck products with Scryfall's
+current top 100 commanders by EDHREC rank, producing 269 unique searchable
+records. ROM names are ASCII and limited to 28 characters; each record has one
+compact primary-archetype ID. Regeneration requires internet access, but the ROM
+itself remains fully offline.
+
 ⸻
 
 Important Technical Note

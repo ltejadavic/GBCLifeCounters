@@ -17,6 +17,7 @@ typedef struct Player {
     uint8_t commander_tax[MAX_COMMANDERS_PER_PLAYER];
     uint8_t commander_cast_count[MAX_COMMANDERS_PER_PLAYER];
     uint8_t custom_counters[MAX_CUSTOM_COUNTERS];
+    uint16_t commander_id;
     uint8_t eliminated;
     uint8_t is_monarch;
     uint8_t has_initiative;

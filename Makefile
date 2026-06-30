@@ -6,6 +6,7 @@ ROM := build/$(ROM_NAME).gbc
 GBC_OBJDIR := build/gbc_obj
 SOURCES := \
 	gbc_src/main.c \
+	gbc_src/commander_db.c \
 	gbc_src/player.c \
 	gbc_src/game_state.c \
 	gbc_src/actions.c \
