@@ -94,11 +94,19 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     );
     assert(
         navigation_next_detail_field(DETAIL_FIELD_COMMANDER_DAMAGE)
+        == DETAIL_FIELD_MONARCH
+    );
+    assert(
+        navigation_next_detail_field(DETAIL_FIELD_MONARCH)
+        == DETAIL_FIELD_INITIATIVE
+    );
+    assert(
+        navigation_next_detail_field(DETAIL_FIELD_INITIATIVE)
         == DETAIL_FIELD_LIFE
     );
     assert(
         navigation_previous_detail_field(DETAIL_FIELD_LIFE)
-        == DETAIL_FIELD_COMMANDER_DAMAGE
+        == DETAIL_FIELD_INITIATIVE
     );
 
     game_state_init(&game, 8u, DEFAULT_STARTING_LIFE);
@@ -274,41 +282,45 @@ static void test_manual_elimination_restore_and_winner(void) {
     assert(rules_check_winner(&game) == NO_PLAYER);
 }
 
-static void test_global_turn_storm_and_unique_statuses(void) {
+static void test_unique_player_statuses(void) {
     GameState game;
 
     game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
     assert(action_eliminate_player(&game, 1u));
-    assert(navigation_next_active_player(&game, 0) == 2);
-    assert(navigation_previous_active_player(&game, 0) == 3);
-    assert(navigation_next_status_player(&game, NO_PLAYER) == 0);
-    assert(navigation_next_status_player(&game, 0) == 2);
-    assert(navigation_previous_status_player(&game, 2) == 0);
-
-    assert(!action_set_active_player(&game, 1u));
-    assert(action_set_active_player(&game, 0u));
-    assert(action_advance_turn(&game));
-    assert(game.active_player == 2);
-    assert(game.turn_number == 2u);
-    assert(action_change_turn_number(&game, -20) == 1u);
-    assert(action_change_turn_number(&game, 10) == 11u);
-
-    assert(action_change_storm_count(&game, 5) == 5u);
-    assert(action_change_storm_count(&game, -20) == 0u);
 
     assert(action_set_monarch(&game, 0));
+    assert(game.monarch_player == 0);
+    assert(game.players[0].is_monarch);
     assert(action_set_monarch(&game, 2));
     assert(!game.players[0].is_monarch);
     assert(game.players[2].is_monarch);
     assert(!action_set_monarch(&game, 1));
-    assert(action_set_monarch(&game, NO_PLAYER));
-    assert(game.monarch_player == NO_PLAYER);
 
     assert(action_set_initiative(&game, 3));
     assert(game.players[3].has_initiative);
+    assert(game.players[2].is_monarch);
     assert(!action_set_initiative(&game, 1));
+    assert(action_eliminate_player(&game, 2u));
+    assert(game.monarch_player == NO_PLAYER);
+    assert(!game.players[2].is_monarch);
+    assert(game.initiative_player == 3);
+
+    assert(action_set_monarch(&game, 3));
+    assert(game.players[3].is_monarch);
+    assert(game.players[3].has_initiative);
+    assert(action_set_monarch(&game, 0));
+    assert(action_set_monarch(&game, NO_PLAYER));
+    assert(game.monarch_player == NO_PLAYER);
     assert(action_set_initiative(&game, NO_PLAYER));
     assert(game.initiative_player == NO_PLAYER);
+
+    assert(action_set_monarch(&game, 0));
+    assert(action_set_initiative(&game, 3));
+    game_state_reset(&game);
+    assert(game.monarch_player == NO_PLAYER);
+    assert(game.initiative_player == NO_PLAYER);
+    assert(!game.players[0].is_monarch);
+    assert(!game.players[3].has_initiative);
 }
 
 static void assert_life_text(int16_t value, const char *expected) {
@@ -342,17 +354,6 @@ static void test_counter_text_replaces_the_entire_field(void) {
     assert(strcmp(output, "255") == 0);
 }
 
-static void test_uint16_text_handles_turn_limits(void) {
-    char output[UINT16_TEXT_BUFFER_SIZE];
-
-    format_uint16_value(1u, output);
-    assert(strcmp(output, "    1") == 0);
-    format_uint16_value(123u, output);
-    assert(strcmp(output, "  123") == 0);
-    format_uint16_value(65535u, output);
-    assert(strcmp(output, "65535") == 0);
-}
-
 int main(void) {
     test_four_player_initial_state();
     test_player_count_is_clamped_to_supported_range();
@@ -365,10 +366,9 @@ int main(void) {
     test_self_commander_damage_is_rejected();
     test_eight_player_capacity_and_game_reset();
     test_manual_elimination_restore_and_winner();
-    test_global_turn_storm_and_unique_statuses();
+    test_unique_player_statuses();
     test_life_text_replaces_the_entire_field();
     test_counter_text_replaces_the_entire_field();
-    test_uint16_text_handles_turn_limits();
     printf("GBC core tests passed.\n");
     return 0;
 }

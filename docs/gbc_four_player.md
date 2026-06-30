@@ -39,10 +39,13 @@ On the setup screen:
 
 On the player detail screen:
 
-- Up / Down: select Life or Poison.
+- Up / Down: select Life, Poison, commander damage, Monarch, or Initiative.
 - Left / Right: change the selected value using the displayed step.
 - Select: cycle the adjustment step through 1, 5, and 10.
 - A while `CMD MAX` is selected: open commander damage by source.
+- A, Left, or Right while `MONARCH` or `INITIATIVE` is selected: toggle that
+  status for the current player. Assigning a unique status transfers it from
+  its previous holder.
 - Start: request manual elimination, or restoration if the player is already
   eliminated.
 - B: return to the overview.
@@ -113,25 +116,25 @@ damage to its own controller.
 6. Confirm normal commander damage from another player still changes both the
    source total and target life.
 
-## Test 11: global game state
+## Test 11: Monarch and Initiative per player
 
-1. From overview press B. Confirm `GLOBAL GAME STATE` shows Active, Turn,
-   Storm, Monarch, and Initiative.
-2. Use Up/Down to select fields. Left/Right must change only the selected field.
-3. Change Active manually and confirm eliminated players are skipped.
-4. Select Active or Turn and press A. Active must advance to the next living
-   player and Turn must increase by one.
-5. Turn cannot go below 1. Select cycles adjustment steps 1, 5, and 10.
-6. Storm cannot go below 0. Press A on Storm to clear it to 0.
-7. Cycle Monarch through players and `--`. Only one player may hold it. Press A
-   to clear it; eliminated players must be skipped.
-8. Repeat for Initiative. It must remain independent from Monarch.
-9. Return with B. Overview must show `MON` and `INI` holders plus `ACT` and
-   `TURN` on the bottom line.
-10. Eliminate a Monarch or Initiative holder. That status must clear
-    automatically.
-11. Reset must restore Active P1, Turn 1, Storm 0, Monarch none, and Initiative
-    none.
+1. Confirm the overview has `M` and `I` column headers and no global-state,
+   active-player, or turn display.
+2. Open P1 detail and confirm `MONARCH` and `INITIATIVE` both show `NO`.
+3. Select `MONARCH` and press A. It must show `YES`; returning to the overview
+   must show `M` only on P1.
+4. Open P3 detail and enable `MONARCH`. P3 must show `YES`, and P1 must
+   automatically lose its `M` marker.
+5. Toggle P3 Monarch again. No player must retain an `M` marker.
+6. Enable Initiative for P2. The overview must show `I` only on P2.
+7. Enable Initiative for P4. It must transfer from P2 to P4.
+8. Confirm Monarch and Initiative remain independent: one player may be
+   Monarch while another has Initiative, and the same player may hold both.
+9. Eliminate the current Monarch or Initiative holder. Its status and overview
+   marker must clear automatically.
+10. Confirm an eliminated player cannot be assigned either status until it is
+    restored.
+11. Reset the game. Every `M` and `I` marker must be cleared.
 
 ## Full regression checklist
 
@@ -145,8 +148,8 @@ damage to its own controller.
    Left and Right must use the displayed step.
 6. Select P2 and press A. Confirm the detail title names P2, Life is selected,
    and Poison starts at 0.
-7. Use Up/Down to switch between Life and Poison. Changes must affect only the
-   selected field and only P2.
+7. Use Up/Down to move through Life, Poison, CMD MAX, Monarch, and Initiative.
+   Numeric changes must affect only the selected field and only P2.
 8. Attempt to decrease Poison below 0. It must remain at 0.
 9. Set Poison to 8. The poison status and field must show a warning palette.
    Return with B; P2 must show `P  8` and `PSN` in the overview.
@@ -181,6 +184,7 @@ damage to its own controller.
 26. Eliminate all players. No winner may be shown when zero players are active.
 27. Confirm reset restores all players and removes every `OUT` and winner label.
 28. Confirm the bottom line reads `CGB COLOR: ACTIVE`.
+29. Complete Test 11 and confirm unique Monarch and Initiative ownership.
 
 No input should alter more than one player or apply more than once per button
 press.

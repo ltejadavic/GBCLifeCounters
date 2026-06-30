@@ -14,7 +14,6 @@
 #define SCREEN_PLAYER_DETAIL 3u
 #define SCREEN_COMMANDER_DAMAGE 4u
 #define SCREEN_ELIMINATION_CONFIRMATION 5u
-#define SCREEN_GLOBAL_STATE 6u
 
 static GameState game;
 static uint8_t setup_player_count = 4u;
@@ -27,7 +26,6 @@ static uint8_t selected_field = DETAIL_FIELD_LIFE;
 static uint8_t selected_source = 0u;
 static uint8_t first_visible_source = 0u;
 static uint8_t adjustment_step = LIFE_STEP_SMALL;
-static uint8_t global_field = GLOBAL_FIELD_ACTIVE_PLAYER;
 static uint8_t screen_state = SCREEN_SETUP;
 
 static void update_player_window(void) {
@@ -164,112 +162,29 @@ static void handle_overview_input(uint8_t pressed) {
             selected_field,
             adjustment_step
         );
-    } else if (pressed & J_B) {
-        global_field = GLOBAL_FIELD_ACTIVE_PLAYER;
-        screen_state = SCREEN_GLOBAL_STATE;
-        ui_show_global_state(&game, global_field, adjustment_step);
     } else if (pressed & J_START) {
         screen_state = SCREEN_RESET_CONFIRMATION;
         ui_draw_reset_prompt();
     }
 }
 
-static void handle_global_state_input(uint8_t pressed) {
-    if (pressed & J_UP) {
-        global_field = global_field == 0u
-            ? (GLOBAL_FIELD_COUNT - 1u)
-            : (uint8_t)(global_field - 1u);
-    } else if (pressed & J_DOWN) {
-        global_field = (uint8_t)((global_field + 1u) % GLOBAL_FIELD_COUNT);
-    } else if (pressed & J_LEFT) {
-        if (global_field == GLOBAL_FIELD_ACTIVE_PLAYER) {
-            int8_t player_id = navigation_previous_active_player(
-                &game,
-                game.active_player
-            );
-            if (player_id != NO_PLAYER) {
-                action_set_active_player(&game, (uint8_t)player_id);
-            }
-        } else if (global_field == GLOBAL_FIELD_TURN_NUMBER) {
-            action_change_turn_number(
-                &game,
-                (int16_t)(-((int16_t)adjustment_step))
-            );
-        } else if (global_field == GLOBAL_FIELD_STORM_COUNT) {
-            action_change_storm_count(
-                &game,
-                (int16_t)(-((int16_t)adjustment_step))
-            );
-        } else if (global_field == GLOBAL_FIELD_MONARCH) {
-            action_set_monarch(
-                &game,
-                navigation_previous_status_player(&game, game.monarch_player)
-            );
-        } else {
-            action_set_initiative(
-                &game,
-                navigation_previous_status_player(
-                    &game,
-                    game.initiative_player
-                )
-            );
-        }
-    } else if (pressed & J_RIGHT) {
-        if (global_field == GLOBAL_FIELD_ACTIVE_PLAYER) {
-            int8_t player_id = navigation_next_active_player(
-                &game,
-                game.active_player
-            );
-            if (player_id != NO_PLAYER) {
-                action_set_active_player(&game, (uint8_t)player_id);
-            }
-        } else if (global_field == GLOBAL_FIELD_TURN_NUMBER) {
-            action_change_turn_number(&game, (int16_t)adjustment_step);
-        } else if (global_field == GLOBAL_FIELD_STORM_COUNT) {
-            action_change_storm_count(&game, (int16_t)adjustment_step);
-        } else if (global_field == GLOBAL_FIELD_MONARCH) {
-            action_set_monarch(
-                &game,
-                navigation_next_status_player(&game, game.monarch_player)
-            );
-        } else {
-            action_set_initiative(
-                &game,
-                navigation_next_status_player(
-                    &game,
-                    game.initiative_player
-                )
-            );
-        }
-    } else if (pressed & J_SELECT) {
-        adjustment_step = navigation_next_life_step(adjustment_step);
-    } else if (pressed & J_A) {
-        if (
-            (global_field == GLOBAL_FIELD_ACTIVE_PLAYER)
-            || (global_field == GLOBAL_FIELD_TURN_NUMBER)
-        ) {
-            action_advance_turn(&game);
-        } else if (global_field == GLOBAL_FIELD_STORM_COUNT) {
-            action_change_storm_count(&game, -255);
-        } else if (global_field == GLOBAL_FIELD_MONARCH) {
-            action_set_monarch(&game, NO_PLAYER);
-        } else {
-            action_set_initiative(&game, NO_PLAYER);
-        }
-    } else if (pressed & J_B) {
-        screen_state = SCREEN_OVERVIEW;
-        ui_show_overview(
-            &game,
-            selected_player,
-            first_visible_player,
-            adjustment_step
-        );
-        return;
-    } else {
+static void toggle_selected_player_status(void) {
+    int8_t player_id = (int8_t)selected_player;
+
+    if (game.players[selected_player].eliminated) {
         return;
     }
-
-    ui_refresh_global_state(&game, global_field, adjustment_step);
+    if (selected_field == DETAIL_FIELD_MONARCH) {
+        action_set_monarch(
+            &game,
+            game.monarch_player == player_id ? NO_PLAYER : player_id
+        );
+    } else if (selected_field == DETAIL_FIELD_INITIATIVE) {
+        action_set_initiative(
+            &game,
+            game.initiative_player == player_id ? NO_PLAYER : player_id
+        );
+    }
 }
 
 static void handle_detail_input(uint8_t pressed) {
@@ -292,6 +207,8 @@ static void handle_detail_input(uint8_t pressed) {
                 selected_player,
                 (int16_t)(-((int16_t)adjustment_step))
             );
+        } else {
+            toggle_selected_player_status();
         }
     } else if (pressed & J_RIGHT) {
         if (game.players[selected_player].eliminated) {
@@ -308,6 +225,8 @@ static void handle_detail_input(uint8_t pressed) {
                 selected_player,
                 (int16_t)adjustment_step
             );
+        } else {
+            toggle_selected_player_status();
         }
     } else if (pressed & J_SELECT) {
         adjustment_step = navigation_next_life_step(adjustment_step);
@@ -315,22 +234,24 @@ static void handle_detail_input(uint8_t pressed) {
         screen_state = SCREEN_ELIMINATION_CONFIRMATION;
         ui_draw_elimination_prompt(&game.players[selected_player]);
         return;
-    } else if (
-        (pressed & J_A)
-        && (selected_field == DETAIL_FIELD_COMMANDER_DAMAGE)
-        && !game.players[selected_player].eliminated
-    ) {
-        selected_source = selected_player == 0u ? 1u : 0u;
-        first_visible_source = 0u;
-        screen_state = SCREEN_COMMANDER_DAMAGE;
-        ui_show_commander_damage(
-            &game,
-            selected_player,
-            selected_source,
-            first_visible_source,
-            adjustment_step
-        );
-        return;
+    } else if (pressed & J_A) {
+        if (
+            (selected_field == DETAIL_FIELD_COMMANDER_DAMAGE)
+            && !game.players[selected_player].eliminated
+        ) {
+            selected_source = selected_player == 0u ? 1u : 0u;
+            first_visible_source = 0u;
+            screen_state = SCREEN_COMMANDER_DAMAGE;
+            ui_show_commander_damage(
+                &game,
+                selected_player,
+                selected_source,
+                first_visible_source,
+                adjustment_step
+            );
+            return;
+        }
+        toggle_selected_player_status();
     } else if (pressed & J_B) {
         screen_state = SCREEN_OVERVIEW;
         ui_show_overview(
@@ -489,8 +410,6 @@ void main(void) {
             handle_detail_input(pressed);
         } else if (screen_state == SCREEN_COMMANDER_DAMAGE) {
             handle_commander_damage_input(pressed);
-        } else if (screen_state == SCREEN_GLOBAL_STATE) {
-            handle_global_state_input(pressed);
         } else {
             handle_overview_input(pressed);
         }

@@ -52,22 +52,3 @@ void format_counter_value(
         value /= 10u;
     } while (value > 0u);
 }
-
-void format_uint16_value(
-    uint16_t value,
-    char output[UINT16_TEXT_BUFFER_SIZE]
-) {
-    uint8_t index;
-    uint8_t position = UINT16_TEXT_WIDTH;
-
-    for (index = 0u; index < UINT16_TEXT_WIDTH; index++) {
-        output[index] = ' ';
-    }
-    output[UINT16_TEXT_WIDTH] = '\0';
-
-    do {
-        position--;
-        output[position] = (char)('0' + (value % 10u));
-        value /= 10u;
-    } while (value > 0u);
-}

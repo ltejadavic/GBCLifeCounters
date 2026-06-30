@@ -53,83 +53,6 @@ uint8_t navigation_next_other_player(
     return candidate;
 }
 
-int8_t navigation_previous_active_player(
-    const GameState *game,
-    int8_t current_player
-) {
-    uint8_t offset;
-    uint8_t start = current_player == NO_PLAYER
-        ? 0u
-        : (uint8_t)current_player;
-
-    for (offset = 1u; offset <= game->player_count; offset++) {
-        uint8_t candidate = (uint8_t)(
-            (start + game->player_count - offset) % game->player_count
-        );
-        if (!game->players[candidate].eliminated) {
-            return (int8_t)candidate;
-        }
-    }
-    return NO_PLAYER;
-}
-
-int8_t navigation_next_active_player(
-    const GameState *game,
-    int8_t current_player
-) {
-    uint8_t offset;
-    uint8_t start = current_player == NO_PLAYER
-        ? (uint8_t)(game->player_count - 1u)
-        : (uint8_t)current_player;
-
-    for (offset = 1u; offset <= game->player_count; offset++) {
-        uint8_t candidate = (uint8_t)(
-            (start + offset) % game->player_count
-        );
-        if (!game->players[candidate].eliminated) {
-            return (int8_t)candidate;
-        }
-    }
-    return NO_PLAYER;
-}
-
-int8_t navigation_previous_status_player(
-    const GameState *game,
-    int8_t current_player
-) {
-    int8_t candidate;
-
-    if (current_player == NO_PLAYER) {
-        candidate = (int8_t)(game->player_count - 1u);
-    } else {
-        candidate = (int8_t)(current_player - 1);
-    }
-    while (candidate >= 0) {
-        if (!game->players[(uint8_t)candidate].eliminated) {
-            return candidate;
-        }
-        candidate--;
-    }
-    return NO_PLAYER;
-}
-
-int8_t navigation_next_status_player(
-    const GameState *game,
-    int8_t current_player
-) {
-    uint8_t candidate = current_player == NO_PLAYER
-        ? 0u
-        : (uint8_t)(current_player + 1);
-
-    while (candidate < game->player_count) {
-        if (!game->players[candidate].eliminated) {
-            return (int8_t)candidate;
-        }
-        candidate++;
-    }
-    return NO_PLAYER;
-}
-
 uint8_t navigation_next_life_step(uint8_t current_step) {
     if (current_step == LIFE_STEP_SMALL) {
         return LIFE_STEP_MEDIUM;
@@ -142,13 +65,13 @@ uint8_t navigation_next_life_step(uint8_t current_step) {
 
 uint8_t navigation_previous_detail_field(uint8_t current_field) {
     if (current_field == DETAIL_FIELD_LIFE) {
-        return DETAIL_FIELD_COMMANDER_DAMAGE;
+        return (DETAIL_FIELD_COUNT - 1u);
     }
     return (uint8_t)(current_field - 1u);
 }
 
 uint8_t navigation_next_detail_field(uint8_t current_field) {
-    if (current_field >= DETAIL_FIELD_COMMANDER_DAMAGE) {
+    if (current_field >= (DETAIL_FIELD_COUNT - 1u)) {
         return DETAIL_FIELD_LIFE;
     }
     return (uint8_t)(current_field + 1u);

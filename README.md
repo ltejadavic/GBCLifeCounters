@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Configurable multiplayer MVP with global turn and status tracking
+Configurable multiplayer MVP with per-player Monarch and Initiative statuses
 
 Planned development order:
 
@@ -48,8 +48,9 @@ python prototype_python/main.py
 
 The Python rules engine is the source of truth. The terminal program is a thin
 interactive client over that engine. The current C/GBDK MVP ports life, poison,
-commander damage, manual elimination, winner detection, and reset behavior;
-advanced counters and statuses remain in the Python reference for now.
+commander damage, Monarch, Initiative, manual elimination, winner detection,
+and reset behavior; other advanced counters and statuses remain in the Python
+reference for now.
 
 Game Boy Color Prototype
 
@@ -58,9 +59,10 @@ starting life. It tracks life, poison, and commander damage with scrollable
 player/source lists. Possible losses require manual elimination confirmation,
 and a winner appears only when exactly one player remains active.
 
-The global-state screen tracks active player, turn number, storm count,
-Monarch, and Initiative. Unique statuses skip eliminated players and clear when
-their holder is eliminated.
+Monarch and Initiative are edited from each player's detail screen. Each status
+can belong to only one player, transfers automatically, can be cleared, and is
+removed if its holder is eliminated. Turn, active-player, and Storm controls are
+not exposed in the current ROM.
 
 Build and verify it from the repository root:
 
@@ -82,12 +84,13 @@ Controls:
 * Left / Right: decrease / increase the selected player's life
 * Select: cycle adjustment step through 1, 5, and 10
 * A: open the selected player's Life/Poison detail screen
-* B: open global game state
 * Start: open reset confirmation; A confirms and B cancels
 
-Player detail includes `CMD MAX`; selecting it and pressing A opens damage by
-source commander. Start in player detail confirms elimination or restoration.
-Each row shows a combined warning/loss state without automatic elimination. See
+Player detail includes `CMD MAX`, `MONARCH`, and `INITIATIVE`. Press A on a
+status to toggle it for that player; assigning it transfers it from any previous
+holder. Selecting `CMD MAX` and pressing A opens damage by source commander.
+Start in player detail confirms elimination or restoration. Each row shows a
+combined warning/loss state without automatic elimination. See
 `docs/gbc_four_player.md` for the complete emulator test checklist and expected
 behavior.
 
