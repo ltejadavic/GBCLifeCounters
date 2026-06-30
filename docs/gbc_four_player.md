@@ -152,7 +152,7 @@ damage to its own controller.
    game setup.
 2. Confirm the credits appear in this order across two rows: `APLI FORT MAMO`
    and `RURO JTBA LTJD`.
-3. Confirm each credit has a short color band immediately above it: APLI uses
+3. Confirm each credit has a short, separated color band below it: APLI uses
    white/green/blue; FORT red/blue; MAMO all five colors; RURO green/black;
    JTBA red; and LTJD blue/black/green.
 4. Confirm five centered pixel-art mana symbols are visible in white, blue,
@@ -161,7 +161,7 @@ damage to its own controller.
    per second without disturbing the rest of the screen.
 6. Press A, B, Select, and the D-Pad. The splash must remain unchanged.
 7. Press Start once. A second screen must show `DEVELOPED BY` with `LTJD`
-   centered below it and its blue/black/green accent above the initials.
+   centered below it and its blue/black/green accent below the initials.
 8. Confirm `CONTINUE` blinks at the lower-right corner. B, Select, and the
    D-Pad must not leave this screen.
 9. Press A or Start. The existing setup screen must appear with four players

@@ -64,36 +64,36 @@ typedef struct SplashAccent {
 
 static const SplashAccent splash_accents[] = {
     /* APLI: white, green, blue. */
-    {3u, 4u, SPLASH_PALETTE_WHITE},
-    {4u, 4u, SPLASH_PALETTE_WHITE},
-    {5u, 4u, SPLASH_PALETTE_GREEN},
-    {6u, 4u, SPLASH_PALETTE_BLUE},
+    {3u, 6u, SPLASH_PALETTE_WHITE},
+    {4u, 6u, SPLASH_PALETTE_WHITE},
+    {5u, 6u, SPLASH_PALETTE_GREEN},
+    {6u, 6u, SPLASH_PALETTE_BLUE},
     /* FORT: half red, half blue. */
-    {8u, 4u, SPLASH_PALETTE_RED},
-    {9u, 4u, SPLASH_PALETTE_RED},
-    {10u, 4u, SPLASH_PALETTE_BLUE},
-    {11u, 4u, SPLASH_PALETTE_BLUE},
+    {8u, 6u, SPLASH_PALETTE_RED},
+    {9u, 6u, SPLASH_PALETTE_RED},
+    {10u, 6u, SPLASH_PALETTE_BLUE},
+    {11u, 6u, SPLASH_PALETTE_BLUE},
     /* MAMO: all five Magic colors. */
-    {13u, 4u, SPLASH_PALETTE_WHITE},
-    {14u, 4u, SPLASH_PALETTE_BLUE},
-    {15u, 4u, SPLASH_PALETTE_BLACK},
-    {16u, 4u, SPLASH_PALETTE_RED},
-    {17u, 4u, SPLASH_PALETTE_GREEN},
+    {13u, 6u, SPLASH_PALETTE_WHITE},
+    {14u, 6u, SPLASH_PALETTE_BLUE},
+    {15u, 6u, SPLASH_PALETTE_BLACK},
+    {16u, 6u, SPLASH_PALETTE_RED},
+    {17u, 6u, SPLASH_PALETTE_GREEN},
     /* RURO: green and black. */
-    {3u, 7u, SPLASH_PALETTE_GREEN},
-    {4u, 7u, SPLASH_PALETTE_GREEN},
-    {5u, 7u, SPLASH_PALETTE_BLACK},
-    {6u, 7u, SPLASH_PALETTE_BLACK},
+    {3u, 9u, SPLASH_PALETTE_GREEN},
+    {4u, 9u, SPLASH_PALETTE_GREEN},
+    {5u, 9u, SPLASH_PALETTE_BLACK},
+    {6u, 9u, SPLASH_PALETTE_BLACK},
     /* JTBA: red. */
-    {8u, 7u, SPLASH_PALETTE_RED},
-    {9u, 7u, SPLASH_PALETTE_RED},
-    {10u, 7u, SPLASH_PALETTE_RED},
-    {11u, 7u, SPLASH_PALETTE_RED},
+    {8u, 9u, SPLASH_PALETTE_RED},
+    {9u, 9u, SPLASH_PALETTE_RED},
+    {10u, 9u, SPLASH_PALETTE_RED},
+    {11u, 9u, SPLASH_PALETTE_RED},
     /* LTJD: blue, black, green. */
-    {13u, 7u, SPLASH_PALETTE_BLUE},
-    {14u, 7u, SPLASH_PALETTE_BLACK},
-    {15u, 7u, SPLASH_PALETTE_GREEN},
-    {16u, 7u, SPLASH_PALETTE_GREEN},
+    {13u, 9u, SPLASH_PALETTE_BLUE},
+    {14u, 9u, SPLASH_PALETTE_BLACK},
+    {15u, 9u, SPLASH_PALETTE_GREEN},
+    {16u, 9u, SPLASH_PALETTE_GREEN},
 };
 
 static void set_region_palette(
@@ -634,10 +634,10 @@ void ui_show_developer_credit(void) {
     gotoxy(8u, 8u);
     printf("LTJD");
 
-    set_bkg_tiles(8u, 7u, 4u, 1u, accent_tiles);
-    set_region_palette(8u, 7u, 1u, 1u, SPLASH_PALETTE_BLUE);
-    set_region_palette(9u, 7u, 1u, 1u, SPLASH_PALETTE_BLACK);
-    set_region_palette(10u, 7u, 2u, 1u, SPLASH_PALETTE_GREEN);
+    set_bkg_tiles(8u, 9u, 4u, 1u, accent_tiles);
+    set_region_palette(8u, 9u, 1u, 1u, SPLASH_PALETTE_BLUE);
+    set_region_palette(9u, 9u, 1u, 1u, SPLASH_PALETTE_BLACK);
+    set_region_palette(10u, 9u, 2u, 1u, SPLASH_PALETTE_GREEN);
     ui_set_developer_prompt_visible(1u);
 }
 
