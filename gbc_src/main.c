@@ -15,6 +15,8 @@
 #define SCREEN_COMMANDER_DAMAGE 4u
 #define SCREEN_ELIMINATION_CONFIRMATION 5u
 #define SCREEN_SPLASH 6u
+#define SCREEN_DEVELOPER_CREDIT 7u
+#define PROMPT_BLINK_FRAMES 30u
 
 static GameState game;
 static uint8_t setup_player_count = 4u;
@@ -28,6 +30,8 @@ static uint8_t selected_source = 0u;
 static uint8_t first_visible_source = 0u;
 static uint8_t adjustment_step = LIFE_STEP_SMALL;
 static uint8_t screen_state = SCREEN_SPLASH;
+static uint8_t prompt_blink_frames = 0u;
+static uint8_t prompt_is_visible = 1u;
 
 static void update_player_window(void) {
     first_visible_player = navigation_update_window_start(
@@ -58,6 +62,15 @@ static void refresh_overview(void) {
 
 static void handle_splash_input(uint8_t pressed) {
     if (pressed & J_START) {
+        prompt_blink_frames = 0u;
+        prompt_is_visible = 1u;
+        screen_state = SCREEN_DEVELOPER_CREDIT;
+        ui_show_developer_credit();
+    }
+}
+
+static void handle_developer_credit_input(uint8_t pressed) {
+    if (pressed & (J_A | J_START)) {
         screen_state = SCREEN_SETUP;
         ui_show_setup(
             setup_player_count,
@@ -65,6 +78,27 @@ static void handle_splash_input(uint8_t pressed) {
             setup_field,
             setup_can_cancel
         );
+    }
+}
+
+static void update_blinking_prompt(void) {
+    if (
+        (screen_state != SCREEN_SPLASH)
+        && (screen_state != SCREEN_DEVELOPER_CREDIT)
+    ) {
+        return;
+    }
+
+    prompt_blink_frames++;
+    if (prompt_blink_frames < PROMPT_BLINK_FRAMES) {
+        return;
+    }
+    prompt_blink_frames = 0u;
+    prompt_is_visible = (uint8_t)(!prompt_is_visible);
+    if (screen_state == SCREEN_SPLASH) {
+        ui_set_splash_prompt_visible(prompt_is_visible);
+    } else {
+        ui_set_developer_prompt_visible(prompt_is_visible);
     }
 }
 
@@ -410,6 +444,8 @@ void main(void) {
 
         if (screen_state == SCREEN_SPLASH) {
             handle_splash_input(pressed);
+        } else if (screen_state == SCREEN_DEVELOPER_CREDIT) {
+            handle_developer_credit_input(pressed);
         } else if (screen_state == SCREEN_SETUP) {
             handle_setup_input(pressed);
         } else if (screen_state == SCREEN_RESET_CONFIRMATION) {
@@ -424,6 +460,7 @@ void main(void) {
             handle_overview_input(pressed);
         }
 
+        update_blinking_prompt();
         previous_keys = keys;
         vsync();
     }

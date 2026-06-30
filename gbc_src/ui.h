@@ -7,6 +7,9 @@
 
 void ui_initialize(void);
 void ui_show_splash(void);
+void ui_set_splash_prompt_visible(uint8_t visible);
+void ui_show_developer_credit(void);
+void ui_set_developer_prompt_visible(uint8_t visible);
 void ui_show_setup(
     uint8_t player_count,
     int16_t starting_life,

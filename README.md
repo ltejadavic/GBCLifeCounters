@@ -79,7 +79,8 @@ build/commander_gbc_multiplayer.gbc
 
 Controls:
 
-* Splash: press Start to open game setup
+* Splash: press Start to open the developer credit
+* Developer credit: press A or Start to open game setup
 * Setup: choose 2–8 players and starting life, then press A
 * Up / Down: select a player
 * Left / Right: decrease / increase the selected player's life
@@ -104,7 +105,9 @@ and is skipped by navigation.
 
 The startup presentation credits `NOCHES DE COMMANDER`, shows the six supplied
 initial groups with their requested Magic color identities, and uses custom
-8x8 pixel-art symbols for white, blue, black, red, and green.
+8x8 pixel-art symbols for white, blue, black, red, and green. `PRESS START`
+blinks before a second `DEVELOPED BY LTJD` screen with a blinking `CONTINUE`
+prompt.
 
 ⸻
 

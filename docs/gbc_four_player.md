@@ -23,7 +23,12 @@ build/commander_gbc_multiplayer.gbc
 
 On the splash screen:
 
-- Start: open game setup.
+- Start: open the developer credit.
+- Other buttons: no action.
+
+On the developer credit screen:
+
+- A or Start: open game setup.
 - Other buttons: no action.
 
 On the setup screen:
@@ -152,12 +157,17 @@ damage to its own controller.
    JTBA red; and LTJD blue/black/green.
 4. Confirm five centered pixel-art mana symbols are visible in white, blue,
    black, red, and green order.
-5. Confirm `PRESS START` appears near the bottom.
+5. Confirm `PRESS START` appears near the bottom and blinks approximately twice
+   per second without disturbing the rest of the screen.
 6. Press A, B, Select, and the D-Pad. The splash must remain unchanged.
-7. Press Start once. The existing setup screen must appear with four players
+7. Press Start once. A second screen must show `DEVELOPED BY` with `LTJD`
+   centered below it and its blue/black/green accent above the initials.
+8. Confirm `CONTINUE` blinks at the lower-right corner. B, Select, and the
+   D-Pad must not leave this screen.
+9. Press A or Start. The existing setup screen must appear with four players
    and 40 starting life, using its normal palettes.
-8. Continue into a game and confirm the overview and detail colors are
-   unchanged from Test 11.
+10. Continue into a game and confirm the overview and detail colors are
+    unchanged from Test 11.
 
 ## Full regression checklist
 

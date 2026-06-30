@@ -607,11 +607,43 @@ void ui_show_splash(void) {
     printf("APLI FORT MAMO");
     gotoxy(3u, 8u);
     printf("RURO JTBA LTJD");
-    gotoxy(5u, 15u);
-    printf("PRESS START");
-
     draw_splash_accents();
     draw_splash_mana_symbols();
+    ui_set_splash_prompt_visible(1u);
+}
+
+void ui_set_splash_prompt_visible(uint8_t visible) {
+    gotoxy(5u, 15u);
+    printf(visible ? "PRESS START" : "           ");
+}
+
+void ui_show_developer_credit(void) {
+    uint8_t accent_tiles[] = {
+        SPLASH_TILE_ACCENT,
+        SPLASH_TILE_ACCENT,
+        SPLASH_TILE_ACCENT,
+        SPLASH_TILE_ACCENT,
+    };
+
+    prepare_screen();
+    set_bkg_palette(BKGF_CGB_PAL0, 6u, splash_palettes);
+    set_bkg_data(SPLASH_TILE_FIRST, SPLASH_TILE_COUNT, splash_tiles);
+
+    gotoxy(4u, 5u);
+    printf("DEVELOPED BY");
+    gotoxy(8u, 8u);
+    printf("LTJD");
+
+    set_bkg_tiles(8u, 7u, 4u, 1u, accent_tiles);
+    set_region_palette(8u, 7u, 1u, 1u, SPLASH_PALETTE_BLUE);
+    set_region_palette(9u, 7u, 1u, 1u, SPLASH_PALETTE_BLACK);
+    set_region_palette(10u, 7u, 2u, 1u, SPLASH_PALETTE_GREEN);
+    ui_set_developer_prompt_visible(1u);
+}
+
+void ui_set_developer_prompt_visible(uint8_t visible) {
+    gotoxy(12u, 16u);
+    printf(visible ? "CONTINUE" : "        ");
 }
 
 void ui_show_setup(
