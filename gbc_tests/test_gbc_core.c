@@ -171,6 +171,26 @@ static void test_commander_damage_is_separate_by_source_and_slot(void) {
     assert(!action_change_commander_damage(&game, 1u, 2u, 2u, 1));
 }
 
+static void test_commander_damage_changes_life_by_applied_delta(void) {
+    GameState game;
+
+    game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
+    assert(action_change_life(&game, 0u, -3));
+    assert(game.players[0].life == 37);
+
+    assert(action_change_commander_damage(&game, 0u, 1u, 0u, 5));
+    assert(game.commander_damage[0][1][0] == 5u);
+    assert(game.players[0].life == 32);
+
+    assert(action_change_commander_damage(&game, 0u, 1u, 0u, -2));
+    assert(game.commander_damage[0][1][0] == 3u);
+    assert(game.players[0].life == 34);
+
+    assert(action_change_commander_damage(&game, 0u, 1u, 0u, -10));
+    assert(game.commander_damage[0][1][0] == 0u);
+    assert(game.players[0].life == 37);
+}
+
 static void test_eight_player_capacity_and_game_reset(void) {
     GameState game;
 
@@ -276,6 +296,7 @@ int main(void) {
     test_navigation_wraps_and_cycles_steps();
     test_poison_actions_and_rules_are_independent();
     test_commander_damage_is_separate_by_source_and_slot();
+    test_commander_damage_changes_life_by_applied_delta();
     test_eight_player_capacity_and_game_reset();
     test_manual_elimination_restore_and_winner();
     test_life_text_replaces_the_entire_field();

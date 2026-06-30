@@ -19,6 +19,7 @@ static GameState game;
 static uint8_t setup_player_count = 4u;
 static int16_t setup_starting_life = DEFAULT_STARTING_LIFE;
 static uint8_t setup_field = SETUP_FIELD_PLAYER_COUNT;
+static uint8_t setup_can_cancel = 0u;
 static uint8_t selected_player = 0u;
 static uint8_t first_visible_player = 0u;
 static uint8_t selected_field = DETAIL_FIELD_LIFE;
@@ -84,15 +85,28 @@ static void handle_setup_input(uint8_t pressed) {
             setup_starting_life += STARTING_LIFE_STEP;
         }
     } else if (pressed & J_B) {
-        setup_player_count = 4u;
-        setup_starting_life = DEFAULT_STARTING_LIFE;
-        setup_field = SETUP_FIELD_PLAYER_COUNT;
+        if (setup_can_cancel) {
+            setup_can_cancel = 0u;
+            screen_state = SCREEN_OVERVIEW;
+            ui_show_overview(
+                &game,
+                selected_player,
+                first_visible_player,
+                adjustment_step
+            );
+            return;
+        } else {
+            setup_player_count = 4u;
+            setup_starting_life = DEFAULT_STARTING_LIFE;
+            setup_field = SETUP_FIELD_PLAYER_COUNT;
+        }
     } else if (pressed & J_A) {
         game_state_init(&game, setup_player_count, setup_starting_life);
         selected_player = 0u;
         first_visible_player = 0u;
         selected_field = DETAIL_FIELD_LIFE;
         adjustment_step = LIFE_STEP_SMALL;
+        setup_can_cancel = 0u;
         screen_state = SCREEN_OVERVIEW;
         ui_show_overview(
             &game,
@@ -105,7 +119,12 @@ static void handle_setup_input(uint8_t pressed) {
         return;
     }
 
-    ui_show_setup(setup_player_count, setup_starting_life, setup_field);
+    ui_show_setup(
+        setup_player_count,
+        setup_starting_life,
+        setup_field,
+        setup_can_cancel
+    );
 }
 
 static void handle_overview_input(uint8_t pressed) {
@@ -318,6 +337,18 @@ static void handle_reset_input(uint8_t pressed) {
     } else if (pressed & J_B) {
         screen_state = SCREEN_OVERVIEW;
         refresh_overview();
+    } else if (pressed & J_SELECT) {
+        setup_player_count = game.player_count;
+        setup_starting_life = game.starting_life;
+        setup_field = SETUP_FIELD_PLAYER_COUNT;
+        setup_can_cancel = 1u;
+        screen_state = SCREEN_SETUP;
+        ui_show_setup(
+            setup_player_count,
+            setup_starting_life,
+            setup_field,
+            setup_can_cancel
+        );
     }
 }
 
@@ -325,7 +356,12 @@ void main(void) {
     uint8_t previous_keys = 0u;
 
     ui_initialize();
-    ui_show_setup(setup_player_count, setup_starting_life, setup_field);
+    ui_show_setup(
+        setup_player_count,
+        setup_starting_life,
+        setup_field,
+        setup_can_cancel
+    );
 
     while (1) {
         uint8_t keys = joypad();

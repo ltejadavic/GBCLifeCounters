@@ -9,7 +9,8 @@ void ui_initialize(void);
 void ui_show_setup(
     uint8_t player_count,
     int16_t starting_life,
-    uint8_t selected_field
+    uint8_t selected_field,
+    uint8_t can_cancel
 );
 void ui_show_overview(
     const GameState *game,

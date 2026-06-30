@@ -106,19 +106,18 @@ static void draw_overview_header(
     uint8_t last_visible_player = (uint8_t)(
         first_visible_player + OVERVIEW_PLAYER_LIMIT
     );
+    char range_text[] = "PLAYERS 1-4 OF 4";
 
     if (last_visible_player > game->player_count) {
         last_visible_player = game->player_count;
     }
+    range_text[8] = (char)('1' + first_visible_player);
+    range_text[10] = (char)('0' + last_visible_player);
+    range_text[15] = (char)('0' + game->player_count);
     gotoxy(3u, 0u);
     printf("COMMANDER GBC");
     gotoxy(1u, 1u);
-    printf("PLAYERS ");
-    printf("%u", (uint8_t)(first_visible_player + 1u));
-    printf("-");
-    printf("%u", last_visible_player);
-    printf(" OF ");
-    printf("%u", game->player_count);
+    printf("%s", range_text);
     draw_color_diagnostic();
 }
 
@@ -424,7 +423,8 @@ void ui_initialize(void) {
 void ui_show_setup(
     uint8_t player_count,
     int16_t starting_life,
-    uint8_t selected_field
+    uint8_t selected_field,
+    uint8_t can_cancel
 ) {
     char player_count_text[COUNTER_TEXT_BUFFER_SIZE];
     char life_text[LIFE_TEXT_BUFFER_SIZE];
@@ -461,7 +461,11 @@ void ui_show_setup(
     gotoxy(1u, 14u);
     printf("A START GAME");
     gotoxy(1u, 15u);
-    printf("B DEFAULTS");
+    if (can_cancel) {
+        printf("B CANCEL");
+    } else {
+        printf("B DEFAULTS");
+    }
     draw_color_diagnostic();
 }
 
@@ -589,6 +593,8 @@ void ui_draw_reset_prompt(void) {
     printf("RESET ALL PLAYERS?");
     gotoxy(3u, 14u);
     printf("A YES    B NO");
+    gotoxy(1u, 15u);
+    printf("SELECT NEW SETUP");
 }
 
 void ui_draw_elimination_prompt(const Player *player) {

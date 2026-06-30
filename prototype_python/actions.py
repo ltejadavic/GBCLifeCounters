@@ -217,13 +217,15 @@ def add_commander_damage(
     current = get_commander_damage(
         game, target_player_id, source_player_id, commander_slot
     )
-    return set_commander_damage(
+    new_value = set_commander_damage(
         game,
         target_player_id,
         source_player_id,
         current + amount,
         commander_slot,
     )
+    decrease_life(game, target_player_id, amount)
+    return new_value
 
 
 def remove_commander_damage(
@@ -237,13 +239,16 @@ def remove_commander_damage(
     current = get_commander_damage(
         game, target_player_id, source_player_id, commander_slot
     )
-    return set_commander_damage(
+    removed_amount = min(amount, current)
+    new_value = set_commander_damage(
         game,
         target_player_id,
         source_player_id,
-        max(0, current - amount),
+        current - removed_amount,
         commander_slot,
     )
+    increase_life(game, target_player_id, removed_amount)
+    return new_value
 
 
 def set_commander_damage(

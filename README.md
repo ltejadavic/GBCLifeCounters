@@ -86,6 +86,10 @@ Each row shows a combined warning/loss state without automatic elimination. See
 `docs/gbc_four_player.md` for the complete emulator test checklist and expected
 behavior.
 
+Normal commander damage entered in the source screen also reduces life. The
+reset confirmation offers `SELECT NEW SETUP` to reconfigure the game, with B
+returning to the current game without losing its state.
+
 ⸻
 
 Important Technical Note

@@ -54,6 +54,11 @@ On the commander damage screen:
 - Select: cycle the adjustment step through 1, 5, and 10.
 - B: return to player detail.
 
+Commander damage entered on this screen represents normal commander combat
+damage: adding it also subtracts the same amount from life. Removing a tracked
+amount restores that applied life delta as an input correction. Infect and
+other replacement-effect helpers are not part of this screen yet.
+
 ## Test 8: setup and 2–8 players
 
 1. Boot and confirm `GAME SETUP` defaults to four players and 40 life.
@@ -73,6 +78,23 @@ On the commander damage screen:
     revert to four players or 40 life.
 12. Restart the ROM, configure eight players, and confirm navigation reaches P8
     and wraps correctly.
+
+## Test 9: commander life coupling and setup return
+
+1. In a six-player game, confirm the header reads exactly `PLAYERS 1-4 OF 6`.
+   After scrolling it must show valid single-digit ranges without extra numbers.
+2. Reduce P1 from 40 to 37 using normal life editing.
+3. Record 5 commander damage to P1 from P2. The tracked commander value must be
+   5 and P1 life must become 32.
+4. Remove 2 commander damage. The tracked value must become 3 and life 34.
+   Remove more than remains: commander damage must clamp to 0 and life return
+   only to 37, not above it.
+5. From overview press Start, then Select. Setup must reopen with the current
+   player count and starting life.
+6. Change setup values, then press B. The existing game and all its values must
+   return unchanged.
+7. Reopen Setup and press A after changing values. A fresh game must start with
+   the newly selected player count and starting life.
 
 ## Full regression checklist
 

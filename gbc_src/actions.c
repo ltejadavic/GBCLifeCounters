@@ -70,6 +70,8 @@ bool action_change_commander_damage(
     int16_t amount
 ) {
     uint8_t *damage;
+    uint8_t previous_damage;
+    int16_t applied_damage;
 
     if (
         !is_valid_player(game, target_player)
@@ -80,7 +82,10 @@ bool action_change_commander_damage(
     }
 
     damage = &game->commander_damage[target_player][source_player][commander_slot];
+    previous_damage = *damage;
     *damage = change_uint8_value(*damage, amount);
+    applied_damage = (int16_t)(*damage) - (int16_t)previous_damage;
+    action_change_life(game, target_player, (int16_t)(-applied_damage));
     return true;
 }
 

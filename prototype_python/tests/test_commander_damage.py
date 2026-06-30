@@ -77,3 +77,16 @@ def test_commander_damage_can_be_removed_and_read_as_matrix() -> None:
     assert remove_commander_damage(game, 1, 0, 3) == 7
     assert remove_commander_damage(game, 1, 0, 20) == 0
     assert get_commander_damage_received(game, 1)[0] == [0, 0]
+
+
+def test_commander_damage_changes_life_and_removal_corrects_it() -> None:
+    game = GameState()
+
+    add_commander_damage(game, 1, 0, 5)
+    assert game.players[1].life == 35
+
+    remove_commander_damage(game, 1, 0, 2)
+    assert game.players[1].life == 37
+
+    remove_commander_damage(game, 1, 0, 20)
+    assert game.players[1].life == 40
