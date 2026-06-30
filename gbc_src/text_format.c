@@ -1,0 +1,35 @@
+#include "text_format.h"
+
+void format_life_total(
+    int16_t value,
+    char output[LIFE_TEXT_BUFFER_SIZE]
+) {
+    uint8_t index;
+    uint8_t position = LIFE_TEXT_WIDTH;
+    uint16_t magnitude;
+    uint8_t is_negative = (value < 0);
+
+    for (index = 0u; index < LIFE_TEXT_WIDTH; index++) {
+        output[index] = ' ';
+    }
+    output[LIFE_TEXT_WIDTH] = '\0';
+
+    if (is_negative) {
+        /* Adding one before negating keeps INT16_MIN representable. */
+        magnitude = (uint16_t)(-(value + 1));
+        magnitude++;
+    } else {
+        magnitude = (uint16_t)value;
+    }
+
+    do {
+        position--;
+        output[position] = (char)('0' + (magnitude % 10u));
+        magnitude /= 10u;
+    } while (magnitude > 0u);
+
+    if (is_negative) {
+        position--;
+        output[position] = '-';
+    }
+}

@@ -38,7 +38,11 @@ build/commander_gbc_one_player.gbc
 9. Reduce life to `0`, then below zero. Status must become `MAY LOSE`, the
    palette must turn red, and the negative value must remain visible.
 10. Press Start. Life must return to `40`, status to `OK`, and the palette to
-   green.
+    green.
+
+When testing transitions such as `10` to `5`, `5` to `0`, positive to negative,
+or any value back to `40`, no digits from the previous value may remain on
+screen.
 
 If `CGB COLOR: ACTIVE` appears but all three states remain monochrome, check the
 emulator's video settings for a forced DMG/monochrome palette.

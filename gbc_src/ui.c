@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "rules.h"
+#include "text_format.h"
 #include "ui.h"
 
 static const palette_color_t normal_palette[] = {
@@ -91,12 +92,14 @@ void ui_initialize(void) {
 
 void ui_refresh_player(const GameState *game, uint8_t player_id) {
     const Player *player = &game->players[player_id];
+    char life_text[LIFE_TEXT_BUFFER_SIZE];
 
     gotoxy(6, 5);
     printf("        ");
     gotoxy(8, 5);
     printf("%s", player->name);
+    format_life_total(player->life, life_text);
     gotoxy(7, 8);
-    printf("%6d", player->life);
+    printf("%s", life_text);
     draw_status(rules_check_life(player));
 }

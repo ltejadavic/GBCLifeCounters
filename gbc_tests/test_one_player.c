@@ -1,11 +1,13 @@
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "actions.h"
 #include "constants.h"
 #include "game_state.h"
 #include "rules.h"
+#include "text_format.h"
 
 static void test_initial_state(void) {
     GameState game;
@@ -82,11 +84,30 @@ static void test_eight_player_capacity_and_reset(void) {
     assert(game.turn_number == 1u);
 }
 
+static void assert_life_text(int16_t value, const char *expected) {
+    char output[LIFE_TEXT_BUFFER_SIZE];
+
+    format_life_total(value, output);
+    assert(strcmp(output, expected) == 0);
+}
+
+static void test_life_text_replaces_the_entire_field(void) {
+    assert_life_text(40, "    40");
+    assert_life_text(10, "    10");
+    assert_life_text(5, "     5");
+    assert_life_text(0, "     0");
+    assert_life_text(-5, "    -5");
+    assert_life_text(900, "   900");
+    assert_life_text(MAX_LIFE_TOTAL, " 32767");
+    assert_life_text(MIN_LIFE_TOTAL, "-32768");
+}
+
 int main(void) {
     test_initial_state();
     test_life_actions_and_rules();
     test_validation_and_life_bounds();
     test_eight_player_capacity_and_reset();
+    test_life_text_replaces_the_entire_field();
     printf("GBC core tests passed.\n");
     return 0;
 }

@@ -9,12 +9,14 @@ SOURCES := \
 	gbc_src/game_state.c \
 	gbc_src/actions.c \
 	gbc_src/rules.c \
+	gbc_src/text_format.c \
 	gbc_src/ui.c
 CORE_SOURCES := \
 	gbc_src/player.c \
 	gbc_src/game_state.c \
 	gbc_src/actions.c \
-	gbc_src/rules.c
+	gbc_src/rules.c \
+	gbc_src/text_format.c
 CORE_TEST := build/test_gbc_core
 LCC_FLAGS := -msm83:gb -Wm-yC -Wm-yn"CMDGBC 1P"
 HOST_CC ?= cc
