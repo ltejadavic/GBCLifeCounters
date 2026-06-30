@@ -5,6 +5,7 @@
 
 #include "navigation.h"
 #include "rules.h"
+#include "splash_assets.h"
 #include "text_format.h"
 #include "ui.h"
 
@@ -13,6 +14,11 @@
 #define WARNING_PALETTE 1u
 #define LOSS_PALETTE 2u
 #define ELIMINATED_PALETTE 3u
+#define SPLASH_PALETTE_WHITE 1u
+#define SPLASH_PALETTE_BLUE 2u
+#define SPLASH_PALETTE_BLACK 3u
+#define SPLASH_PALETTE_RED 4u
+#define SPLASH_PALETTE_GREEN 5u
 
 static const uint8_t player_rows[OVERVIEW_PLAYER_LIMIT] = {3u, 5u, 7u, 9u};
 
@@ -33,6 +39,61 @@ static const palette_color_t background_palettes[] = {
     RGB8(158, 171, 183),
     RGB8(75, 88, 103),
     RGB8(25, 31, 40),
+};
+
+static const palette_color_t splash_palettes[] = {
+    RGB8(245, 239, 224), RGB8(174, 205, 100),
+    RGB8(67, 117, 69), RGB8(19, 43, 35),
+    RGB8(245, 239, 224), RGB8(255, 246, 204),
+    RGB8(230, 203, 124), RGB8(67, 43, 19),
+    RGB8(245, 239, 224), RGB8(126, 196, 224),
+    RGB8(39, 104, 183), RGB8(18, 44, 79),
+    RGB8(245, 239, 224), RGB8(132, 118, 145),
+    RGB8(65, 52, 78), RGB8(19, 17, 24),
+    RGB8(245, 239, 224), RGB8(239, 129, 106),
+    RGB8(184, 54, 48), RGB8(72, 24, 25),
+    RGB8(245, 239, 224), RGB8(151, 199, 125),
+    RGB8(48, 130, 73), RGB8(19, 54, 33),
+};
+
+typedef struct SplashAccent {
+    uint8_t x;
+    uint8_t y;
+    uint8_t palette;
+} SplashAccent;
+
+static const SplashAccent splash_accents[] = {
+    /* APLI: white, green, blue. */
+    {3u, 4u, SPLASH_PALETTE_WHITE},
+    {4u, 4u, SPLASH_PALETTE_WHITE},
+    {5u, 4u, SPLASH_PALETTE_GREEN},
+    {6u, 4u, SPLASH_PALETTE_BLUE},
+    /* FORT: half red, half blue. */
+    {8u, 4u, SPLASH_PALETTE_RED},
+    {9u, 4u, SPLASH_PALETTE_RED},
+    {10u, 4u, SPLASH_PALETTE_BLUE},
+    {11u, 4u, SPLASH_PALETTE_BLUE},
+    /* MAMO: all five Magic colors. */
+    {13u, 4u, SPLASH_PALETTE_WHITE},
+    {14u, 4u, SPLASH_PALETTE_BLUE},
+    {15u, 4u, SPLASH_PALETTE_BLACK},
+    {16u, 4u, SPLASH_PALETTE_RED},
+    {17u, 4u, SPLASH_PALETTE_GREEN},
+    /* RURO: green and black. */
+    {3u, 7u, SPLASH_PALETTE_GREEN},
+    {4u, 7u, SPLASH_PALETTE_GREEN},
+    {5u, 7u, SPLASH_PALETTE_BLACK},
+    {6u, 7u, SPLASH_PALETTE_BLACK},
+    /* JTBA: red. */
+    {8u, 7u, SPLASH_PALETTE_RED},
+    {9u, 7u, SPLASH_PALETTE_RED},
+    {10u, 7u, SPLASH_PALETTE_RED},
+    {11u, 7u, SPLASH_PALETTE_RED},
+    /* LTJD: blue, black, green. */
+    {13u, 7u, SPLASH_PALETTE_BLUE},
+    {14u, 7u, SPLASH_PALETTE_BLACK},
+    {15u, 7u, SPLASH_PALETTE_GREEN},
+    {16u, 7u, SPLASH_PALETTE_GREEN},
 };
 
 static void set_region_palette(
@@ -69,6 +130,65 @@ static void prepare_screen(void) {
         DEVICE_SCREEN_HEIGHT,
         NORMAL_PALETTE
     );
+}
+
+static void load_game_palettes(void) {
+    set_bkg_palette(BKGF_CGB_PAL0, 4u, background_palettes);
+}
+
+static void draw_splash_accents(void) {
+    uint8_t index;
+    uint8_t accent_tile = SPLASH_TILE_ACCENT;
+
+    for (
+        index = 0u;
+        index < (uint8_t)(sizeof(splash_accents) / sizeof(SplashAccent));
+        index++
+    ) {
+        set_bkg_tiles(
+            splash_accents[index].x,
+            splash_accents[index].y,
+            1u,
+            1u,
+            &accent_tile
+        );
+        set_region_palette(
+            splash_accents[index].x,
+            splash_accents[index].y,
+            1u,
+            1u,
+            splash_accents[index].palette
+        );
+    }
+}
+
+static void draw_splash_mana_symbols(void) {
+    uint8_t icon_tiles[] = {
+        SPLASH_TILE_WHITE_MANA,
+        SPLASH_TILE_BLUE_MANA,
+        SPLASH_TILE_BLACK_MANA,
+        SPLASH_TILE_RED_MANA,
+        SPLASH_TILE_GREEN_MANA,
+    };
+    uint8_t icon_palettes[] = {
+        SPLASH_PALETTE_WHITE,
+        SPLASH_PALETTE_BLUE,
+        SPLASH_PALETTE_BLACK,
+        SPLASH_PALETTE_RED,
+        SPLASH_PALETTE_GREEN,
+    };
+    uint8_t index;
+
+    set_bkg_tiles(7u, 11u, 5u, 1u, icon_tiles);
+    for (index = 0u; index < 5u; index++) {
+        set_region_palette(
+            (uint8_t)(7u + index),
+            11u,
+            1u,
+            1u,
+            icon_palettes[index]
+        );
+    }
 }
 
 static void draw_color_diagnostic(void) {
@@ -469,9 +589,29 @@ static void draw_commander_controls(uint8_t adjustment_step) {
 }
 
 void ui_initialize(void) {
-    set_bkg_palette(BKGF_CGB_PAL0, 4u, background_palettes);
+    load_game_palettes();
     SHOW_BKG;
     DISPLAY_ON;
+}
+
+void ui_show_splash(void) {
+    prepare_screen();
+    set_bkg_palette(BKGF_CGB_PAL0, 6u, splash_palettes);
+    set_bkg_data(SPLASH_TILE_FIRST, SPLASH_TILE_COUNT, splash_tiles);
+
+    gotoxy(0u, 0u);
+    printf("NOCHES DE COMMANDER");
+    gotoxy(6u, 2u);
+    printf("PRESENTA");
+    gotoxy(3u, 5u);
+    printf("APLI FORT MAMO");
+    gotoxy(3u, 8u);
+    printf("RURO JTBA LTJD");
+    gotoxy(5u, 15u);
+    printf("PRESS START");
+
+    draw_splash_accents();
+    draw_splash_mana_symbols();
 }
 
 void ui_show_setup(
@@ -483,6 +623,7 @@ void ui_show_setup(
     char player_count_text[COUNTER_TEXT_BUFFER_SIZE];
     char life_text[LIFE_TEXT_BUFFER_SIZE];
 
+    load_game_palettes();
     prepare_screen();
     format_counter_value(player_count, player_count_text);
     format_life_total(starting_life, life_text);

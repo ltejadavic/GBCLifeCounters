@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Configurable multiplayer MVP with per-player Monarch and Initiative statuses
+Configurable multiplayer MVP with splash presentation and unique statuses
 
 Planned development order:
 
@@ -79,6 +79,7 @@ build/commander_gbc_multiplayer.gbc
 
 Controls:
 
+* Splash: press Start to open game setup
 * Setup: choose 2–8 players and starting life, then press A
 * Up / Down: select a player
 * Left / Right: decrease / increase the selected player's life
@@ -100,6 +101,10 @@ returning to the current game without losing its state.
 
 The target player's own commander source is displayed as a disabled `SELF` row
 and is skipped by navigation.
+
+The startup presentation credits `NOCHES DE COMMANDER`, shows the six supplied
+initial groups with their requested Magic color identities, and uses custom
+8x8 pixel-art symbols for white, blue, black, red, and green.
 
 ⸻
 

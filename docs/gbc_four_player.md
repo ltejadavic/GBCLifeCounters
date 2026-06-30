@@ -21,6 +21,11 @@ build/commander_gbc_multiplayer.gbc
 
 ## Controls
 
+On the splash screen:
+
+- Start: open game setup.
+- Other buttons: no action.
+
 On the setup screen:
 
 - Up / Down: select player count or starting life.
@@ -135,6 +140,24 @@ damage to its own controller.
 10. Confirm an eliminated player cannot be assigned either status until it is
     restored.
 11. Reset the game. Every `M` and `I` marker must be cleared.
+
+## Test 12: startup presentation
+
+1. Boot the ROM and confirm `NOCHES DE COMMANDER` and `PRESENTA` appear before
+   game setup.
+2. Confirm the credits appear in this order across two rows: `APLI FORT MAMO`
+   and `RURO JTBA LTJD`.
+3. Confirm each credit has a short color band immediately above it: APLI uses
+   white/green/blue; FORT red/blue; MAMO all five colors; RURO green/black;
+   JTBA red; and LTJD blue/black/green.
+4. Confirm five centered pixel-art mana symbols are visible in white, blue,
+   black, red, and green order.
+5. Confirm `PRESS START` appears near the bottom.
+6. Press A, B, Select, and the D-Pad. The splash must remain unchanged.
+7. Press Start once. The existing setup screen must appear with four players
+   and 40 starting life, using its normal palettes.
+8. Continue into a game and confirm the overview and detail colors are
+   unchanged from Test 11.
 
 ## Full regression checklist
 

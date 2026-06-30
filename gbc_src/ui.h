@@ -6,6 +6,7 @@
 #include "game_state.h"
 
 void ui_initialize(void);
+void ui_show_splash(void);
 void ui_show_setup(
     uint8_t player_count,
     int16_t starting_life,

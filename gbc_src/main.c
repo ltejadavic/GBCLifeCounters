@@ -14,6 +14,7 @@
 #define SCREEN_PLAYER_DETAIL 3u
 #define SCREEN_COMMANDER_DAMAGE 4u
 #define SCREEN_ELIMINATION_CONFIRMATION 5u
+#define SCREEN_SPLASH 6u
 
 static GameState game;
 static uint8_t setup_player_count = 4u;
@@ -26,7 +27,7 @@ static uint8_t selected_field = DETAIL_FIELD_LIFE;
 static uint8_t selected_source = 0u;
 static uint8_t first_visible_source = 0u;
 static uint8_t adjustment_step = LIFE_STEP_SMALL;
-static uint8_t screen_state = SCREEN_SETUP;
+static uint8_t screen_state = SCREEN_SPLASH;
 
 static void update_player_window(void) {
     first_visible_player = navigation_update_window_start(
@@ -53,6 +54,18 @@ static void refresh_overview(void) {
         first_visible_player,
         adjustment_step
     );
+}
+
+static void handle_splash_input(uint8_t pressed) {
+    if (pressed & J_START) {
+        screen_state = SCREEN_SETUP;
+        ui_show_setup(
+            setup_player_count,
+            setup_starting_life,
+            setup_field,
+            setup_can_cancel
+        );
+    }
 }
 
 static void handle_setup_input(uint8_t pressed) {
@@ -389,18 +402,15 @@ void main(void) {
     uint8_t previous_keys = 0u;
 
     ui_initialize();
-    ui_show_setup(
-        setup_player_count,
-        setup_starting_life,
-        setup_field,
-        setup_can_cancel
-    );
+    ui_show_splash();
 
     while (1) {
         uint8_t keys = joypad();
         uint8_t pressed = keys & (uint8_t)(~previous_keys);
 
-        if (screen_state == SCREEN_SETUP) {
+        if (screen_state == SCREEN_SPLASH) {
+            handle_splash_input(pressed);
+        } else if (screen_state == SCREEN_SETUP) {
             handle_setup_input(pressed);
         } else if (screen_state == SCREEN_RESET_CONFIRMATION) {
             handle_reset_input(pressed);
