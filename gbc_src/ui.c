@@ -906,6 +906,8 @@ void ui_show_commander_search(
     gotoxy(1u, 0u);
     printf("SELECT CMDR FOR ");
     printf("%s", player->name);
+    gotoxy(0u, 2u);
+    printf(list_focus ? " " : ">");
     gotoxy(1u, 2u);
     printf("QUERY: ");
     print_fixed_text(query, COMMANDER_QUERY_MAX);
@@ -926,9 +928,9 @@ void ui_show_commander_search(
         printf("%c", keyboard[index]);
     }
     gotoxy(1u, 14u);
-    printf("SELECT LIST/KEYS");
+    printf("START/SEL FOCUS");
     gotoxy(1u, 15u);
-    printf("A TYPE  START PICK");
+    printf("A TYPE/CHOOSE");
     gotoxy(1u, 16u);
     printf("B DELETE/BACK");
     draw_color_diagnostic();

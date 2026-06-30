@@ -105,7 +105,7 @@ static void open_commander_search(void) {
 static void handle_commander_search_input(uint8_t pressed) {
     static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-,";
 
-    if (pressed & J_SELECT) {
+    if ((pressed & J_SELECT) || (pressed & J_START)) {
         commander_list_focus = (uint8_t)(!commander_list_focus);
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
     } else if (commander_list_focus && (pressed & J_UP)) {
@@ -155,7 +155,8 @@ static void handle_commander_search_input(uint8_t pressed) {
             sound_play_effect(SOUND_EFFECT_CANCEL);
         }
     } else if (
-        ((pressed & J_START) || ((pressed & J_A) && commander_list_focus))
+        (pressed & J_A)
+        && commander_list_focus
         && (commander_match_count > 0u)
     ) {
         action_set_commander(
@@ -173,7 +174,9 @@ static void handle_commander_search_input(uint8_t pressed) {
         );
         return;
     } else if (pressed & J_B) {
-        if (commander_query_length > 0u) {
+        if (commander_list_focus) {
+            commander_list_focus = 0u;
+        } else if (commander_query_length > 0u) {
             commander_query_length--;
             commander_query[commander_query_length] = '\0';
             commander_suggestion = 0u;

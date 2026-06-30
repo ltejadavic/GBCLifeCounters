@@ -28,52 +28,72 @@ static uint8_t is_search_character(char value) {
     );
 }
 
-static uint8_t contains_query(const char *name, const char *query) {
-    uint8_t name_start;
+static uint8_t query_matches_at(
+    const char *name,
+    const char *query,
+    uint8_t name_start
+) {
+    uint8_t query_index = 0u;
+    uint8_t name_index = name_start;
 
-    if (query[0] == '\0') {
-        return 1u;
-    }
-    for (name_start = 0u; name[name_start] != '\0'; name_start++) {
-        uint8_t query_index = 0u;
-        uint8_t name_index = name_start;
-
-        if (!is_search_character(name[name_start])) {
-            continue;
-        }
-        while (query[query_index] != '\0') {
-            while (
-                (name[name_index] != '\0')
-                && !is_search_character(name[name_index])
-            ) {
-                name_index++;
-            }
-            while (
-                (query[query_index] != '\0')
-                && !is_search_character(query[query_index])
-            ) {
-                query_index++;
-            }
-            if (query[query_index] == '\0') {
-                return 1u;
-            }
-            if (
-                (name[name_index] == '\0')
-                || (
-                    upper_ascii(name[name_index])
-                    != upper_ascii(query[query_index])
-                )
-            ) {
-                break;
-            }
+    while (query[query_index] != '\0') {
+        while (
+            (name[name_index] != '\0')
+            && !is_search_character(name[name_index])
+        ) {
             name_index++;
+        }
+        while (
+            (query[query_index] != '\0')
+            && !is_search_character(query[query_index])
+        ) {
             query_index++;
         }
         if (query[query_index] == '\0') {
             return 1u;
         }
+        if (
+            (name[name_index] == '\0')
+            || (
+                upper_ascii(name[name_index])
+                != upper_ascii(query[query_index])
+            )
+        ) {
+            return 0u;
+        }
+        name_index++;
+        query_index++;
     }
-    return 0u;
+    return 1u;
+}
+
+static uint8_t match_priority(const char *name, const char *query) {
+    uint8_t name_start;
+
+    if (query[0] == '\0') {
+        return 0u;
+    }
+    if (query_matches_at(name, query, 0u)) {
+        return 0u;
+    }
+    for (name_start = 1u; name[name_start] != '\0'; name_start++) {
+        if (
+            is_search_character(name[name_start])
+            && !is_search_character(name[(uint8_t)(name_start - 1u)])
+            && query_matches_at(name, query, name_start)
+        ) {
+            return 1u;
+        }
+    }
+    for (name_start = 1u; name[name_start] != '\0'; name_start++) {
+        if (
+            is_search_character(name[name_start])
+            && query_matches_at(name, query, name_start)
+        ) {
+            return 2u;
+        }
+    }
+    return 255u;
 }
 
 uint16_t commander_db_count(void) BANKED {
@@ -117,16 +137,22 @@ uint8_t commander_db_find_matches(
     uint16_t commander_id;
     uint8_t count = 0u;
     uint8_t matched_count;
+    uint8_t priority;
 
-    for (
-        commander_id = 0u;
-        (commander_id < commander_db_count())
-        && (count < COMMANDER_SUGGESTION_COUNT);
-        commander_id++
-    ) {
-        if (contains_query(commander_records[commander_id].name, query)) {
-            results[count] = commander_id;
-            count++;
+    for (priority = 0u; priority < 3u; priority++) {
+        for (
+            commander_id = 0u;
+            (commander_id < commander_db_count())
+            && (count < COMMANDER_SUGGESTION_COUNT);
+            commander_id++
+        ) {
+            if (
+                match_priority(commander_records[commander_id].name, query)
+                == priority
+            ) {
+                results[count] = commander_id;
+                count++;
+            }
         }
     }
     matched_count = count;

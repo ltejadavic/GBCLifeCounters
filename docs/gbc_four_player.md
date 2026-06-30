@@ -211,19 +211,24 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
    apostrophe, hyphen, and comma. No literal `-8s` or `-16s` may appear.
 3. Use the D-Pad to move over letters and A to type `ATRAXA`. Suggestions must
    update after every character and include `Atraxa, Praetors' Voice`.
-4. Press Select to focus the suggestion list, use Up/Down to choose, then A or
-   Start to assign it. B must delete one query character; with an empty query,
-   B must return without changing the commander.
-5. Return to P1 detail. The commander name must be shown using at most eight
+4. Press Select or Start to move focus to the suggestion list, use Up/Down to
+   choose, then A to assign it. Start must never assign the first suggestion.
+   Press Start, Select, or B while the list is focused to return to the keyboard
+   with the complete query and cursor position preserved.
+5. While the keyboard is focused, B must delete one query character; with an
+   empty query, B must return without changing the commander.
+6. Return to P1 detail. The commander name must be shown using at most eight
    characters with its `CTR` label and colored 8x8 Counters archetype symbol.
-6. Return to overview. A miniature version of the same archetype symbol must
+7. Return to overview. A miniature version of the same archetype symbol must
    appear in P1's row without covering poison or warning state.
-7. Assign a different commander to P1 and confirm both name and symbol change.
-8. Assign different commanders to P2–P4. Each player must retain an independent
+8. Assign a different commander to P1 and confirm both name and symbol change.
+9. Assign different commanders to P2–P4. Each player must retain an independent
    selection, including after scrolling in games with 5–8 players.
-9. Search `TCHALLA` without an apostrophe. Punctuation-insensitive matching must
+10. Search `TCHALLA` without an apostrophe. Punctuation-insensitive matching must
    still suggest `T'Challa, the Black Panther`.
-10. Reset the game. Every player commander must return to `--` and every
+11. Type `THE`. Names beginning with `The` must rank before names that merely
+    contain “the” in the middle.
+12. Reset the game. Every player commander must return to `--` and every
     archetype symbol must disappear.
 
 ## Full regression checklist
