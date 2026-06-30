@@ -112,10 +112,14 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     );
     assert(
         navigation_next_detail_field(DETAIL_FIELD_INITIATIVE)
-        == DETAIL_FIELD_LIFE
+        == DETAIL_FIELD_COMMANDER
     );
     assert(
         navigation_previous_detail_field(DETAIL_FIELD_LIFE)
+        == DETAIL_FIELD_COMMANDER
+    );
+    assert(
+        navigation_previous_detail_field(DETAIL_FIELD_COMMANDER)
         == DETAIL_FIELD_INITIATIVE
     );
 

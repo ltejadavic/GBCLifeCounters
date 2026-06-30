@@ -205,6 +205,7 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
 ## Test 14: commander selection and archetypes
 
 1. Open P1 detail. A new `CMDR` row must show `--`; select it and press A.
+   Up from Life and Down from Initiative must both reach `CMDR`.
 2. Confirm the commander search shows an eight-character query, three live
    suggestions, and a 7x4 on-screen keyboard.
 3. Use the D-Pad to move over letters and A to type `ATRAXA`. Suggestions must
