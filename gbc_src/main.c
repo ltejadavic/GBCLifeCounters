@@ -216,7 +216,7 @@ static void handle_detail_input(uint8_t pressed) {
         && (selected_field == DETAIL_FIELD_COMMANDER_DAMAGE)
         && !game.players[selected_player].eliminated
     ) {
-        selected_source = 0u;
+        selected_source = selected_player == 0u ? 1u : 0u;
         first_visible_source = 0u;
         screen_state = SCREEN_COMMANDER_DAMAGE;
         ui_show_commander_damage(
@@ -275,10 +275,18 @@ static void handle_elimination_input(uint8_t pressed) {
 
 static void handle_commander_damage_input(uint8_t pressed) {
     if (pressed & J_UP) {
-        selected_source = navigation_previous_player(&game, selected_source);
+        selected_source = navigation_previous_other_player(
+            &game,
+            selected_source,
+            selected_player
+        );
         update_source_window();
     } else if (pressed & J_DOWN) {
-        selected_source = navigation_next_player(&game, selected_source);
+        selected_source = navigation_next_other_player(
+            &game,
+            selected_source,
+            selected_player
+        );
         update_source_window();
     } else if (pressed & J_LEFT) {
         action_change_commander_damage(

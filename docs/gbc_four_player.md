@@ -59,6 +59,10 @@ damage: adding it also subtracts the same amount from life. Removing a tracked
 amount restores that applied life delta as an input correction. Infect and
 other replacement-effect helpers are not part of this screen yet.
 
+The target player's own commander is shown as a disabled gray `SELF` row. It is
+never selectable or editable because a commander cannot deal commander combat
+damage to its own controller.
+
 ## Test 8: setup and 2–8 players
 
 1. Boot and confirm `GAME SETUP` defaults to four players and 40 life.
@@ -95,6 +99,19 @@ other replacement-effect helpers are not part of this screen yet.
    return unchanged.
 7. Reopen Setup and press A after changing values. A fresh game must start with
    the newly selected player count and starting life.
+
+## Test 10: reject self commander damage
+
+1. Open commander damage received by P1.
+2. Confirm the P1 source row is gray, displays `---` and `SELF`, and does not
+   show the selection marker.
+3. Press Up/Down repeatedly. Selection must cycle through every other source
+   while always skipping P1.
+4. Confirm Left/Right cannot modify the P1 self row or P1 life through that row.
+5. Repeat for another target such as P4. The disabled row must move to P4 while
+   all other source rows remain editable.
+6. Confirm normal commander damage from another player still changes both the
+   source total and target life.
 
 ## Full regression checklist
 

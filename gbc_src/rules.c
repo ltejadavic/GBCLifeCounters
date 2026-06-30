@@ -31,6 +31,7 @@ RuleStatus rules_check_commander_damage(
     if (
         (target_player >= game->player_count)
         || (source_player >= game->player_count)
+        || (target_player == source_player)
         || (commander_slot >= MAX_COMMANDERS_PER_PLAYER)
     ) {
         return RULE_STATUS_NORMAL;
@@ -58,6 +59,9 @@ RuleStatus rules_check_commander_damage_for_player(
         return RULE_STATUS_NORMAL;
     }
     for (source_player = 0u; source_player < game->player_count; source_player++) {
+        if (source_player == target_player) {
+            continue;
+        }
         for (
             commander_slot = 0u;
             commander_slot < MAX_COMMANDERS_PER_PLAYER;
@@ -89,6 +93,9 @@ uint8_t rules_get_highest_commander_damage(
         return 0u;
     }
     for (source_player = 0u; source_player < game->player_count; source_player++) {
+        if (source_player == target_player) {
+            continue;
+        }
         for (
             commander_slot = 0u;
             commander_slot < MAX_COMMANDERS_PER_PLAYER;

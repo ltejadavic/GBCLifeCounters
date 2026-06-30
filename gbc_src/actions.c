@@ -76,6 +76,7 @@ bool action_change_commander_damage(
     if (
         !is_valid_player(game, target_player)
         || !is_valid_player(game, source_player)
+        || (target_player == source_player)
         || (commander_slot >= MAX_COMMANDERS_PER_PLAYER)
     ) {
         return false;
@@ -99,6 +100,7 @@ bool action_set_commander_damage(
     if (
         !is_valid_player(game, target_player)
         || !is_valid_player(game, source_player)
+        || (target_player == source_player)
         || (commander_slot >= MAX_COMMANDERS_PER_PLAYER)
     ) {
         return false;

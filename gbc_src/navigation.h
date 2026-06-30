@@ -22,6 +22,16 @@ uint8_t navigation_next_player(
     const GameState *game,
     uint8_t current_player
 );
+uint8_t navigation_previous_other_player(
+    const GameState *game,
+    uint8_t current_player,
+    uint8_t excluded_player
+);
+uint8_t navigation_next_other_player(
+    const GameState *game,
+    uint8_t current_player,
+    uint8_t excluded_player
+);
 uint8_t navigation_next_life_step(uint8_t current_step);
 uint8_t navigation_previous_detail_field(uint8_t current_field);
 uint8_t navigation_next_detail_field(uint8_t current_field);

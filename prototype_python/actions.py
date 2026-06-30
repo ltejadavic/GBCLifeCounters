@@ -261,6 +261,8 @@ def set_commander_damage(
     _require_nonnegative(value, "commander damage")
     game.get_player(target_player_id)
     game.get_player(source_player_id)
+    if target_player_id == source_player_id:
+        raise ValueError("a player's commander cannot deal commander damage to itself")
     game.validate_commander_slot(commander_slot)
     game.commander_damage[target_player_id][source_player_id][commander_slot] = value
     return value
@@ -274,6 +276,8 @@ def get_commander_damage(
 ) -> int:
     game.get_player(target_player_id)
     game.get_player(source_player_id)
+    if target_player_id == source_player_id:
+        raise ValueError("a player's commander cannot deal commander damage to itself")
     game.validate_commander_slot(commander_slot)
     return game.commander_damage[target_player_id][source_player_id][commander_slot]
 

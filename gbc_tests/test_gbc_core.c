@@ -81,6 +81,9 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     assert(navigation_previous_player(&game, 0u) == 3u);
     assert(navigation_next_player(&game, 3u) == 0u);
     assert(navigation_next_player(&game, 1u) == 2u);
+    assert(navigation_previous_other_player(&game, 1u, 0u) == 3u);
+    assert(navigation_next_other_player(&game, 3u, 0u) == 1u);
+    assert(navigation_next_other_player(&game, 1u, 2u) == 3u);
     assert(navigation_next_life_step(LIFE_STEP_SMALL) == LIFE_STEP_MEDIUM);
     assert(navigation_next_life_step(LIFE_STEP_MEDIUM) == LIFE_STEP_LARGE);
     assert(navigation_next_life_step(LIFE_STEP_LARGE) == LIFE_STEP_SMALL);
@@ -191,6 +194,20 @@ static void test_commander_damage_changes_life_by_applied_delta(void) {
     assert(game.players[0].life == 37);
 }
 
+static void test_self_commander_damage_is_rejected(void) {
+    GameState game;
+
+    game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
+    assert(!action_change_commander_damage(&game, 0u, 0u, 0u, 5));
+    assert(!action_set_commander_damage(&game, 0u, 0u, 0u, 5u));
+    assert(game.commander_damage[0][0][0] == 0u);
+    assert(game.players[0].life == DEFAULT_STARTING_LIFE);
+    assert(
+        rules_check_commander_damage(&game, 0u, 0u, 0u)
+        == RULE_STATUS_NORMAL
+    );
+}
+
 static void test_eight_player_capacity_and_game_reset(void) {
     GameState game;
 
@@ -297,6 +314,7 @@ int main(void) {
     test_poison_actions_and_rules_are_independent();
     test_commander_damage_is_separate_by_source_and_slot();
     test_commander_damage_changes_life_by_applied_delta();
+    test_self_commander_damage_is_rejected();
     test_eight_player_capacity_and_game_reset();
     test_manual_elimination_restore_and_winner();
     test_life_text_replaces_the_entire_field();

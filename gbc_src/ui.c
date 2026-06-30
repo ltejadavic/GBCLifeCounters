@@ -363,6 +363,7 @@ static void draw_commander_source_row(
     uint8_t row,
     uint8_t is_selected
 ) {
+    uint8_t is_self_source = target_player == source_player;
     RuleStatus status = rules_check_commander_damage(
         game,
         target_player,
@@ -375,10 +376,15 @@ static void draw_commander_source_row(
         game->commander_damage[target_player][source_player][0u],
         damage_text
     );
+    if (is_self_source) {
+        damage_text[0] = '-';
+        damage_text[1] = '-';
+        damage_text[2] = '-';
+    }
     gotoxy(0u, row);
     printf("                    ");
     gotoxy(0u, row);
-    printf(is_selected ? ">" : " ");
+    printf((is_selected && !is_self_source) ? ">" : " ");
     gotoxy(2u, row);
     printf("FROM");
     gotoxy(7u, row);
@@ -386,13 +392,17 @@ static void draw_commander_source_row(
     gotoxy(11u, row);
     printf("%s", damage_text);
     gotoxy(15u, row);
-    print_status_word(status);
+    if (is_self_source) {
+        printf("SELF");
+    } else {
+        print_status_word(status);
+    }
     set_region_palette(
         0u,
         row,
         DEVICE_SCREEN_WIDTH,
         1u,
-        palette_for_status(status)
+        is_self_source ? ELIMINATED_PALETTE : palette_for_status(status)
     );
 }
 

@@ -90,6 +90,9 @@ Normal commander damage entered in the source screen also reduces life. The
 reset confirmation offers `SELECT NEW SETUP` to reconfigure the game, with B
 returning to the current game without losing its state.
 
+The target player's own commander source is displayed as a disabled `SELF` row
+and is skipped by navigation.
+
 ⸻
 
 Important Technical Note

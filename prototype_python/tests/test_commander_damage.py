@@ -1,3 +1,5 @@
+import pytest
+
 from prototype_python.actions import (
     add_commander_damage,
     get_commander_damage,
@@ -90,3 +92,12 @@ def test_commander_damage_changes_life_and_removal_corrects_it() -> None:
 
     remove_commander_damage(game, 1, 0, 20)
     assert game.players[1].life == 40
+
+
+def test_player_cannot_receive_commander_damage_from_own_commander() -> None:
+    game = GameState()
+
+    with pytest.raises(ValueError):
+        add_commander_damage(game, 0, 0, 1)
+
+    assert game.players[0].life == 40

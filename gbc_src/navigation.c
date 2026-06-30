@@ -27,6 +27,32 @@ uint8_t navigation_next_player(
     return current_player;
 }
 
+uint8_t navigation_previous_other_player(
+    const GameState *game,
+    uint8_t current_player,
+    uint8_t excluded_player
+) {
+    uint8_t candidate = navigation_previous_player(game, current_player);
+
+    if (candidate == excluded_player) {
+        candidate = navigation_previous_player(game, candidate);
+    }
+    return candidate;
+}
+
+uint8_t navigation_next_other_player(
+    const GameState *game,
+    uint8_t current_player,
+    uint8_t excluded_player
+) {
+    uint8_t candidate = navigation_next_player(game, current_player);
+
+    if (candidate == excluded_player) {
+        candidate = navigation_next_player(game, candidate);
+    }
+    return candidate;
+}
+
 uint8_t navigation_next_life_step(uint8_t current_step) {
     if (current_step == LIFE_STEP_SMALL) {
         return LIFE_STEP_MEDIUM;
