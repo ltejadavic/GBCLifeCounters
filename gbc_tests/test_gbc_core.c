@@ -76,10 +76,17 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     assert(navigation_next_life_step(LIFE_STEP_MEDIUM) == LIFE_STEP_LARGE);
     assert(navigation_next_life_step(LIFE_STEP_LARGE) == LIFE_STEP_SMALL);
     assert(navigation_next_detail_field(DETAIL_FIELD_LIFE) == DETAIL_FIELD_POISON);
-    assert(navigation_next_detail_field(DETAIL_FIELD_POISON) == DETAIL_FIELD_LIFE);
+    assert(
+        navigation_next_detail_field(DETAIL_FIELD_POISON)
+        == DETAIL_FIELD_COMMANDER_DAMAGE
+    );
+    assert(
+        navigation_next_detail_field(DETAIL_FIELD_COMMANDER_DAMAGE)
+        == DETAIL_FIELD_LIFE
+    );
     assert(
         navigation_previous_detail_field(DETAIL_FIELD_LIFE)
-        == DETAIL_FIELD_POISON
+        == DETAIL_FIELD_COMMANDER_DAMAGE
     );
 }
 
@@ -91,7 +98,7 @@ static void test_poison_actions_and_rules_are_independent(void) {
     assert(game.players[0].poison == 0u);
     assert(game.players[1].poison == 8u);
     assert(rules_check_poison(&game, &game.players[1]) == RULE_STATUS_WARNING);
-    assert(rules_check_player(&game, &game.players[1]) == RULE_STATUS_WARNING);
+    assert(rules_check_player(&game, 1u) == RULE_STATUS_WARNING);
 
     assert(action_change_poison(&game, 1u, 2));
     assert(game.players[1].poison == 10u);
@@ -107,6 +114,46 @@ static void test_poison_actions_and_rules_are_independent(void) {
     assert(action_change_poison(&game, 1u, 20));
     assert(game.players[1].poison == 255u);
     assert(!action_change_poison(&game, 4u, 1));
+}
+
+static void test_commander_damage_is_separate_by_source_and_slot(void) {
+    GameState game;
+
+    game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
+    assert(action_set_commander_damage(&game, 1u, 0u, 0u, 12u));
+    assert(action_set_commander_damage(&game, 1u, 0u, 1u, 9u));
+    assert(rules_get_highest_commander_damage(&game, 1u) == 12u);
+    assert(
+        rules_check_commander_damage_for_player(&game, 1u)
+        == RULE_STATUS_NORMAL
+    );
+
+    assert(action_set_commander_damage(&game, 1u, 2u, 0u, 9u));
+    assert(
+        rules_check_commander_damage_for_player(&game, 1u)
+        == RULE_STATUS_NORMAL
+    );
+
+    assert(action_set_commander_damage(&game, 1u, 2u, 0u, 18u));
+    assert(
+        rules_check_commander_damage(&game, 1u, 2u, 0u)
+        == RULE_STATUS_WARNING
+    );
+    assert(rules_check_player(&game, 1u) == RULE_STATUS_WARNING);
+
+    assert(action_change_commander_damage(&game, 1u, 2u, 0u, 3));
+    assert(game.commander_damage[1][2][0] == 21u);
+    assert(
+        rules_check_commander_damage(&game, 1u, 2u, 0u)
+        == RULE_STATUS_POSSIBLE_LOSS
+    );
+    assert(game.players[1].eliminated == 0u);
+
+    assert(action_change_commander_damage(&game, 1u, 2u, 0u, -30));
+    assert(game.commander_damage[1][2][0] == 0u);
+    assert(!action_change_commander_damage(&game, 4u, 2u, 0u, 1));
+    assert(!action_change_commander_damage(&game, 1u, 4u, 0u, 1));
+    assert(!action_change_commander_damage(&game, 1u, 2u, 2u, 1));
 }
 
 static void test_eight_player_capacity_and_game_reset(void) {
@@ -175,6 +222,7 @@ int main(void) {
     test_validation_and_life_bounds();
     test_navigation_wraps_and_cycles_steps();
     test_poison_actions_and_rules_are_independent();
+    test_commander_damage_is_separate_by_source_and_slot();
     test_eight_player_capacity_and_game_reset();
     test_life_text_replaces_the_entire_field();
     test_counter_text_replaces_the_entire_field();

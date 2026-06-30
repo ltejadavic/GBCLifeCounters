@@ -110,7 +110,11 @@ static void draw_player_row(
 ) {
     RuleStatus life_status = rules_check_life(player);
     RuleStatus poison_status = rules_check_poison(game, player);
-    RuleStatus player_status = rules_check_player(game, player);
+    RuleStatus commander_status = rules_check_commander_damage_for_player(
+        game,
+        player->player_id
+    );
+    RuleStatus player_status = rules_check_player(game, player->player_id);
     char life_text[LIFE_TEXT_BUFFER_SIZE];
     char poison_text[COUNTER_TEXT_BUFFER_SIZE];
 
@@ -132,10 +136,14 @@ static void draw_player_row(
     if (player_status == RULE_STATUS_POSSIBLE_LOSS) {
         printf("LOSS");
     } else if (
-        (life_status == RULE_STATUS_WARNING)
-        && (poison_status == RULE_STATUS_WARNING)
+        ((life_status == RULE_STATUS_WARNING) ? 1u : 0u)
+        + ((poison_status == RULE_STATUS_WARNING) ? 1u : 0u)
+        + ((commander_status == RULE_STATUS_WARNING) ? 1u : 0u)
+        > 1u
     ) {
         printf("WARN");
+    } else if (commander_status == RULE_STATUS_WARNING) {
+        printf("CMD ");
     } else if (poison_status == RULE_STATUS_WARNING) {
         printf("PSN ");
     } else if (life_status == RULE_STATUS_WARNING) {
@@ -189,11 +197,20 @@ static void draw_detail_fields(
 ) {
     RuleStatus life_status = rules_check_life(player);
     RuleStatus poison_status = rules_check_poison(game, player);
+    RuleStatus commander_status = rules_check_commander_damage_for_player(
+        game,
+        player->player_id
+    );
     char life_text[LIFE_TEXT_BUFFER_SIZE];
     char poison_text[COUNTER_TEXT_BUFFER_SIZE];
+    char commander_text[COUNTER_TEXT_BUFFER_SIZE];
 
     format_life_total(player->life, life_text);
     format_counter_value(player->poison, poison_text);
+    format_counter_value(
+        rules_get_highest_commander_damage(game, player->player_id),
+        commander_text
+    );
 
     gotoxy(0u, 3u);
     printf("                    ");
@@ -203,6 +220,8 @@ static void draw_detail_fields(
     printf("LIFE");
     gotoxy(9u, 3u);
     printf("%s", life_text);
+    gotoxy(16u, 3u);
+    print_status_word(life_status);
     set_region_palette(
         0u,
         3u,
@@ -219,6 +238,8 @@ static void draw_detail_fields(
     printf("POISON");
     gotoxy(12u, 5u);
     printf("%s", poison_text);
+    gotoxy(16u, 5u);
+    print_status_word(poison_status);
     set_region_palette(
         0u,
         5u,
@@ -227,18 +248,98 @@ static void draw_detail_fields(
         palette_for_status(poison_status)
     );
 
-    gotoxy(1u, 7u);
-    printf("LIFE STATUS: ");
-    print_status_word(life_status);
-    gotoxy(1u, 8u);
-    printf("PSN STATUS : ");
-    print_status_word(poison_status);
+    gotoxy(0u, 7u);
+    printf("                    ");
+    gotoxy(0u, 7u);
+    printf(selected_field == DETAIL_FIELD_COMMANDER_DAMAGE ? ">" : " ");
+    gotoxy(2u, 7u);
+    printf("CMD MAX");
+    gotoxy(12u, 7u);
+    printf("%s", commander_text);
+    gotoxy(16u, 7u);
+    print_status_word(commander_status);
+    set_region_palette(
+        0u,
+        7u,
+        DEVICE_SCREEN_WIDTH,
+        1u,
+        palette_for_status(commander_status)
+    );
 }
 
 static void draw_detail_controls(uint8_t adjustment_step) {
     clear_help_area();
     gotoxy(1u, 11u);
     printf("UP/DOWN FIELD");
+    gotoxy(1u, 12u);
+    printf("LEFT/RIGHT CHANGE");
+    gotoxy(1u, 13u);
+    if (adjustment_step == 1u) {
+        printf("SELECT STEP: 1");
+    } else if (adjustment_step == 5u) {
+        printf("SELECT STEP: 5");
+    } else {
+        printf("SELECT STEP: 10");
+    }
+    gotoxy(1u, 14u);
+    printf("A CMD SOURCES");
+    gotoxy(1u, 15u);
+    printf("B BACK");
+}
+
+static void draw_commander_header(const Player *target) {
+    gotoxy(3u, 0u);
+    printf("COMMANDER GBC");
+    gotoxy(1u, 1u);
+    printf("CMD DAMAGE TO ");
+    printf("%s", target->name);
+    draw_color_diagnostic();
+}
+
+static void draw_commander_source_row(
+    const GameState *game,
+    uint8_t target_player,
+    uint8_t source_player,
+    uint8_t row,
+    uint8_t is_selected
+) {
+    RuleStatus status = rules_check_commander_damage(
+        game,
+        target_player,
+        source_player,
+        0u
+    );
+    char damage_text[COUNTER_TEXT_BUFFER_SIZE];
+
+    format_counter_value(
+        game->commander_damage[target_player][source_player][0u],
+        damage_text
+    );
+    gotoxy(0u, row);
+    printf("                    ");
+    gotoxy(0u, row);
+    printf(is_selected ? ">" : " ");
+    gotoxy(2u, row);
+    printf("FROM");
+    gotoxy(7u, row);
+    printf("%s", game->players[source_player].name);
+    gotoxy(11u, row);
+    printf("%s", damage_text);
+    gotoxy(15u, row);
+    print_status_word(status);
+    set_region_palette(
+        0u,
+        row,
+        DEVICE_SCREEN_WIDTH,
+        1u,
+        palette_for_status(status)
+    );
+}
+
+static void draw_commander_controls(uint8_t adjustment_step) {
+    clear_help_area();
+    gotoxy(1u, 11u);
+    printf("UP/DOWN SOURCE");
     gotoxy(1u, 12u);
     printf("LEFT/RIGHT CHANGE");
     gotoxy(1u, 13u);
@@ -315,6 +416,42 @@ void ui_refresh_player_detail(
 ) {
     draw_detail_fields(game, &game->players[player_id], selected_field);
     draw_detail_controls(adjustment_step);
+}
+
+void ui_show_commander_damage(
+    const GameState *game,
+    uint8_t target_player,
+    uint8_t selected_source,
+    uint8_t adjustment_step
+) {
+    prepare_screen();
+    draw_commander_header(&game->players[target_player]);
+    ui_refresh_commander_damage(
+        game,
+        target_player,
+        selected_source,
+        adjustment_step
+    );
+}
+
+void ui_refresh_commander_damage(
+    const GameState *game,
+    uint8_t target_player,
+    uint8_t selected_source,
+    uint8_t adjustment_step
+) {
+    uint8_t source_player;
+
+    for (source_player = 0u; source_player < game->player_count; source_player++) {
+        draw_commander_source_row(
+            game,
+            target_player,
+            source_player,
+            player_rows[source_player],
+            source_player == selected_source
+        );
+    }
+    draw_commander_controls(adjustment_step);
 }
 
 void ui_draw_reset_prompt(void) {

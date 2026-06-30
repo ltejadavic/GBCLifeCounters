@@ -11,6 +11,20 @@ typedef enum RuleStatus {
 
 RuleStatus rules_check_life(const Player *player);
 RuleStatus rules_check_poison(const GameState *game, const Player *player);
-RuleStatus rules_check_player(const GameState *game, const Player *player);
+RuleStatus rules_check_commander_damage(
+    const GameState *game,
+    uint8_t target_player,
+    uint8_t source_player,
+    uint8_t commander_slot
+);
+RuleStatus rules_check_commander_damage_for_player(
+    const GameState *game,
+    uint8_t target_player
+);
+uint8_t rules_get_highest_commander_damage(
+    const GameState *game,
+    uint8_t target_player
+);
+RuleStatus rules_check_player(const GameState *game, uint8_t player_id);
 
 #endif

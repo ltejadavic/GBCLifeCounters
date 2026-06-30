@@ -10,6 +10,7 @@
 #define LIFE_STEP_LARGE 10u
 #define DETAIL_FIELD_LIFE 0u
 #define DETAIL_FIELD_POISON 1u
+#define DETAIL_FIELD_COMMANDER_DAMAGE 2u
 
 uint8_t navigation_previous_player(
     const GameState *game,

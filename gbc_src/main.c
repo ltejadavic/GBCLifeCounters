@@ -11,10 +11,12 @@
 #define SCREEN_OVERVIEW 0u
 #define SCREEN_RESET_CONFIRMATION 1u
 #define SCREEN_PLAYER_DETAIL 2u
+#define SCREEN_COMMANDER_DAMAGE 3u
 
 static GameState game;
 static uint8_t selected_player = 0u;
 static uint8_t selected_field = DETAIL_FIELD_LIFE;
+static uint8_t selected_source = 0u;
 static uint8_t adjustment_step = LIFE_STEP_SMALL;
 static uint8_t screen_state = SCREEN_OVERVIEW;
 
@@ -65,7 +67,7 @@ static void handle_detail_input(uint8_t pressed) {
                 selected_player,
                 (int16_t)(-((int16_t)adjustment_step))
             );
-        } else {
+        } else if (selected_field == DETAIL_FIELD_LIFE) {
             action_change_life(
                 &game,
                 selected_player,
@@ -79,7 +81,7 @@ static void handle_detail_input(uint8_t pressed) {
                 selected_player,
                 (int16_t)adjustment_step
             );
-        } else {
+        } else if (selected_field == DETAIL_FIELD_LIFE) {
             action_change_life(
                 &game,
                 selected_player,
@@ -88,6 +90,19 @@ static void handle_detail_input(uint8_t pressed) {
         }
     } else if (pressed & J_SELECT) {
         adjustment_step = navigation_next_life_step(adjustment_step);
+    } else if (
+        (pressed & J_A)
+        && (selected_field == DETAIL_FIELD_COMMANDER_DAMAGE)
+    ) {
+        selected_source = 0u;
+        screen_state = SCREEN_COMMANDER_DAMAGE;
+        ui_show_commander_damage(
+            &game,
+            selected_player,
+            selected_source,
+            adjustment_step
+        );
+        return;
     } else if (pressed & J_B) {
         screen_state = SCREEN_OVERVIEW;
         ui_show_overview(&game, selected_player, adjustment_step);
@@ -100,6 +115,50 @@ static void handle_detail_input(uint8_t pressed) {
         &game,
         selected_player,
         selected_field,
+        adjustment_step
+    );
+}
+
+static void handle_commander_damage_input(uint8_t pressed) {
+    if (pressed & J_UP) {
+        selected_source = navigation_previous_player(&game, selected_source);
+    } else if (pressed & J_DOWN) {
+        selected_source = navigation_next_player(&game, selected_source);
+    } else if (pressed & J_LEFT) {
+        action_change_commander_damage(
+            &game,
+            selected_player,
+            selected_source,
+            0u,
+            (int16_t)(-((int16_t)adjustment_step))
+        );
+    } else if (pressed & J_RIGHT) {
+        action_change_commander_damage(
+            &game,
+            selected_player,
+            selected_source,
+            0u,
+            (int16_t)adjustment_step
+        );
+    } else if (pressed & J_SELECT) {
+        adjustment_step = navigation_next_life_step(adjustment_step);
+    } else if (pressed & J_B) {
+        screen_state = SCREEN_PLAYER_DETAIL;
+        ui_show_player_detail(
+            &game,
+            selected_player,
+            selected_field,
+            adjustment_step
+        );
+        return;
+    } else {
+        return;
+    }
+
+    ui_refresh_commander_damage(
+        &game,
+        selected_player,
+        selected_source,
         adjustment_step
     );
 }
@@ -133,6 +192,8 @@ void main(void) {
             handle_reset_input(pressed);
         } else if (screen_state == SCREEN_PLAYER_DETAIL) {
             handle_detail_input(pressed);
+        } else if (screen_state == SCREEN_COMMANDER_DAMAGE) {
+            handle_commander_damage_input(pressed);
         } else {
             handle_overview_input(pressed);
         }

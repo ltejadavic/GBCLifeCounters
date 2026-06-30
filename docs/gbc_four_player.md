@@ -1,8 +1,8 @@
-# GBC Four-Player Life and Poison
+# GBC Four-Player Commander MVP
 
 This iteration of the four-player Commander MVP tracks independent life and
-poison values. The overview remains compact while A opens a detail screen for
-editing the selected player.
+poison values plus commander damage separated by source commander. The overview
+remains compact while A opens detail and commander-source screens.
 
 ## Build and verify
 
@@ -34,7 +34,15 @@ On the player detail screen:
 - Up / Down: select Life or Poison.
 - Left / Right: change the selected value using the displayed step.
 - Select: cycle the adjustment step through 1, 5, and 10.
+- A while `CMD MAX` is selected: open commander damage by source.
 - B: return to the overview.
+
+On the commander damage screen:
+
+- Up / Down: select the source commander, P1 through P4.
+- Left / Right: change damage from that commander to the target player.
+- Select: cycle the adjustment step through 1, 5, and 10.
+- B: return to player detail.
 
 ## Emulator test checklist
 
@@ -60,12 +68,24 @@ On the player detail screen:
 12. Press Start, then B. The reset prompt must close without changing values.
 13. Press Start, then A. Every player must return to 40 life and 0 poison,
     selection to P1, and adjustment step to 1.
-14. Confirm the bottom line reads `CGB COLOR: ACTIVE`.
+14. In P2 detail, select `CMD MAX` and press A. Confirm the title reads
+    `CMD DAMAGE TO P2` and rows list sources P1 through P4.
+15. Add 12 commander damage from P1 and 9 from P3. `CMD MAX` must be 12 and
+    there must be no warning: damage from different commanders does not combine.
+16. Raise P1's commander damage to 18. It must show `WARN`; after returning,
+    P2 must show `CMD` in the overview.
+17. Raise that same source to 21. It must show `LOSS` without automatically
+    eliminating or hiding P2.
+18. Reduce commander damage below zero. It must clamp to 0 without affecting
+    other source rows.
+19. Confirm reset restores all commander damage, poison, and life values.
+20. Confirm the bottom line reads `CGB COLOR: ACTIVE`.
 
 No input should alter more than one player or apply more than once per button
 press.
 
 ## Current limits
 
-Commander damage, manual elimination, winner detection, player setup, and sound
-are not exposed in the ROM yet.
+The UI currently edits the main commander slot only. The second partner slot is
+kept separate in the model and rules but is not exposed yet. Manual elimination,
+winner detection, player setup, and sound are also not exposed yet.

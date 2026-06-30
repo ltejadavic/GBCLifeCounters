@@ -38,13 +38,15 @@ uint8_t navigation_next_life_step(uint8_t current_step) {
 }
 
 uint8_t navigation_previous_detail_field(uint8_t current_field) {
-    return current_field == DETAIL_FIELD_LIFE
-        ? DETAIL_FIELD_POISON
-        : DETAIL_FIELD_LIFE;
+    if (current_field == DETAIL_FIELD_LIFE) {
+        return DETAIL_FIELD_COMMANDER_DAMAGE;
+    }
+    return (uint8_t)(current_field - 1u);
 }
 
 uint8_t navigation_next_detail_field(uint8_t current_field) {
-    return current_field == DETAIL_FIELD_POISON
-        ? DETAIL_FIELD_LIFE
-        : DETAIL_FIELD_POISON;
+    if (current_field >= DETAIL_FIELD_COMMANDER_DAMAGE) {
+        return DETAIL_FIELD_LIFE;
+    }
+    return (uint8_t)(current_field + 1u);
 }
