@@ -6,24 +6,44 @@
 #define NOTE_C3 1046u
 #define NOTE_C4 1547u
 #define NOTE_D4 1602u
+#define NOTE_EB4 1627u
 #define NOTE_E4 1651u
+#define NOTE_F4 1673u
 #define NOTE_G4 1714u
+#define NOTE_AB4 1732u
 #define NOTE_A4 1750u
+#define NOTE_BB4 1767u
 #define NOTE_C5 1798u
+#define NOTE_D5 1825u
+#define NOTE_EB5 1837u
 #define NOTE_E5 1849u
+#define NOTE_F5 1860u
 #define NOTE_G5 1881u
-#define INTRO_NOTE_FRAMES 18u
-#define INTRO_REST_FRAMES 10u
 
-static const uint16_t intro_notes[] = {
-    NOTE_C5,
-    NOTE_E5,
-    NOTE_G5,
-    NOTE_E5,
-    NOTE_A4,
-    NOTE_C5,
-    NOTE_E5,
-    0u,
+typedef struct IntroStep {
+    uint16_t frequency;
+    uint8_t frames;
+} IntroStep;
+
+/*
+ * A quiet C-minor fantasy loop. Four arpeggiated phrases build into a short
+ * ascent, resolve on C, then use G as a pickup into the opening C again.
+ */
+static const IntroStep intro_steps[] = {
+    {NOTE_C5, 14u}, {NOTE_EB5, 14u}, {NOTE_G5, 18u},
+    {NOTE_EB5, 10u}, {NOTE_C5, 18u}, {0u, 6u},
+    {NOTE_BB4, 12u}, {NOTE_D5, 12u}, {NOTE_F5, 18u},
+    {NOTE_D5, 10u}, {NOTE_BB4, 18u}, {0u, 6u},
+    {NOTE_AB4, 12u}, {NOTE_C5, 12u}, {NOTE_EB5, 18u},
+    {NOTE_C5, 10u}, {NOTE_AB4, 18u}, {0u, 6u},
+    {NOTE_F4, 12u}, {NOTE_AB4, 12u}, {NOTE_C5, 18u},
+    {NOTE_AB4, 10u}, {NOTE_F4, 18u}, {0u, 6u},
+    {NOTE_G4, 10u}, {NOTE_BB4, 10u}, {NOTE_D5, 10u},
+    {NOTE_G5, 20u}, {NOTE_F5, 12u}, {NOTE_D5, 12u},
+    {NOTE_BB4, 16u}, {NOTE_EB5, 12u}, {NOTE_C5, 12u},
+    {NOTE_AB4, 16u}, {NOTE_G4, 10u}, {NOTE_D5, 10u},
+    {NOTE_G5, 16u}, {NOTE_EB5, 12u}, {NOTE_D5, 12u},
+    {NOTE_C5, 30u}, {0u, 12u}, {NOTE_G4, 10u},
 };
 
 static SoundEffect active_effect = SOUND_EFFECT_NONE;
@@ -186,19 +206,21 @@ static void update_effect(void) {
 }
 
 static void start_next_intro_note(void) {
-    uint16_t frequency = intro_notes[intro_note_index];
+    const IntroStep *step = &intro_steps[intro_note_index];
 
     intro_note_index++;
-    if (intro_note_index >= (uint8_t)(sizeof(intro_notes) / sizeof(uint16_t))) {
+    if (
+        intro_note_index
+        >= (uint8_t)(sizeof(intro_steps) / sizeof(IntroStep))
+    ) {
         intro_note_index = 0u;
     }
-    if (frequency == 0u) {
+    if (step->frequency == 0u) {
         silence_pulse_2();
-        intro_frames_remaining = INTRO_REST_FRAMES;
     } else {
-        trigger_pulse_2(frequency);
-        intro_frames_remaining = INTRO_NOTE_FRAMES;
+        trigger_pulse_2(step->frequency);
     }
+    intro_frames_remaining = step->frames;
 }
 
 static void update_intro_music(void) {

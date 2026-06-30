@@ -173,8 +173,10 @@ damage to its own controller.
 
 Use an emulator with Game Boy audio enabled and a moderate output volume.
 
-1. Boot the ROM. A quiet looping chiptune melody must begin on the presentation
-   screen and continue through `DEVELOPED BY LTJD`.
+1. Boot the ROM. A quiet fantasy-style chiptune melody of approximately ten
+   seconds must begin on the presentation screen and continue through
+   `DEVELOPED BY LTJD`. Let it loop twice: the resolved ending and pickup note
+   must return naturally to the opening arpeggio without an abrupt cut.
 2. Press Start on the presentation. A distinct three-note Start effect must
    play without skipping the developer-credit screen.
 3. On the developer credit, press A or Start. A confirmation effect must play,

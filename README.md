@@ -114,7 +114,9 @@ blinks before a second `DEVELOPED BY LTJD` screen with a blinking `CONTINUE`
 prompt.
 
 Audio is generated directly with the Game Boy pulse and noise channels. A
-low-volume looping melody is limited to the splash and developer-credit screens.
+low-volume, approximately ten-second fantasy loop is limited to the splash and
+developer-credit screens. Its final resolved phrase includes a pickup note that
+returns naturally to the opening arpeggio.
 Gameplay has no background music: short original effects provide navigation,
 confirm/cancel, Start, value increase/decrease, possible-loss, and manual
 elimination feedback. The audio system disables the sound hardware while idle
