@@ -1,7 +1,7 @@
 GBDK_HOME ?= $(CURDIR)/.tools/gbdk
 LCC := $(GBDK_HOME)/bin/lcc
 
-ROM_NAME := commander_gbc_four_player
+ROM_NAME := commander_gbc_multiplayer
 ROM := build/$(ROM_NAME).gbc
 SOURCES := \
 	gbc_src/main.c \
@@ -20,7 +20,7 @@ CORE_SOURCES := \
 	gbc_src/rules.c \
 	gbc_src/text_format.c
 CORE_TEST := build/test_gbc_core
-LCC_FLAGS := -msm83:gb -Wm-yC -Wm-yn"CMDGBC 4P"
+LCC_FLAGS := -msm83:gb -Wm-yC -Wm-yn"CMDGBC MVP"
 HOST_CC ?= cc
 HOST_CFLAGS := -std=c99 -Wall -Wextra -Werror -Igbc_src
 

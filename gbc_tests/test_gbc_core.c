@@ -27,6 +27,15 @@ static void test_four_player_initial_state(void) {
     assert(game.active_player == 0);
 }
 
+static void test_player_count_is_clamped_to_supported_range(void) {
+    GameState game;
+
+    game_state_init(&game, 0u, DEFAULT_STARTING_LIFE);
+    assert(game.player_count == MIN_PLAYERS);
+    game_state_init(&game, MAX_PLAYERS + 1u, DEFAULT_STARTING_LIFE);
+    assert(game.player_count == MAX_PLAYERS);
+}
+
 static void test_life_actions_are_independent(void) {
     GameState game;
 
@@ -88,6 +97,12 @@ static void test_navigation_wraps_and_cycles_steps(void) {
         navigation_previous_detail_field(DETAIL_FIELD_LIFE)
         == DETAIL_FIELD_COMMANDER_DAMAGE
     );
+
+    game_state_init(&game, 8u, DEFAULT_STARTING_LIFE);
+    assert(navigation_update_window_start(&game, 0u, 0u, 4u) == 0u);
+    assert(navigation_update_window_start(&game, 4u, 0u, 4u) == 1u);
+    assert(navigation_update_window_start(&game, 7u, 1u, 4u) == 4u);
+    assert(navigation_update_window_start(&game, 0u, 4u, 4u) == 0u);
 }
 
 static void test_poison_actions_and_rules_are_independent(void) {
@@ -255,6 +270,7 @@ static void test_counter_text_replaces_the_entire_field(void) {
 
 int main(void) {
     test_four_player_initial_state();
+    test_player_count_is_clamped_to_supported_range();
     test_life_actions_are_independent();
     test_validation_and_life_bounds();
     test_navigation_wraps_and_cycles_steps();

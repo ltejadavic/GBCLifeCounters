@@ -1,8 +1,8 @@
-# GBC Four-Player Commander MVP
+# GBC Multiplayer Commander MVP
 
-This iteration of the four-player Commander MVP tracks independent life and
-poison values plus commander damage separated by source commander. The overview
-remains compact while A opens detail and commander-source screens.
+This iteration supports two through eight players with configurable starting
+life. It tracks independent life and poison values plus commander damage
+separated by source commander.
 
 ## Build and verify
 
@@ -16,12 +16,20 @@ make all
 Generated ROM:
 
 ```text
-build/commander_gbc_four_player.gbc
+build/commander_gbc_multiplayer.gbc
 ```
 
 ## Controls
 
-- Up / Down: select the previous or next player, wrapping between P1 and P4.
+On the setup screen:
+
+- Up / Down: select player count or starting life.
+- Left / Right: set 2–8 players or adjust starting life by 5.
+- A: start the configured game.
+- B: restore setup defaults of four players and 40 life.
+
+- Up / Down: select the previous or next player, wrapping across all configured
+  players. Lists scroll four rows at a time.
 - Left / Right: decrease or increase the selected player's life.
 - Select: cycle the life adjustment step through 1, 5, and 10.
 - A: open the selected player's Life/Poison detail screen.
@@ -41,12 +49,32 @@ On the player detail screen:
 
 On the commander damage screen:
 
-- Up / Down: select the source commander, P1 through P4.
+- Up / Down: select the source commander across all configured players.
 - Left / Right: change damage from that commander to the target player.
 - Select: cycle the adjustment step through 1, 5, and 10.
 - B: return to player detail.
 
-## Emulator test checklist
+## Test 8: setup and 2–8 players
+
+1. Boot and confirm `GAME SETUP` defaults to four players and 40 life.
+2. Verify player count cannot go below 2 or above 8.
+3. Verify starting life changes by 5 and stays between 5 and 100.
+4. Change both values, press B, and confirm defaults return to 4 and 40.
+5. Configure six players with 30 starting life and press A.
+6. Confirm the overview shows `PLAYERS 1-4 OF 6`, with P1–P4 at 30.
+7. Move down to P5 and P6. The list must scroll and keep `>` on the selected
+   player. Moving past P6 must wrap to P1 and restore the first window.
+8. Change P6 life and poison. P1–P5 must remain unchanged.
+9. Open P6 commander damage and move through sources P1–P6. The source list
+   must scroll without corrupting rows or values.
+10. Add commander damage from P5 to P6, return to overview, and confirm P6 keeps
+    the correct status.
+11. Confirm reset restores six players to 30 life and zero counters; it must not
+    revert to four players or 40 life.
+12. Restart the ROM, configure eight players, and confirm navigation reaches P8
+    and wraps correctly.
+
+## Full regression checklist
 
 1. Boot in Game Boy Color mode and confirm four rows appear: P1 through P4,
    each at 40 life, poison `P  0`, and status `OK`.
@@ -101,5 +129,5 @@ press.
 ## Current limits
 
 The UI currently edits the main commander slot only. The second partner slot is
-kept separate in the model and rules but is not exposed yet. Player setup and
-sound are also not exposed yet.
+kept separate in the model and rules but is not exposed yet. Sound is also not
+exposed yet.

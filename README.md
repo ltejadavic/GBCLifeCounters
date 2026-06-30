@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Four-player Commander MVP with manual elimination and winner detection
+Configurable 2–8 player Commander MVP
 
 Planned development order:
 
@@ -47,14 +47,15 @@ python prototype_python/main.py
 ```
 
 The Python rules engine is the source of truth. The terminal program is a thin
-interactive client over that engine. The multiplayer rules engine has not yet
-been ported to C/GBDK.
+interactive client over that engine. The current C/GBDK MVP ports life, poison,
+commander damage, manual elimination, winner detection, and reset behavior;
+advanced counters and statuses remain in the Python reference for now.
 
 Game Boy Color Prototype
 
-The current C/GBDK milestone tracks independent life, poison, and commander
-damage for four players. Commander damage remains separate by target, source,
-and commander slot. Possible losses require manual elimination confirmation,
+The current C/GBDK milestone supports two through eight players and configurable
+starting life. It tracks life, poison, and commander damage with scrollable
+player/source lists. Possible losses require manual elimination confirmation,
 and a winner appears only when exactly one player remains active.
 
 Build and verify it from the repository root:
@@ -67,11 +68,12 @@ make verify
 Generated ROM:
 
 ```text
-build/commander_gbc_four_player.gbc
+build/commander_gbc_multiplayer.gbc
 ```
 
 Controls:
 
+* Setup: choose 2–8 players and starting life, then press A
 * Up / Down: select a player
 * Left / Right: decrease / increase the selected player's life
 * Select: cycle adjustment step through 1, 5, and 10

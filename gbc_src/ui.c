@@ -99,11 +99,26 @@ static void print_status_word(RuleStatus status) {
     }
 }
 
-static void draw_overview_header(void) {
+static void draw_overview_header(
+    const GameState *game,
+    uint8_t first_visible_player
+) {
+    uint8_t last_visible_player = (uint8_t)(
+        first_visible_player + OVERVIEW_PLAYER_LIMIT
+    );
+
+    if (last_visible_player > game->player_count) {
+        last_visible_player = game->player_count;
+    }
     gotoxy(3u, 0u);
     printf("COMMANDER GBC");
-    gotoxy(2u, 1u);
-    printf("4P LIFE / POISON");
+    gotoxy(1u, 1u);
+    printf("PLAYERS ");
+    printf("%u", (uint8_t)(first_visible_player + 1u));
+    printf("-");
+    printf("%u", last_visible_player);
+    printf(" OF ");
+    printf("%u", game->player_count);
     draw_color_diagnostic();
 }
 
@@ -406,32 +421,86 @@ void ui_initialize(void) {
     DISPLAY_ON;
 }
 
+void ui_show_setup(
+    uint8_t player_count,
+    int16_t starting_life,
+    uint8_t selected_field
+) {
+    char player_count_text[COUNTER_TEXT_BUFFER_SIZE];
+    char life_text[LIFE_TEXT_BUFFER_SIZE];
+
+    prepare_screen();
+    format_counter_value(player_count, player_count_text);
+    format_life_total(starting_life, life_text);
+
+    gotoxy(3u, 0u);
+    printf("COMMANDER GBC");
+    gotoxy(5u, 2u);
+    printf("GAME SETUP");
+
+    gotoxy(0u, 5u);
+    printf(selected_field == SETUP_FIELD_PLAYER_COUNT ? ">" : " ");
+    gotoxy(2u, 5u);
+    printf("PLAYERS");
+    gotoxy(13u, 5u);
+    printf("%s", player_count_text);
+
+    gotoxy(0u, 7u);
+    printf(selected_field == SETUP_FIELD_STARTING_LIFE ? ">" : " ");
+    gotoxy(2u, 7u);
+    printf("START LIFE");
+    gotoxy(13u, 7u);
+    printf("%s", life_text);
+
+    gotoxy(3u, 9u);
+    printf("2-8 PLAYERS");
+    gotoxy(1u, 11u);
+    printf("UP/DOWN FIELD");
+    gotoxy(1u, 12u);
+    printf("LEFT/RIGHT CHANGE");
+    gotoxy(1u, 14u);
+    printf("A START GAME");
+    gotoxy(1u, 15u);
+    printf("B DEFAULTS");
+    draw_color_diagnostic();
+}
+
 void ui_show_overview(
     const GameState *game,
     uint8_t selected_player,
+    uint8_t first_visible_player,
     uint8_t life_step
 ) {
     prepare_screen();
-    draw_overview_header();
-    ui_refresh_overview(game, selected_player, life_step);
+    ui_refresh_overview(
+        game,
+        selected_player,
+        first_visible_player,
+        life_step
+    );
 }
 
 void ui_refresh_overview(
     const GameState *game,
     uint8_t selected_player,
+    uint8_t first_visible_player,
     uint8_t life_step
 ) {
-    uint8_t player_id;
-    uint8_t visible_players = game->player_count;
+    uint8_t visible_index;
+    uint8_t visible_players = (uint8_t)(
+        game->player_count - first_visible_player
+    );
 
+    draw_overview_header(game, first_visible_player);
     if (visible_players > OVERVIEW_PLAYER_LIMIT) {
         visible_players = OVERVIEW_PLAYER_LIMIT;
     }
-    for (player_id = 0u; player_id < visible_players; player_id++) {
+    for (visible_index = 0u; visible_index < visible_players; visible_index++) {
+        uint8_t player_id = (uint8_t)(first_visible_player + visible_index);
         draw_player_row(
             game,
             &game->players[player_id],
-            player_rows[player_id],
+            player_rows[visible_index],
             player_id == selected_player
         );
     }
@@ -472,6 +541,7 @@ void ui_show_commander_damage(
     const GameState *game,
     uint8_t target_player,
     uint8_t selected_source,
+    uint8_t first_visible_source,
     uint8_t adjustment_step
 ) {
     prepare_screen();
@@ -480,6 +550,7 @@ void ui_show_commander_damage(
         game,
         target_player,
         selected_source,
+        first_visible_source,
         adjustment_step
     );
 }
@@ -488,16 +559,24 @@ void ui_refresh_commander_damage(
     const GameState *game,
     uint8_t target_player,
     uint8_t selected_source,
+    uint8_t first_visible_source,
     uint8_t adjustment_step
 ) {
-    uint8_t source_player;
+    uint8_t visible_index;
+    uint8_t visible_sources = (uint8_t)(
+        game->player_count - first_visible_source
+    );
 
-    for (source_player = 0u; source_player < game->player_count; source_player++) {
+    if (visible_sources > OVERVIEW_PLAYER_LIMIT) {
+        visible_sources = OVERVIEW_PLAYER_LIMIT;
+    }
+    for (visible_index = 0u; visible_index < visible_sources; visible_index++) {
+        uint8_t source_player = (uint8_t)(first_visible_source + visible_index);
         draw_commander_source_row(
             game,
             target_player,
             source_player,
-            player_rows[source_player],
+            player_rows[visible_index],
             source_player == selected_source
         );
     }

@@ -55,8 +55,8 @@ void game_state_init(
     uint8_t player_count,
     int16_t starting_life
 ) {
-    if (player_count == 0u) {
-        player_count = 1u;
+    if (player_count < MIN_PLAYERS) {
+        player_count = MIN_PLAYERS;
     } else if (player_count > MAX_PLAYERS) {
         player_count = MAX_PLAYERS;
     }
