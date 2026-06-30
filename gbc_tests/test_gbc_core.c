@@ -36,11 +36,11 @@ static void test_life_actions_are_independent(void) {
     assert(game.players[1].life == 5);
     assert(game.players[2].life == 40);
     assert(game.players[3].life == 40);
-    assert(rules_check_life(&game.players[1]) == LIFE_STATUS_WARNING);
+    assert(rules_check_life(&game.players[1]) == RULE_STATUS_WARNING);
 
     assert(action_change_life(&game, 2u, -40));
     assert(game.players[2].life == 0);
-    assert(rules_check_life(&game.players[2]) == LIFE_STATUS_POSSIBLE_LOSS);
+    assert(rules_check_life(&game.players[2]) == RULE_STATUS_POSSIBLE_LOSS);
     assert(game.players[2].eliminated == 0u);
 
     assert(action_change_life(&game, 2u, -10));
@@ -49,7 +49,7 @@ static void test_life_actions_are_independent(void) {
 
     assert(action_reset_player(&game, 2u));
     assert(game.players[2].life == DEFAULT_STARTING_LIFE);
-    assert(rules_check_life(&game.players[2]) == LIFE_STATUS_NORMAL);
+    assert(rules_check_life(&game.players[2]) == RULE_STATUS_NORMAL);
 }
 
 static void test_validation_and_life_bounds(void) {
@@ -75,6 +75,38 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     assert(navigation_next_life_step(LIFE_STEP_SMALL) == LIFE_STEP_MEDIUM);
     assert(navigation_next_life_step(LIFE_STEP_MEDIUM) == LIFE_STEP_LARGE);
     assert(navigation_next_life_step(LIFE_STEP_LARGE) == LIFE_STEP_SMALL);
+    assert(navigation_next_detail_field(DETAIL_FIELD_LIFE) == DETAIL_FIELD_POISON);
+    assert(navigation_next_detail_field(DETAIL_FIELD_POISON) == DETAIL_FIELD_LIFE);
+    assert(
+        navigation_previous_detail_field(DETAIL_FIELD_LIFE)
+        == DETAIL_FIELD_POISON
+    );
+}
+
+static void test_poison_actions_and_rules_are_independent(void) {
+    GameState game;
+
+    game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
+    assert(action_change_poison(&game, 1u, 8));
+    assert(game.players[0].poison == 0u);
+    assert(game.players[1].poison == 8u);
+    assert(rules_check_poison(&game, &game.players[1]) == RULE_STATUS_WARNING);
+    assert(rules_check_player(&game, &game.players[1]) == RULE_STATUS_WARNING);
+
+    assert(action_change_poison(&game, 1u, 2));
+    assert(game.players[1].poison == 10u);
+    assert(
+        rules_check_poison(&game, &game.players[1])
+        == RULE_STATUS_POSSIBLE_LOSS
+    );
+    assert(game.players[1].eliminated == 0u);
+
+    assert(action_change_poison(&game, 1u, -20));
+    assert(game.players[1].poison == 0u);
+    assert(action_set_poison(&game, 1u, 250u));
+    assert(action_change_poison(&game, 1u, 20));
+    assert(game.players[1].poison == 255u);
+    assert(!action_change_poison(&game, 4u, 1));
 }
 
 static void test_eight_player_capacity_and_game_reset(void) {
@@ -124,13 +156,28 @@ static void test_life_text_replaces_the_entire_field(void) {
     assert_life_text(MIN_LIFE_TOTAL, "-32768");
 }
 
+static void test_counter_text_replaces_the_entire_field(void) {
+    char output[COUNTER_TEXT_BUFFER_SIZE];
+
+    format_counter_value(0u, output);
+    assert(strcmp(output, "  0") == 0);
+    format_counter_value(8u, output);
+    assert(strcmp(output, "  8") == 0);
+    format_counter_value(10u, output);
+    assert(strcmp(output, " 10") == 0);
+    format_counter_value(255u, output);
+    assert(strcmp(output, "255") == 0);
+}
+
 int main(void) {
     test_four_player_initial_state();
     test_life_actions_are_independent();
     test_validation_and_life_bounds();
     test_navigation_wraps_and_cycles_steps();
+    test_poison_actions_and_rules_are_independent();
     test_eight_player_capacity_and_game_reset();
     test_life_text_replaces_the_entire_field();
+    test_counter_text_replaces_the_entire_field();
     printf("GBC core tests passed.\n");
     return 0;
 }

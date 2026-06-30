@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-First four-player GBC life-overview iteration implemented
+Four-player GBC life and poison iteration implemented
 
 Planned development order:
 
@@ -52,9 +52,9 @@ been ported to C/GBDK.
 
 Game Boy Color Prototype
 
-The current C/GBDK milestone displays four independent players using the
-fixed-size data model, action, rule, navigation, and UI modules. It is the first
-iteration of the four-player Commander MVP.
+The current C/GBDK milestone tracks independent life and poison for four
+players. The overview provides quick life editing and a player-detail screen
+provides Life/Poison editing with rule warnings.
 
 Build and verify it from the repository root:
 
@@ -74,9 +74,10 @@ Controls:
 * Up / Down: select a player
 * Left / Right: decrease / increase the selected player's life
 * Select: cycle adjustment step through 1, 5, and 10
+* A: open the selected player's Life/Poison detail screen
 * Start: open reset confirmation; A confirms and B cancels
 
-Each row shows `LOW` at 5 or less and `LOSS` at 0 or less without automatic
+Each row shows life, poison, and combined warning/loss state without automatic
 elimination. See `docs/gbc_four_player.md` for the complete emulator test
 checklist and expected behavior.
 

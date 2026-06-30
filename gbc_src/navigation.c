@@ -36,3 +36,15 @@ uint8_t navigation_next_life_step(uint8_t current_step) {
     }
     return LIFE_STEP_SMALL;
 }
+
+uint8_t navigation_previous_detail_field(uint8_t current_field) {
+    return current_field == DETAIL_FIELD_LIFE
+        ? DETAIL_FIELD_POISON
+        : DETAIL_FIELD_LIFE;
+}
+
+uint8_t navigation_next_detail_field(uint8_t current_field) {
+    return current_field == DETAIL_FIELD_POISON
+        ? DETAIL_FIELD_LIFE
+        : DETAIL_FIELD_POISON;
+}

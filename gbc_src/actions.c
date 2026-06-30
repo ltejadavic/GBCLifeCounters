@@ -30,6 +30,34 @@ bool action_set_life(GameState *game, uint8_t player_id, int16_t value) {
     return true;
 }
 
+bool action_change_poison(GameState *game, uint8_t player_id, int16_t amount) {
+    Player *player;
+    int16_t current;
+
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+
+    player = &game->players[player_id];
+    current = (int16_t)player->poison;
+    if (amount > (255 - current)) {
+        player->poison = 255u;
+    } else if (amount < -current) {
+        player->poison = 0u;
+    } else {
+        player->poison = (uint8_t)(current + amount);
+    }
+    return true;
+}
+
+bool action_set_poison(GameState *game, uint8_t player_id, uint8_t value) {
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+    game->players[player_id].poison = value;
+    return true;
+}
+
 bool action_reset_player(GameState *game, uint8_t player_id) {
     if (!is_valid_player(game, player_id)) {
         return false;
