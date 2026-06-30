@@ -118,6 +118,22 @@ static void draw_overview_header(
     printf("COMMANDER GBC");
     gotoxy(1u, 1u);
     printf("%s", range_text);
+    gotoxy(0u, 2u);
+    printf("MON");
+    gotoxy(4u, 2u);
+    if (game->monarch_player == NO_PLAYER) {
+        printf("--");
+    } else {
+        printf("%s", game->players[(uint8_t)game->monarch_player].name);
+    }
+    gotoxy(8u, 2u);
+    printf("INI");
+    gotoxy(12u, 2u);
+    if (game->initiative_player == NO_PLAYER) {
+        printf("--");
+    } else {
+        printf("%s", game->players[(uint8_t)game->initiative_player].name);
+    }
     draw_color_diagnostic();
 }
 
@@ -185,6 +201,7 @@ static void draw_player_row(
 
 static void draw_winner(const GameState *game) {
     int8_t winner = rules_check_winner(game);
+    char turn_text[UINT16_TEXT_BUFFER_SIZE];
 
     gotoxy(0u, 16u);
     printf("                    ");
@@ -192,6 +209,20 @@ static void draw_winner(const GameState *game) {
         gotoxy(3u, 16u);
         printf("WINNER: ");
         printf("%s", game->players[(uint8_t)winner].name);
+    } else {
+        format_uint16_value(game->turn_number, turn_text);
+        gotoxy(1u, 16u);
+        printf("ACT");
+        gotoxy(5u, 16u);
+        if (game->active_player == NO_PLAYER) {
+            printf("--");
+        } else {
+            printf("%s", game->players[(uint8_t)game->active_player].name);
+        }
+        gotoxy(9u, 16u);
+        printf("TURN");
+        gotoxy(14u, 16u);
+        printf("%s", turn_text);
     }
 }
 
@@ -210,7 +241,7 @@ static void draw_overview_controls(uint8_t life_step) {
         printf("SELECT STEP: 10");
     }
     gotoxy(1u, 14u);
-    printf("A PLAYER DETAILS");
+    printf("A PLAYER  B GLOBAL");
     gotoxy(1u, 15u);
     printf("START RESET GAME");
 }
@@ -424,6 +455,36 @@ static void draw_commander_controls(uint8_t adjustment_step) {
     printf("B BACK");
 }
 
+static void print_player_or_none(const GameState *game, int8_t player_id) {
+    if (player_id == NO_PLAYER) {
+        printf("--");
+    } else {
+        printf("%s", game->players[(uint8_t)player_id].name);
+    }
+}
+
+static void draw_global_field_marker(uint8_t row, uint8_t is_selected) {
+    gotoxy(0u, row);
+    printf(is_selected ? ">" : " ");
+}
+
+static void draw_global_controls(uint8_t adjustment_step) {
+    gotoxy(1u, 13u);
+    printf("UP/DOWN FIELD");
+    gotoxy(1u, 14u);
+    printf("LEFT/RIGHT CHANGE");
+    gotoxy(1u, 15u);
+    printf("A ACTION  B BACK");
+    gotoxy(1u, 16u);
+    if (adjustment_step == 1u) {
+        printf("SELECT STEP: 1");
+    } else if (adjustment_step == 5u) {
+        printf("SELECT STEP: 5");
+    } else {
+        printf("SELECT STEP: 10");
+    }
+}
+
 void ui_initialize(void) {
     set_bkg_palette(BKGF_CGB_PAL0, 4u, background_palettes);
     SHOW_BKG;
@@ -595,6 +656,67 @@ void ui_refresh_commander_damage(
         );
     }
     draw_commander_controls(adjustment_step);
+}
+
+void ui_show_global_state(
+    const GameState *game,
+    uint8_t selected_field,
+    uint8_t adjustment_step
+) {
+    prepare_screen();
+    gotoxy(3u, 0u);
+    printf("COMMANDER GBC");
+    gotoxy(1u, 1u);
+    printf("GLOBAL GAME STATE");
+    draw_color_diagnostic();
+    ui_refresh_global_state(game, selected_field, adjustment_step);
+}
+
+void ui_refresh_global_state(
+    const GameState *game,
+    uint8_t selected_field,
+    uint8_t adjustment_step
+) {
+    char turn_text[UINT16_TEXT_BUFFER_SIZE];
+    char storm_text[COUNTER_TEXT_BUFFER_SIZE];
+
+    format_uint16_value(game->turn_number, turn_text);
+    format_counter_value(game->storm_count, storm_text);
+
+    draw_global_field_marker(
+        3u,
+        selected_field == GLOBAL_FIELD_ACTIVE_PLAYER
+    );
+    gotoxy(2u, 3u);
+    printf("ACTIVE");
+    gotoxy(14u, 3u);
+    print_player_or_none(game, game->active_player);
+
+    draw_global_field_marker(5u, selected_field == GLOBAL_FIELD_TURN_NUMBER);
+    gotoxy(2u, 5u);
+    printf("TURN");
+    gotoxy(13u, 5u);
+    printf("%s", turn_text);
+
+    draw_global_field_marker(7u, selected_field == GLOBAL_FIELD_STORM_COUNT);
+    gotoxy(2u, 7u);
+    printf("STORM");
+    gotoxy(15u, 7u);
+    printf("%s", storm_text);
+
+    draw_global_field_marker(9u, selected_field == GLOBAL_FIELD_MONARCH);
+    gotoxy(2u, 9u);
+    printf("MONARCH");
+    gotoxy(14u, 9u);
+    print_player_or_none(game, game->monarch_player);
+
+    draw_global_field_marker(11u, selected_field == GLOBAL_FIELD_INITIATIVE);
+    gotoxy(2u, 11u);
+    printf("INITIATIVE");
+    gotoxy(14u, 11u);
+    print_player_or_none(game, game->initiative_player);
+
+    draw_global_controls(adjustment_step);
 }
 
 void ui_draw_reset_prompt(void) {

@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Configurable 2–8 player Commander MVP
+Configurable multiplayer MVP with global turn and status tracking
 
 Planned development order:
 
@@ -58,6 +58,10 @@ starting life. It tracks life, poison, and commander damage with scrollable
 player/source lists. Possible losses require manual elimination confirmation,
 and a winner appears only when exactly one player remains active.
 
+The global-state screen tracks active player, turn number, storm count,
+Monarch, and Initiative. Unique statuses skip eliminated players and clear when
+their holder is eliminated.
+
 Build and verify it from the repository root:
 
 ```text
@@ -78,6 +82,7 @@ Controls:
 * Left / Right: decrease / increase the selected player's life
 * Select: cycle adjustment step through 1, 5, and 10
 * A: open the selected player's Life/Poison detail screen
+* B: open global game state
 * Start: open reset confirmation; A confirms and B cancels
 
 Player detail includes `CMD MAX`; selecting it and pressing A opens damage by

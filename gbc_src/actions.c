@@ -160,6 +160,104 @@ bool action_restore_player(GameState *game, uint8_t player_id) {
     return true;
 }
 
+bool action_set_active_player(GameState *game, uint8_t player_id) {
+    if (
+        !is_valid_player(game, player_id)
+        || game->players[player_id].eliminated
+    ) {
+        return false;
+    }
+    game->active_player = (int8_t)player_id;
+    return true;
+}
+
+uint16_t action_change_turn_number(GameState *game, int16_t amount) {
+    if (amount > 0) {
+        uint16_t increase = (uint16_t)amount;
+        if (game->turn_number > (uint16_t)(65535u - increase)) {
+            game->turn_number = 65535u;
+        } else {
+            game->turn_number = (uint16_t)(game->turn_number + increase);
+        }
+    } else if (amount < 0) {
+        uint16_t decrease = (uint16_t)(-(amount + 1));
+        decrease++;
+        if (decrease >= game->turn_number) {
+            game->turn_number = 1u;
+        } else {
+            game->turn_number = (uint16_t)(game->turn_number - decrease);
+        }
+    }
+    return game->turn_number;
+}
+
+bool action_advance_turn(GameState *game) {
+    uint8_t start_player;
+    int8_t next_player;
+
+    start_player = game->active_player == NO_PLAYER
+        ? (uint8_t)(game->player_count - 1u)
+        : (uint8_t)game->active_player;
+    next_player = find_next_active_player(game, start_player);
+    if (next_player == NO_PLAYER) {
+        return false;
+    }
+    game->active_player = next_player;
+    action_change_turn_number(game, 1);
+    return true;
+}
+
+uint8_t action_change_storm_count(GameState *game, int16_t amount) {
+    game->storm_count = change_uint8_value(game->storm_count, amount);
+    return game->storm_count;
+}
+
+bool action_set_monarch(GameState *game, int8_t player_id) {
+    uint8_t index;
+
+    if (
+        (player_id != NO_PLAYER)
+        && (
+            (player_id < 0)
+            || ((uint8_t)player_id >= game->player_count)
+            || game->players[(uint8_t)player_id].eliminated
+        )
+    ) {
+        return false;
+    }
+    for (index = 0u; index < game->player_count; index++) {
+        game->players[index].is_monarch = 0u;
+    }
+    game->monarch_player = player_id;
+    if (player_id != NO_PLAYER) {
+        game->players[(uint8_t)player_id].is_monarch = 1u;
+    }
+    return true;
+}
+
+bool action_set_initiative(GameState *game, int8_t player_id) {
+    uint8_t index;
+
+    if (
+        (player_id != NO_PLAYER)
+        && (
+            (player_id < 0)
+            || ((uint8_t)player_id >= game->player_count)
+            || game->players[(uint8_t)player_id].eliminated
+        )
+    ) {
+        return false;
+    }
+    for (index = 0u; index < game->player_count; index++) {
+        game->players[index].has_initiative = 0u;
+    }
+    game->initiative_player = player_id;
+    if (player_id != NO_PLAYER) {
+        game->players[(uint8_t)player_id].has_initiative = 1u;
+    }
+    return true;
+}
+
 bool action_reset_player(GameState *game, uint8_t player_id) {
     if (!is_valid_player(game, player_id)) {
         return false;

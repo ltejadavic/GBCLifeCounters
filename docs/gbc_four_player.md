@@ -113,6 +113,26 @@ damage to its own controller.
 6. Confirm normal commander damage from another player still changes both the
    source total and target life.
 
+## Test 11: global game state
+
+1. From overview press B. Confirm `GLOBAL GAME STATE` shows Active, Turn,
+   Storm, Monarch, and Initiative.
+2. Use Up/Down to select fields. Left/Right must change only the selected field.
+3. Change Active manually and confirm eliminated players are skipped.
+4. Select Active or Turn and press A. Active must advance to the next living
+   player and Turn must increase by one.
+5. Turn cannot go below 1. Select cycles adjustment steps 1, 5, and 10.
+6. Storm cannot go below 0. Press A on Storm to clear it to 0.
+7. Cycle Monarch through players and `--`. Only one player may hold it. Press A
+   to clear it; eliminated players must be skipped.
+8. Repeat for Initiative. It must remain independent from Monarch.
+9. Return with B. Overview must show `MON` and `INI` holders plus `ACT` and
+   `TURN` on the bottom line.
+10. Eliminate a Monarch or Initiative holder. That status must clear
+    automatically.
+11. Reset must restore Active P1, Turn 1, Storm 0, Monarch none, and Initiative
+    none.
+
 ## Full regression checklist
 
 1. Boot in Game Boy Color mode and confirm four rows appear: P1 through P4,

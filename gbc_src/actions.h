@@ -27,6 +27,12 @@ bool action_set_commander_damage(
 );
 bool action_eliminate_player(GameState *game, uint8_t player_id);
 bool action_restore_player(GameState *game, uint8_t player_id);
+bool action_set_active_player(GameState *game, uint8_t player_id);
+bool action_advance_turn(GameState *game);
+uint16_t action_change_turn_number(GameState *game, int16_t amount);
+uint8_t action_change_storm_count(GameState *game, int16_t amount);
+bool action_set_monarch(GameState *game, int8_t player_id);
+bool action_set_initiative(GameState *game, int8_t player_id);
 bool action_reset_player(GameState *game, uint8_t player_id);
 
 #endif

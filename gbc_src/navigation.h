@@ -13,6 +13,12 @@
 #define DETAIL_FIELD_COMMANDER_DAMAGE 2u
 #define SETUP_FIELD_PLAYER_COUNT 0u
 #define SETUP_FIELD_STARTING_LIFE 1u
+#define GLOBAL_FIELD_ACTIVE_PLAYER 0u
+#define GLOBAL_FIELD_TURN_NUMBER 1u
+#define GLOBAL_FIELD_STORM_COUNT 2u
+#define GLOBAL_FIELD_MONARCH 3u
+#define GLOBAL_FIELD_INITIATIVE 4u
+#define GLOBAL_FIELD_COUNT 5u
 
 uint8_t navigation_previous_player(
     const GameState *game,
@@ -31,6 +37,22 @@ uint8_t navigation_next_other_player(
     const GameState *game,
     uint8_t current_player,
     uint8_t excluded_player
+);
+int8_t navigation_previous_active_player(
+    const GameState *game,
+    int8_t current_player
+);
+int8_t navigation_next_active_player(
+    const GameState *game,
+    int8_t current_player
+);
+int8_t navigation_previous_status_player(
+    const GameState *game,
+    int8_t current_player
+);
+int8_t navigation_next_status_player(
+    const GameState *game,
+    int8_t current_player
 );
 uint8_t navigation_next_life_step(uint8_t current_step);
 uint8_t navigation_previous_detail_field(uint8_t current_field);
