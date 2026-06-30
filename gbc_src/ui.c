@@ -9,6 +9,8 @@
 #include "text_format.h"
 #include "ui.h"
 
+#pragma bank 255
+
 #define OVERVIEW_PLAYER_LIMIT 4u
 #define NORMAL_PALETTE 0u
 #define WARNING_PALETTE 1u
@@ -588,13 +590,13 @@ static void draw_commander_controls(uint8_t adjustment_step) {
     printf("B BACK");
 }
 
-void ui_initialize(void) {
+void ui_initialize(void) BANKED {
     load_game_palettes();
     SHOW_BKG;
     DISPLAY_ON;
 }
 
-void ui_show_splash(void) {
+void ui_show_splash(void) BANKED {
     prepare_screen();
     set_bkg_palette(BKGF_CGB_PAL0, 6u, splash_palettes);
     set_bkg_data(SPLASH_TILE_FIRST, SPLASH_TILE_COUNT, splash_tiles);
@@ -612,12 +614,12 @@ void ui_show_splash(void) {
     ui_set_splash_prompt_visible(1u);
 }
 
-void ui_set_splash_prompt_visible(uint8_t visible) {
+void ui_set_splash_prompt_visible(uint8_t visible) BANKED {
     gotoxy(5u, 15u);
     printf(visible ? "PRESS START" : "           ");
 }
 
-void ui_show_developer_credit(void) {
+void ui_show_developer_credit(void) BANKED {
     uint8_t accent_tiles[] = {
         SPLASH_TILE_ACCENT,
         SPLASH_TILE_ACCENT,
@@ -641,7 +643,7 @@ void ui_show_developer_credit(void) {
     ui_set_developer_prompt_visible(1u);
 }
 
-void ui_set_developer_prompt_visible(uint8_t visible) {
+void ui_set_developer_prompt_visible(uint8_t visible) BANKED {
     gotoxy(12u, 16u);
     printf(visible ? "CONTINUE" : "        ");
 }
@@ -651,7 +653,7 @@ void ui_show_setup(
     int16_t starting_life,
     uint8_t selected_field,
     uint8_t can_cancel
-) {
+) BANKED {
     char player_count_text[COUNTER_TEXT_BUFFER_SIZE];
     char life_text[LIFE_TEXT_BUFFER_SIZE];
 
@@ -701,7 +703,7 @@ void ui_show_overview(
     uint8_t selected_player,
     uint8_t first_visible_player,
     uint8_t life_step
-) {
+) BANKED {
     prepare_screen();
     ui_refresh_overview(
         game,
@@ -716,7 +718,7 @@ void ui_refresh_overview(
     uint8_t selected_player,
     uint8_t first_visible_player,
     uint8_t life_step
-) {
+) BANKED {
     uint8_t visible_index;
     uint8_t visible_players = (uint8_t)(
         game->player_count - first_visible_player
@@ -744,7 +746,7 @@ void ui_show_player_detail(
     uint8_t player_id,
     uint8_t selected_field,
     uint8_t adjustment_step
-) {
+) BANKED {
     prepare_screen();
     draw_detail_header(&game->players[player_id]);
     ui_refresh_player_detail(
@@ -760,7 +762,7 @@ void ui_refresh_player_detail(
     uint8_t player_id,
     uint8_t selected_field,
     uint8_t adjustment_step
-) {
+) BANKED {
     draw_detail_fields(game, &game->players[player_id], selected_field);
     draw_detail_controls(
         adjustment_step,
@@ -774,7 +776,7 @@ void ui_show_commander_damage(
     uint8_t selected_source,
     uint8_t first_visible_source,
     uint8_t adjustment_step
-) {
+) BANKED {
     prepare_screen();
     draw_commander_header(&game->players[target_player]);
     ui_refresh_commander_damage(
@@ -792,7 +794,7 @@ void ui_refresh_commander_damage(
     uint8_t selected_source,
     uint8_t first_visible_source,
     uint8_t adjustment_step
-) {
+) BANKED {
     uint8_t visible_index;
     uint8_t visible_sources = (uint8_t)(
         game->player_count - first_visible_source
@@ -814,7 +816,7 @@ void ui_refresh_commander_damage(
     draw_commander_controls(adjustment_step);
 }
 
-void ui_draw_reset_prompt(void) {
+void ui_draw_reset_prompt(void) BANKED {
     clear_help_area();
     gotoxy(1u, 12u);
     printf("RESET ALL PLAYERS?");
@@ -824,7 +826,7 @@ void ui_draw_reset_prompt(void) {
     printf("SELECT NEW SETUP");
 }
 
-void ui_draw_elimination_prompt(const Player *player) {
+void ui_draw_elimination_prompt(const Player *player) BANKED {
     clear_help_area();
     gotoxy(2u, 12u);
     if (player->eliminated) {

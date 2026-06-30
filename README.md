@@ -77,6 +77,10 @@ Generated ROM:
 build/commander_gbc_multiplayer.gbc
 ```
 
+The GBC build uses an MBC5 64 KiB ROM with automatic code banking. UI code is
+placed outside the fixed bank, leaving ROM0 capacity for gameplay and audio
+systems while preserving the same emulator controls and behavior.
+
 Controls:
 
 * Splash: press Start to open the developer credit

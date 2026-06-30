@@ -2,59 +2,60 @@
 #define COMMANDER_GBC_UI_H
 
 #include <stdint.h>
+#include <gbdk/platform.h>
 
 #include "game_state.h"
 
-void ui_initialize(void);
-void ui_show_splash(void);
-void ui_set_splash_prompt_visible(uint8_t visible);
-void ui_show_developer_credit(void);
-void ui_set_developer_prompt_visible(uint8_t visible);
+void ui_initialize(void) BANKED;
+void ui_show_splash(void) BANKED;
+void ui_set_splash_prompt_visible(uint8_t visible) BANKED;
+void ui_show_developer_credit(void) BANKED;
+void ui_set_developer_prompt_visible(uint8_t visible) BANKED;
 void ui_show_setup(
     uint8_t player_count,
     int16_t starting_life,
     uint8_t selected_field,
     uint8_t can_cancel
-);
+) BANKED;
 void ui_show_overview(
     const GameState *game,
     uint8_t selected_player,
     uint8_t first_visible_player,
     uint8_t life_step
-);
+) BANKED;
 void ui_refresh_overview(
     const GameState *game,
     uint8_t selected_player,
     uint8_t first_visible_player,
     uint8_t life_step
-);
+) BANKED;
 void ui_show_player_detail(
     const GameState *game,
     uint8_t player_id,
     uint8_t selected_field,
     uint8_t adjustment_step
-);
+) BANKED;
 void ui_refresh_player_detail(
     const GameState *game,
     uint8_t player_id,
     uint8_t selected_field,
     uint8_t adjustment_step
-);
+) BANKED;
 void ui_show_commander_damage(
     const GameState *game,
     uint8_t target_player,
     uint8_t selected_source,
     uint8_t first_visible_source,
     uint8_t adjustment_step
-);
+) BANKED;
 void ui_refresh_commander_damage(
     const GameState *game,
     uint8_t target_player,
     uint8_t selected_source,
     uint8_t first_visible_source,
     uint8_t adjustment_step
-);
-void ui_draw_reset_prompt(void);
-void ui_draw_elimination_prompt(const Player *player);
+) BANKED;
+void ui_draw_reset_prompt(void) BANKED;
+void ui_draw_elimination_prompt(const Player *player) BANKED;
 
 #endif
