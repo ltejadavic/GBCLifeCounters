@@ -5,6 +5,8 @@
 #include "constants.h"
 #include "game_state.h"
 #include "navigation.h"
+#include "rules.h"
+#include "sound.h"
 #include "ui.h"
 
 #define VISIBLE_PLAYER_COUNT 4u
@@ -60,8 +62,29 @@ static void refresh_overview(void) {
     );
 }
 
+static void play_value_feedback(
+    RuleStatus before_status,
+    RuleStatus after_status,
+    int16_t before_value,
+    int16_t after_value
+) {
+    if (before_value == after_value) {
+        sound_play_effect(SOUND_EFFECT_CANCEL);
+    } else if (
+        (before_status != RULE_STATUS_POSSIBLE_LOSS)
+        && (after_status == RULE_STATUS_POSSIBLE_LOSS)
+    ) {
+        sound_play_effect(SOUND_EFFECT_LOSS);
+    } else if (after_value > before_value) {
+        sound_play_effect(SOUND_EFFECT_VALUE_UP);
+    } else {
+        sound_play_effect(SOUND_EFFECT_VALUE_DOWN);
+    }
+}
+
 static void handle_splash_input(uint8_t pressed) {
     if (pressed & J_START) {
+        sound_play_effect(SOUND_EFFECT_START);
         prompt_blink_frames = 0u;
         prompt_is_visible = 1u;
         screen_state = SCREEN_DEVELOPER_CREDIT;
@@ -71,6 +94,10 @@ static void handle_splash_input(uint8_t pressed) {
 
 static void handle_developer_credit_input(uint8_t pressed) {
     if (pressed & (J_A | J_START)) {
+        sound_play_effect(
+            (pressed & J_START) ? SOUND_EFFECT_START : SOUND_EFFECT_CONFIRM
+        );
+        sound_stop_intro_music();
         screen_state = SCREEN_SETUP;
         ui_show_setup(
             setup_player_count,
@@ -104,34 +131,50 @@ static void update_blinking_prompt(void) {
 
 static void handle_setup_input(uint8_t pressed) {
     if ((pressed & J_UP) || (pressed & J_DOWN)) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         setup_field = setup_field == SETUP_FIELD_PLAYER_COUNT
             ? SETUP_FIELD_STARTING_LIFE
             : SETUP_FIELD_PLAYER_COUNT;
     } else if (pressed & J_LEFT) {
+        uint8_t changed = 0u;
+
         if (
             (setup_field == SETUP_FIELD_PLAYER_COUNT)
             && (setup_player_count > MIN_PLAYERS)
         ) {
             setup_player_count--;
+            changed = 1u;
         } else if (
             (setup_field == SETUP_FIELD_STARTING_LIFE)
             && (setup_starting_life > MIN_STARTING_LIFE)
         ) {
             setup_starting_life -= STARTING_LIFE_STEP;
+            changed = 1u;
         }
+        sound_play_effect(
+            changed ? SOUND_EFFECT_VALUE_DOWN : SOUND_EFFECT_CANCEL
+        );
     } else if (pressed & J_RIGHT) {
+        uint8_t changed = 0u;
+
         if (
             (setup_field == SETUP_FIELD_PLAYER_COUNT)
             && (setup_player_count < MAX_PLAYERS)
         ) {
             setup_player_count++;
+            changed = 1u;
         } else if (
             (setup_field == SETUP_FIELD_STARTING_LIFE)
             && (setup_starting_life < MAX_STARTING_LIFE)
         ) {
             setup_starting_life += STARTING_LIFE_STEP;
+            changed = 1u;
         }
+        sound_play_effect(
+            changed ? SOUND_EFFECT_VALUE_UP : SOUND_EFFECT_CANCEL
+        );
     } else if (pressed & J_B) {
+        sound_play_effect(SOUND_EFFECT_CANCEL);
         if (setup_can_cancel) {
             setup_can_cancel = 0u;
             screen_state = SCREEN_OVERVIEW;
@@ -148,6 +191,7 @@ static void handle_setup_input(uint8_t pressed) {
             setup_field = SETUP_FIELD_PLAYER_COUNT;
         }
     } else if (pressed & J_A) {
+        sound_play_effect(SOUND_EFFECT_CONFIRM);
         game_state_init(&game, setup_player_count, setup_starting_life);
         selected_player = 0u;
         first_visible_player = 0u;
@@ -176,31 +220,63 @@ static void handle_setup_input(uint8_t pressed) {
 
 static void handle_overview_input(uint8_t pressed) {
     if (pressed & J_UP) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         selected_player = navigation_previous_player(&game, selected_player);
         update_player_window();
         refresh_overview();
     } else if (pressed & J_DOWN) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         selected_player = navigation_next_player(&game, selected_player);
         update_player_window();
         refresh_overview();
     } else if (pressed & J_LEFT) {
         if (!game.players[selected_player].eliminated) {
+            int16_t before_life = game.players[selected_player].life;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
             action_change_life(
                 &game,
                 selected_player,
                 (int16_t)(-((int16_t)adjustment_step))
             );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                before_life,
+                game.players[selected_player].life
+            );
+        } else {
+            sound_play_effect(SOUND_EFFECT_CANCEL);
         }
         refresh_overview();
     } else if (pressed & J_RIGHT) {
         if (!game.players[selected_player].eliminated) {
+            int16_t before_life = game.players[selected_player].life;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
             action_change_life(&game, selected_player, (int16_t)adjustment_step);
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                before_life,
+                game.players[selected_player].life
+            );
+        } else {
+            sound_play_effect(SOUND_EFFECT_CANCEL);
         }
         refresh_overview();
     } else if (pressed & J_SELECT) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         adjustment_step = navigation_next_life_step(adjustment_step);
         refresh_overview();
     } else if (pressed & J_A) {
+        sound_play_effect(SOUND_EFFECT_CONFIRM);
         selected_field = DETAIL_FIELD_LIFE;
         screen_state = SCREEN_PLAYER_DETAIL;
         ui_show_player_detail(
@@ -210,74 +286,136 @@ static void handle_overview_input(uint8_t pressed) {
             adjustment_step
         );
     } else if (pressed & J_START) {
+        sound_play_effect(SOUND_EFFECT_START);
         screen_state = SCREEN_RESET_CONFIRMATION;
         ui_draw_reset_prompt();
     }
 }
 
-static void toggle_selected_player_status(void) {
+static uint8_t toggle_selected_player_status(void) {
     int8_t player_id = (int8_t)selected_player;
 
     if (game.players[selected_player].eliminated) {
-        return;
+        return 0u;
     }
     if (selected_field == DETAIL_FIELD_MONARCH) {
-        action_set_monarch(
+        return action_set_monarch(
             &game,
             game.monarch_player == player_id ? NO_PLAYER : player_id
         );
     } else if (selected_field == DETAIL_FIELD_INITIATIVE) {
-        action_set_initiative(
+        return action_set_initiative(
             &game,
             game.initiative_player == player_id ? NO_PLAYER : player_id
         );
     }
+    return 0u;
 }
 
 static void handle_detail_input(uint8_t pressed) {
     if (pressed & J_UP) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         selected_field = navigation_previous_detail_field(selected_field);
     } else if (pressed & J_DOWN) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         selected_field = navigation_next_detail_field(selected_field);
     } else if (pressed & J_LEFT) {
         if (game.players[selected_player].eliminated) {
-            /* Eliminated players must be restored before editing. */
+            sound_play_effect(SOUND_EFFECT_CANCEL);
         } else if (selected_field == DETAIL_FIELD_POISON) {
+            uint8_t before_poison = game.players[selected_player].poison;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
             action_change_poison(
                 &game,
                 selected_player,
                 (int16_t)(-((int16_t)adjustment_step))
             );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                (int16_t)before_poison,
+                (int16_t)game.players[selected_player].poison
+            );
         } else if (selected_field == DETAIL_FIELD_LIFE) {
+            int16_t before_life = game.players[selected_player].life;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
             action_change_life(
                 &game,
                 selected_player,
                 (int16_t)(-((int16_t)adjustment_step))
             );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                before_life,
+                game.players[selected_player].life
+            );
         } else {
-            toggle_selected_player_status();
+            sound_play_effect(
+                toggle_selected_player_status()
+                    ? SOUND_EFFECT_CONFIRM
+                    : SOUND_EFFECT_CANCEL
+            );
         }
     } else if (pressed & J_RIGHT) {
         if (game.players[selected_player].eliminated) {
-            /* Eliminated players must be restored before editing. */
+            sound_play_effect(SOUND_EFFECT_CANCEL);
         } else if (selected_field == DETAIL_FIELD_POISON) {
+            uint8_t before_poison = game.players[selected_player].poison;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
             action_change_poison(
                 &game,
                 selected_player,
                 (int16_t)adjustment_step
             );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                (int16_t)before_poison,
+                (int16_t)game.players[selected_player].poison
+            );
         } else if (selected_field == DETAIL_FIELD_LIFE) {
+            int16_t before_life = game.players[selected_player].life;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
             action_change_life(
                 &game,
                 selected_player,
                 (int16_t)adjustment_step
             );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                before_life,
+                game.players[selected_player].life
+            );
         } else {
-            toggle_selected_player_status();
+            sound_play_effect(
+                toggle_selected_player_status()
+                    ? SOUND_EFFECT_CONFIRM
+                    : SOUND_EFFECT_CANCEL
+            );
         }
     } else if (pressed & J_SELECT) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         adjustment_step = navigation_next_life_step(adjustment_step);
     } else if (pressed & J_START) {
+        sound_play_effect(SOUND_EFFECT_START);
         screen_state = SCREEN_ELIMINATION_CONFIRMATION;
         ui_draw_elimination_prompt(&game.players[selected_player]);
         return;
@@ -286,6 +424,7 @@ static void handle_detail_input(uint8_t pressed) {
             (selected_field == DETAIL_FIELD_COMMANDER_DAMAGE)
             && !game.players[selected_player].eliminated
         ) {
+            sound_play_effect(SOUND_EFFECT_CONFIRM);
             selected_source = selected_player == 0u ? 1u : 0u;
             first_visible_source = 0u;
             screen_state = SCREEN_COMMANDER_DAMAGE;
@@ -298,8 +437,13 @@ static void handle_detail_input(uint8_t pressed) {
             );
             return;
         }
-        toggle_selected_player_status();
+        sound_play_effect(
+            toggle_selected_player_status()
+                ? SOUND_EFFECT_CONFIRM
+                : SOUND_EFFECT_CANCEL
+        );
     } else if (pressed & J_B) {
+        sound_play_effect(SOUND_EFFECT_CANCEL);
         screen_state = SCREEN_OVERVIEW;
         ui_show_overview(
             &game,
@@ -324,8 +468,10 @@ static void handle_elimination_input(uint8_t pressed) {
     if (pressed & J_A) {
         if (game.players[selected_player].eliminated) {
             action_restore_player(&game, selected_player);
+            sound_play_effect(SOUND_EFFECT_CONFIRM);
         } else {
             action_eliminate_player(&game, selected_player);
+            sound_play_effect(SOUND_EFFECT_ELIMINATION);
         }
         screen_state = SCREEN_OVERVIEW;
         ui_show_overview(
@@ -335,6 +481,7 @@ static void handle_elimination_input(uint8_t pressed) {
             adjustment_step
         );
     } else if (pressed & J_B) {
+        sound_play_effect(SOUND_EFFECT_CANCEL);
         screen_state = SCREEN_PLAYER_DETAIL;
         ui_show_player_detail(
             &game,
@@ -347,6 +494,7 @@ static void handle_elimination_input(uint8_t pressed) {
 
 static void handle_commander_damage_input(uint8_t pressed) {
     if (pressed & J_UP) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         selected_source = navigation_previous_other_player(
             &game,
             selected_source,
@@ -354,6 +502,7 @@ static void handle_commander_damage_input(uint8_t pressed) {
         );
         update_source_window();
     } else if (pressed & J_DOWN) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         selected_source = navigation_next_other_player(
             &game,
             selected_source,
@@ -361,6 +510,11 @@ static void handle_commander_damage_input(uint8_t pressed) {
         );
         update_source_window();
     } else if (pressed & J_LEFT) {
+        uint8_t before_damage = game.commander_damage[
+            selected_player
+        ][selected_source][0u];
+        RuleStatus before_status = rules_check_player(&game, selected_player);
+
         action_change_commander_damage(
             &game,
             selected_player,
@@ -368,7 +522,20 @@ static void handle_commander_damage_input(uint8_t pressed) {
             0u,
             (int16_t)(-((int16_t)adjustment_step))
         );
+        play_value_feedback(
+            before_status,
+            rules_check_player(&game, selected_player),
+            (int16_t)before_damage,
+            (int16_t)game.commander_damage[
+                selected_player
+            ][selected_source][0u]
+        );
     } else if (pressed & J_RIGHT) {
+        uint8_t before_damage = game.commander_damage[
+            selected_player
+        ][selected_source][0u];
+        RuleStatus before_status = rules_check_player(&game, selected_player);
+
         action_change_commander_damage(
             &game,
             selected_player,
@@ -376,9 +543,19 @@ static void handle_commander_damage_input(uint8_t pressed) {
             0u,
             (int16_t)adjustment_step
         );
+        play_value_feedback(
+            before_status,
+            rules_check_player(&game, selected_player),
+            (int16_t)before_damage,
+            (int16_t)game.commander_damage[
+                selected_player
+            ][selected_source][0u]
+        );
     } else if (pressed & J_SELECT) {
+        sound_play_effect(SOUND_EFFECT_NAVIGATION);
         adjustment_step = navigation_next_life_step(adjustment_step);
     } else if (pressed & J_B) {
+        sound_play_effect(SOUND_EFFECT_CANCEL);
         screen_state = SCREEN_PLAYER_DETAIL;
         ui_show_player_detail(
             &game,
@@ -402,6 +579,7 @@ static void handle_commander_damage_input(uint8_t pressed) {
 
 static void handle_reset_input(uint8_t pressed) {
     if (pressed & J_A) {
+        sound_play_effect(SOUND_EFFECT_CONFIRM);
         game_state_reset(&game);
         selected_player = 0u;
         first_visible_player = 0u;
@@ -415,9 +593,11 @@ static void handle_reset_input(uint8_t pressed) {
             adjustment_step
         );
     } else if (pressed & J_B) {
+        sound_play_effect(SOUND_EFFECT_CANCEL);
         screen_state = SCREEN_OVERVIEW;
         refresh_overview();
     } else if (pressed & J_SELECT) {
+        sound_play_effect(SOUND_EFFECT_CONFIRM);
         setup_player_count = game.player_count;
         setup_starting_life = game.starting_life;
         setup_field = SETUP_FIELD_PLAYER_COUNT;
@@ -437,6 +617,8 @@ void main(void) {
 
     ui_initialize();
     ui_show_splash();
+    sound_initialize();
+    sound_start_intro_music();
 
     while (1) {
         uint8_t keys = joypad();
@@ -461,6 +643,7 @@ void main(void) {
         }
 
         update_blinking_prompt();
+        sound_update();
         previous_keys = keys;
         vsync();
     }

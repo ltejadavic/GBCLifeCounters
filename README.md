@@ -12,7 +12,7 @@ Project Status
 
 Current stage:
 
-Configurable multiplayer MVP with splash presentation and unique statuses
+Configurable multiplayer MVP with chiptune audio feedback and unique statuses
 
 Planned development order:
 
@@ -112,6 +112,13 @@ initial groups with their requested Magic color identities, and uses custom
 8x8 pixel-art symbols for white, blue, black, red, and green. `PRESS START`
 blinks before a second `DEVELOPED BY LTJD` screen with a blinking `CONTINUE`
 prompt.
+
+Audio is generated directly with the Game Boy pulse and noise channels. A
+low-volume looping melody is limited to the splash and developer-credit screens.
+Gameplay has no background music: short original effects provide navigation,
+confirm/cancel, Start, value increase/decrease, possible-loss, and manual
+elimination feedback. The audio system disables the sound hardware while idle
+instead of streaming external samples.
 
 ⸻
 

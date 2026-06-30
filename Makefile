@@ -11,6 +11,7 @@ SOURCES := \
 	gbc_src/actions.c \
 	gbc_src/navigation.c \
 	gbc_src/rules.c \
+	gbc_src/sound.c \
 	gbc_src/splash_assets.c \
 	gbc_src/text_format.c \
 	gbc_src/ui.c

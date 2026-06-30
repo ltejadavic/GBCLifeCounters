@@ -169,6 +169,37 @@ damage to its own controller.
 10. Continue into a game and confirm the overview and detail colors are
     unchanged from Test 11.
 
+## Test 13: music and sound feedback
+
+Use an emulator with Game Boy audio enabled and a moderate output volume.
+
+1. Boot the ROM. A quiet looping chiptune melody must begin on the presentation
+   screen and continue through `DEVELOPED BY LTJD`.
+2. Press Start on the presentation. A distinct three-note Start effect must
+   play without skipping the developer-credit screen.
+3. On the developer credit, press A or Start. A confirmation effect must play,
+   setup must open, and the intro melody must stop completely.
+4. In setup and game menus, Up/Down and Select must produce a short, subtle
+   navigation click. A must sound higher than the lower B/cancel feedback.
+5. Left/Right changes must use an original ascending effect when the displayed
+   value increases and a descending effect when it decreases. Test life,
+   poison, commander damage, player count, and starting life.
+6. Attempt to decrease poison below 0 or edit an eliminated player. A short
+   cancel sound must play and the value must remain unchanged.
+7. Reduce a player's life from a positive value to 0. The normal value effect
+   must be replaced by the longer possible-loss alarm exactly when `LOSS`
+   first appears.
+8. Reset and repeat the possible-loss test with poison reaching 10, then with
+   commander damage from one source reaching 21. Both must use the same alarm
+   without automatically eliminating the player.
+9. Once a player already shows `LOSS`, another value change must use normal
+   increase/decrease feedback rather than repeatedly restarting the alarm.
+10. Confirm manual elimination. It must use a separate low tone/noise effect;
+    restoring the player must use the normal confirmation sound.
+11. Stop pressing buttons after entering setup or the game. There must be no
+    background music or continuous sound; only brief event effects are active.
+12. Confirm all visual behavior from Tests 8–12 remains unchanged.
+
 ## Full regression checklist
 
 1. Boot in Game Boy Color mode and confirm four rows appear: P1 through P4,
@@ -225,5 +256,5 @@ press.
 ## Current limits
 
 The UI currently edits the main commander slot only. The second partner slot is
-kept separate in the model and rules but is not exposed yet. Sound is also not
-exposed yet.
+kept separate in the model and rules but is not exposed yet. Audio volume and
+mute controls are not exposed yet.
