@@ -103,7 +103,7 @@ static void open_commander_search(void) {
 }
 
 static void handle_commander_search_input(uint8_t pressed) {
-    static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ '";
+    static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-,";
 
     if (pressed & J_SELECT) {
         commander_list_focus = (uint8_t)(!commander_list_focus);
@@ -124,22 +124,22 @@ static void handle_commander_search_input(uint8_t pressed) {
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
     } else if (!commander_list_focus && (pressed & J_LEFT)) {
         commander_keyboard_index = commander_keyboard_index == 0u
-            ? 27u
+            ? (COMMANDER_KEY_COUNT - 1u)
             : (uint8_t)(commander_keyboard_index - 1u);
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
     } else if (!commander_list_focus && (pressed & J_RIGHT)) {
         commander_keyboard_index = (uint8_t)(
-            (commander_keyboard_index + 1u) % 28u
+            (commander_keyboard_index + 1u) % COMMANDER_KEY_COUNT
         );
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
     } else if (!commander_list_focus && (pressed & J_UP)) {
         commander_keyboard_index = (uint8_t)(
-            (commander_keyboard_index + 21u) % 28u
+            (commander_keyboard_index + 32u) % COMMANDER_KEY_COUNT
         );
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
     } else if (!commander_list_focus && (pressed & J_DOWN)) {
         commander_keyboard_index = (uint8_t)(
-            (commander_keyboard_index + 7u) % 28u
+            (commander_keyboard_index + 8u) % COMMANDER_KEY_COUNT
         );
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
     } else if ((pressed & J_A) && !commander_list_focus) {

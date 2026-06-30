@@ -8,8 +8,9 @@
 
 #define COMMANDER_NAME_MAX 28u
 #define COMMANDER_DETAIL_NAME_MAX 8u
-#define COMMANDER_QUERY_MAX 8u
+#define COMMANDER_QUERY_MAX 12u
 #define COMMANDER_SUGGESTION_COUNT 3u
+#define COMMANDER_KEY_COUNT 40u
 
 typedef enum CommanderArchetype {
     ARCHETYPE_CONTROL = 0u,

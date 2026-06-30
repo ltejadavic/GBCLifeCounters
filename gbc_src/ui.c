@@ -125,6 +125,34 @@ static uint8_t palette_for_status(RuleStatus status) {
     return NORMAL_PALETTE;
 }
 
+static uint8_t palette_for_archetype(uint8_t archetype) {
+    static const uint8_t palettes[ARCHETYPE_COUNT] = {
+        ELIMINATED_PALETTE, WARNING_PALETTE, NORMAL_PALETTE,
+        WARNING_PALETTE, ELIMINATED_PALETTE, NORMAL_PALETTE,
+        WARNING_PALETTE, LOSS_PALETTE, LOSS_PALETTE,
+        WARNING_PALETTE, NORMAL_PALETTE, LOSS_PALETTE,
+    };
+    return archetype < ARCHETYPE_COUNT
+        ? palettes[archetype]
+        : ELIMINATED_PALETTE;
+}
+
+static void print_fixed_text(const char *text, uint8_t width) {
+    char output[18u];
+    uint8_t index = 0u;
+
+    while ((index < width) && (text[index] != '\0')) {
+        output[index] = text[index];
+        index++;
+    }
+    while (index < width) {
+        output[index] = ' ';
+        index++;
+    }
+    output[index] = '\0';
+    printf("%s", output);
+}
+
 static void prepare_screen(void) {
     cls();
     set_region_palette(
@@ -280,11 +308,13 @@ static void draw_player_row(
     gotoxy(12u, row);
     printf("%s", poison_text);
     if (player->commander_id != NO_COMMANDER_ID) {
+        uint8_t archetype = commander_db_get_archetype(player->commander_id);
         uint8_t tile = (uint8_t)(
             ARCHETYPE_TILE_FIRST
-            + commander_db_get_archetype(player->commander_id)
+            + archetype
         );
         set_bkg_tiles(15u, row, 1u, 1u, &tile);
+        set_region_palette(15u, row, 1u, 1u, palette_for_archetype(archetype));
     }
     gotoxy(16u, row);
     if (player->eliminated) {
@@ -395,14 +425,22 @@ static void draw_detail_fields(
     printf(selected_field == DETAIL_FIELD_COMMANDER ? ">" : " ");
     gotoxy(2u, 2u);
     printf("CMDR");
-    gotoxy(8u, 2u);
+    gotoxy(7u, 2u);
     printf("%s", commander_name);
     if (player->commander_id != NO_COMMANDER_ID) {
+        static const char labels[ARCHETYPE_COUNT][4u] = {
+            "CTL", "ART", "CTR", "ENC", "GRV", "LND",
+            "LIF", "SAC", "SPL", "TOK", "TYP", "VOL",
+        };
+        uint8_t archetype = commander_db_get_archetype(player->commander_id);
         uint8_t tile = (uint8_t)(
             ARCHETYPE_TILE_FIRST
-            + commander_db_get_archetype(player->commander_id)
+            + archetype
         );
+        gotoxy(15u, 2u);
+        printf("%s", labels[archetype]);
         set_bkg_tiles(19u, 2u, 1u, 1u, &tile);
+        set_region_palette(19u, 2u, 1u, 1u, palette_for_archetype(archetype));
     }
 
     gotoxy(0u, 3u);
@@ -861,7 +899,7 @@ void ui_show_commander_search(
     uint8_t keyboard_index,
     uint8_t list_focus
 ) BANKED {
-    static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ '";
+    static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-,";
     uint8_t index;
 
     prepare_screen();
@@ -870,17 +908,19 @@ void ui_show_commander_search(
     printf("%s", player->name);
     gotoxy(1u, 2u);
     printf("QUERY: ");
-    printf("%-8s", query);
+    print_fixed_text(query, COMMANDER_QUERY_MAX);
+    gotoxy(1u, 3u);
+    printf("SUGGESTIONS");
     for (index = 0u; index < 3u; index++) {
-        char name[17u];
-        commander_db_copy_name(suggestions[index], name, 16u);
+        char name[18u];
+        commander_db_copy_name(suggestions[index], name, 17u);
         gotoxy(0u, (uint8_t)(4u + index));
         printf((list_focus && (index == selected_suggestion)) ? ">" : " ");
-        printf("%-16s", name);
+        print_fixed_text(name, 17u);
     }
-    for (index = 0u; index < 28u; index++) {
-        uint8_t x = (uint8_t)(3u + (index % 7u) * 2u);
-        uint8_t y = (uint8_t)(9u + (index / 7u));
+    for (index = 0u; index < COMMANDER_KEY_COUNT; index++) {
+        uint8_t x = (uint8_t)(1u + (index % 8u) * 2u);
+        uint8_t y = (uint8_t)(8u + (index / 8u));
         gotoxy(x, y);
         printf((!list_focus && (index == keyboard_index)) ? ">" : " ");
         printf("%c", keyboard[index]);
