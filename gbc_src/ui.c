@@ -118,8 +118,6 @@ static void draw_overview_header(
     printf("COMMANDER GBC");
     gotoxy(1u, 1u);
     printf("%s", range_text);
-    gotoxy(9u, 2u);
-    printf("MI");
     draw_color_diagnostic();
 }
 

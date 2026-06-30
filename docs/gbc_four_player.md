@@ -118,8 +118,8 @@ damage to its own controller.
 
 ## Test 11: Monarch and Initiative per player
 
-1. Confirm the overview has `M` and `I` column headers and no global-state,
-   active-player, or turn display.
+1. Confirm the overview has no redundant `MI` header and no global-state,
+   active-player, or turn display. Status markers appear only beside players.
 2. Open P1 detail and confirm `MONARCH` and `INITIATIVE` both show `NO`.
 3. Select `MONARCH` and press A. It must show `YES`; returning to the overview
    must show `M` only on P1.
