@@ -534,6 +534,24 @@ static void handle_detail_input(uint8_t pressed) {
                 (int16_t)before_poison,
                 (int16_t)game.players[selected_player].poison
             );
+        } else if (selected_field == DETAIL_FIELD_RAD) {
+            uint8_t before_rad = game.players[selected_player].rad;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
+            action_change_rad(
+                &game,
+                selected_player,
+                (int16_t)(-((int16_t)adjustment_step))
+            );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                (int16_t)before_rad,
+                (int16_t)game.players[selected_player].rad
+            );
         } else if (selected_field == DETAIL_FIELD_LIFE) {
             int16_t before_life = game.players[selected_player].life;
             RuleStatus before_status = rules_check_player(
@@ -579,6 +597,24 @@ static void handle_detail_input(uint8_t pressed) {
                 rules_check_player(&game, selected_player),
                 (int16_t)before_poison,
                 (int16_t)game.players[selected_player].poison
+            );
+        } else if (selected_field == DETAIL_FIELD_RAD) {
+            uint8_t before_rad = game.players[selected_player].rad;
+            RuleStatus before_status = rules_check_player(
+                &game,
+                selected_player
+            );
+
+            action_change_rad(
+                &game,
+                selected_player,
+                (int16_t)adjustment_step
+            );
+            play_value_feedback(
+                before_status,
+                rules_check_player(&game, selected_player),
+                (int16_t)before_rad,
+                (int16_t)game.players[selected_player].rad
             );
         } else if (selected_field == DETAIL_FIELD_LIFE) {
             int16_t before_life = game.players[selected_player].life;

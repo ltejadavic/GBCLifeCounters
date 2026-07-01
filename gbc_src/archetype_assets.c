@@ -17,4 +17,5 @@ void archetype_assets_load(void) BANKED {
         ARCHETYPE_PROFILE_TILE_COUNT,
         archetype_profile_tiles
     );
+    set_bkg_data(RAD_COUNTER_TILE, 1u, rad_counter_tile);
 }

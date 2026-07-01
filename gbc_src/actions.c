@@ -62,6 +62,26 @@ bool action_set_poison(GameState *game, uint8_t player_id, uint8_t value) {
     return true;
 }
 
+bool action_change_rad(GameState *game, uint8_t player_id, int16_t amount) {
+    Player *player;
+
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+
+    player = &game->players[player_id];
+    player->rad = change_uint8_value(player->rad, amount);
+    return true;
+}
+
+bool action_set_rad(GameState *game, uint8_t player_id, uint8_t value) {
+    if (!is_valid_player(game, player_id)) {
+        return false;
+    }
+    game->players[player_id].rad = value;
+    return true;
+}
+
 bool action_set_commander(
     GameState *game,
     uint8_t player_id,

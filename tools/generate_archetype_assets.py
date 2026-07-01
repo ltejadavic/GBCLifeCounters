@@ -299,6 +299,18 @@ MINIATURES = (
     ("......33", ".....32.", "..3332..", ".32123..", "3213123.", ".33333..", "...33...", "........"),
 )
 
+# Nuclear trefoil: separate from archetypes and shared by every player.
+RAD_COUNTER_ICON = (
+    "...33...",
+    "..3223..",
+    "..3..3..",
+    "...11...",
+    ".32..23.",
+    "32....23",
+    "33....33",
+    ".3....3.",
+)
+
 PROFILES = (
     control,
     artifacts,
@@ -365,8 +377,15 @@ def main() -> None:
     lines.extend(emit_array("archetype_tiles", mini_bytes))
     lines.append("")
     lines.extend(emit_array("archetype_profile_tiles", profile_bytes))
+    lines.append("")
+    lines.extend(
+        emit_array(
+            "rad_counter_tile",
+            tile_bytes(miniature_image(RAD_COUNTER_ICON), 0, 0),
+        )
+    )
     OUTPUT.write_text("\n".join(lines) + "\n", encoding="ascii")
-    print("generated 12 miniatures and 12 24x24 archetype portraits")
+    print("generated archetype art and nuclear RAD counter icon")
 
 
 if __name__ == "__main__":

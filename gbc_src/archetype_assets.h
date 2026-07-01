@@ -11,6 +11,7 @@
 #define ARCHETYPE_PROFILE_HEIGHT 3u
 #define ARCHETYPE_PROFILE_TILES_PER_IMAGE 9u
 #define ARCHETYPE_PROFILE_TILE_COUNT 108u
+#define RAD_COUNTER_TILE 254u
 
 void archetype_assets_load(void) BANKED;
 

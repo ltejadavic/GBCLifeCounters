@@ -1,6 +1,6 @@
 import json
 
-from tools.generate_archetype_assets import MINIATURES, PROFILES
+from tools.generate_archetype_assets import MINIATURES, PROFILES, RAD_COUNTER_ICON
 from tools.generate_commander_db import ARCHETYPES, ARCHETYPE_OVERRIDES, OUTPUT_JSON
 
 
@@ -31,7 +31,22 @@ def test_archetype_tiles_fit_in_background_vram() -> None:
     miniature_tiles = len(MINIATURES)
     profile_tiles = len(PROFILES) * 3 * 3
 
-    assert first_custom_tile + miniature_tiles + profile_tiles <= 256
+    rad_counter_tiles = 1
+
+    assert (
+        first_custom_tile
+        + miniature_tiles
+        + profile_tiles
+        + rad_counter_tiles
+        <= 256
+    )
+
+
+def test_rad_icon_is_a_distinct_four_tone_nuclear_trefoil() -> None:
+    assert len(RAD_COUNTER_ICON) == 8
+    assert all(len(row) == 8 for row in RAD_COUNTER_ICON)
+    assert set("".join(RAD_COUNTER_ICON)) == {".", "1", "2", "3"}
+    assert RAD_COUNTER_ICON[4] == ".32..23."
 
 
 def test_every_visual_archetype_has_a_clear_database_representative() -> None:

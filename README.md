@@ -48,14 +48,14 @@ python prototype_python/main.py
 
 The Python rules engine is the source of truth. The terminal program is a thin
 interactive client over that engine. The current C/GBDK MVP ports life, poison,
-commander damage, Monarch, Initiative, manual elimination, winner detection,
+RAD, commander damage, Monarch, Initiative, manual elimination, winner detection,
 and reset behavior; other advanced counters and statuses remain in the Python
 reference for now.
 
 Game Boy Color Prototype
 
 The current C/GBDK milestone supports two through eight players and configurable
-starting life. It tracks life, poison, and commander damage with scrollable
+starting life. It tracks life, poison, RAD, and commander damage with scrollable
 player/source lists. Possible losses require manual elimination confirmation,
 and a winner appears only when exactly one player remains active.
 
@@ -89,10 +89,12 @@ Controls:
 * Up / Down: select a player
 * Left / Right: decrease / increase the selected player's life
 * Select: cycle adjustment step through 1, 5, and 10
-* A: open the selected player's Life/Poison detail screen
+* A: open the selected player's Life/Poison/RAD detail screen
 * Start: open reset confirmation; A confirms and B cancels
 
-Player detail includes `CMD MAX`, `MONARCH`, and `INITIATIVE`. Press A on a
+Player detail includes `RAD`, `CMD MAX`, `MONARCH`, and `INITIATIVE`. RAD uses
+the same 1/5/10 adjustment step, clamps between 0 and 255, and does not create a
+loss condition by itself. Press A on a
 status to toggle it for that player; assigning it transfers it from any previous
 holder. Selecting `CMD MAX` and pressing A opens damage by source commander.
 Start in player detail confirms elimination or restoration. Each row shows a
@@ -140,9 +142,9 @@ commander row in player detail. The portrait stays hidden until a commander is
 selected. Detail also shows a three-letter archetype label; arcane,
 constructed, necrotic, and vital palette families make related archetypes
 coherent without making their silhouettes identical.
-The 120 archetype tiles are stored in ROM bank 3 and occupy background tile IDs
-134–253, leaving the fixed ROM bank and the final two tile IDs available for
-future systems.
+The archetype art and nuclear RAD icon are stored in ROM bank 3 and occupy
+background tile IDs 134–254, leaving the fixed ROM bank and final tile ID
+available for future systems.
 
 Regenerate the checked-in 2bpp archetype assets after editing their source
 drawings:

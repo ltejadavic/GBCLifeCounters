@@ -23,6 +23,7 @@
 #define SPLASH_PALETTE_BLACK 3u
 #define SPLASH_PALETTE_RED 4u
 #define SPLASH_PALETTE_GREEN 5u
+#define RAD_PALETTE 5u
 
 static const uint8_t player_rows[OVERVIEW_PLAYER_LIMIT] = {3u, 5u, 7u, 9u};
 
@@ -250,13 +251,17 @@ static void draw_color_diagnostic(void) {
     }
 }
 
-static void clear_help_area(void) {
+static void clear_row_range(uint8_t first_row, uint8_t last_row) {
     uint8_t row;
 
-    for (row = 11u; row <= 15u; row++) {
+    for (row = first_row; row <= last_row; row++) {
         gotoxy(0u, row);
         printf("                    ");
     }
+}
+
+static void clear_help_area(void) {
+    clear_row_range(11u, 15u);
 }
 
 static void print_status_word(RuleStatus status) {
@@ -297,6 +302,8 @@ static void draw_player_row(
     uint8_t row,
     uint8_t is_selected
 ) {
+    uint8_t counter_row = (uint8_t)(row + 1u);
+    uint8_t archetype = ARCHETYPE_COUNT;
     RuleStatus life_status = rules_check_life(player);
     RuleStatus poison_status = rules_check_poison(game, player);
     RuleStatus commander_status = rules_check_commander_damage_for_player(
@@ -306,10 +313,14 @@ static void draw_player_row(
     RuleStatus player_status = rules_check_player(game, player->player_id);
     char life_text[LIFE_TEXT_BUFFER_SIZE];
     char poison_text[COUNTER_TEXT_BUFFER_SIZE];
+    char rad_text[COUNTER_TEXT_BUFFER_SIZE];
 
     format_life_total(player->life, life_text);
     format_counter_value(player->poison, poison_text);
+    format_counter_value(player->rad, rad_text);
     gotoxy(0u, row);
+    printf("                    ");
+    gotoxy(0u, counter_row);
     printf("                    ");
     gotoxy(0u, row);
     printf(is_selected ? ">" : " ");
@@ -321,18 +332,23 @@ static void draw_player_row(
     printf(player->is_monarch ? "M" : " ");
     gotoxy(10u, row);
     printf(player->has_initiative ? "I" : " ");
-    gotoxy(11u, row);
+    gotoxy(1u, counter_row);
     printf("P");
-    gotoxy(12u, row);
+    gotoxy(2u, counter_row);
     printf("%s", poison_text);
+    {
+        uint8_t rad_tile = RAD_COUNTER_TILE;
+        set_bkg_tiles(6u, counter_row, 1u, 1u, &rad_tile);
+        gotoxy(7u, counter_row);
+        printf("%s", rad_text);
+    }
     if (player->commander_id != NO_COMMANDER_ID) {
-        uint8_t archetype = commander_db_get_archetype(player->commander_id);
+        archetype = commander_db_get_archetype(player->commander_id);
         uint8_t tile = (uint8_t)(
             ARCHETYPE_TILE_FIRST
             + archetype
         );
-        set_bkg_tiles(15u, row, 1u, 1u, &tile);
-        set_region_palette(15u, row, 1u, 1u, palette_for_archetype(archetype));
+        set_bkg_tiles(15u, counter_row, 1u, 1u, &tile);
     }
     gotoxy(16u, row);
     if (player->eliminated) {
@@ -364,6 +380,25 @@ static void draw_player_row(
             ? ELIMINATED_PALETTE
             : palette_for_status(player_status)
     );
+    set_region_palette(
+        0u,
+        counter_row,
+        DEVICE_SCREEN_WIDTH,
+        1u,
+        player->eliminated ? ELIMINATED_PALETTE : NORMAL_PALETTE
+    );
+    if (!player->eliminated) {
+        set_region_palette(6u, counter_row, 1u, 1u, RAD_PALETTE);
+        if (archetype < ARCHETYPE_COUNT) {
+            set_region_palette(
+                15u,
+                counter_row,
+                1u,
+                1u,
+                palette_for_archetype(archetype)
+            );
+        }
+    }
 }
 
 static void draw_winner(const GameState *game) {
@@ -459,6 +494,7 @@ static void draw_detail_fields(
     );
     char life_text[LIFE_TEXT_BUFFER_SIZE];
     char poison_text[COUNTER_TEXT_BUFFER_SIZE];
+    char rad_text[COUNTER_TEXT_BUFFER_SIZE];
     char commander_text[COUNTER_TEXT_BUFFER_SIZE];
     char commander_name[COMMANDER_DETAIL_NAME_MAX + 1u];
 
@@ -470,6 +506,7 @@ static void draw_detail_fields(
 
     format_life_total(player->life, life_text);
     format_counter_value(player->poison, poison_text);
+    format_counter_value(player->rad, rad_text);
     format_counter_value(
         rules_get_highest_commander_damage(game, player->player_id),
         commander_text
@@ -552,12 +589,35 @@ static void draw_detail_fields(
     gotoxy(0u, 8u);
     printf("                    ");
     gotoxy(0u, 8u);
-    printf(selected_field == DETAIL_FIELD_COMMANDER_DAMAGE ? ">" : " ");
-    gotoxy(2u, 8u);
-    printf("CMD MAX");
+    printf(selected_field == DETAIL_FIELD_RAD ? ">" : " ");
+    {
+        uint8_t rad_tile = RAD_COUNTER_TILE;
+        set_bkg_tiles(2u, 8u, 1u, 1u, &rad_tile);
+    }
+    gotoxy(4u, 8u);
+    printf("RAD");
     gotoxy(12u, 8u);
+    printf("%s", rad_text);
+    set_region_palette(
+        0u,
+        8u,
+        DEVICE_SCREEN_WIDTH,
+        1u,
+        player->eliminated ? ELIMINATED_PALETTE : NORMAL_PALETTE
+    );
+    if (!player->eliminated) {
+        set_region_palette(2u, 8u, 1u, 1u, RAD_PALETTE);
+    }
+
+    gotoxy(0u, 9u);
+    printf("                    ");
+    gotoxy(0u, 9u);
+    printf(selected_field == DETAIL_FIELD_COMMANDER_DAMAGE ? ">" : " ");
+    gotoxy(2u, 9u);
+    printf("CMD MAX");
+    gotoxy(12u, 9u);
     printf("%s", commander_text);
-    gotoxy(16u, 8u);
+    gotoxy(16u, 9u);
     if (player->eliminated) {
         printf("OUT ");
     } else {
@@ -565,7 +625,7 @@ static void draw_detail_fields(
     }
     set_region_palette(
         0u,
-        8u,
+        9u,
         DEVICE_SCREEN_WIDTH,
         1u,
         player->eliminated
@@ -573,17 +633,17 @@ static void draw_detail_fields(
             : palette_for_status(commander_status)
     );
 
-    gotoxy(0u, 9u);
+    gotoxy(0u, 10u);
     printf("                    ");
-    gotoxy(0u, 9u);
+    gotoxy(0u, 10u);
     printf(selected_field == DETAIL_FIELD_MONARCH ? ">" : " ");
-    gotoxy(2u, 9u);
+    gotoxy(2u, 10u);
     printf("MONARCH");
-    gotoxy(16u, 9u);
+    gotoxy(16u, 10u);
     printf(player->is_monarch ? "YES" : "NO ");
     set_region_palette(
         0u,
-        9u,
+        10u,
         DEVICE_SCREEN_WIDTH,
         1u,
         player->eliminated
@@ -591,17 +651,17 @@ static void draw_detail_fields(
             : (player->is_monarch ? WARNING_PALETTE : NORMAL_PALETTE)
     );
 
-    gotoxy(0u, 10u);
+    gotoxy(0u, 11u);
     printf("                    ");
-    gotoxy(0u, 10u);
+    gotoxy(0u, 11u);
     printf(selected_field == DETAIL_FIELD_INITIATIVE ? ">" : " ");
-    gotoxy(2u, 10u);
+    gotoxy(2u, 11u);
     printf("INITIATIVE");
-    gotoxy(16u, 10u);
+    gotoxy(16u, 11u);
     printf(player->has_initiative ? "YES" : "NO ");
     set_region_palette(
         0u,
-        10u,
+        11u,
         DEVICE_SCREEN_WIDTH,
         1u,
         player->eliminated
@@ -614,12 +674,12 @@ static void draw_detail_controls(
     uint8_t adjustment_step,
     uint8_t player_is_eliminated
 ) {
-    clear_help_area();
-    gotoxy(1u, 11u);
-    printf("UP/DOWN FIELD");
+    clear_row_range(12u, 16u);
     gotoxy(1u, 12u);
-    printf("LEFT/RIGHT CHANGE");
+    printf("UP/DOWN FIELD");
     gotoxy(1u, 13u);
+    printf("LEFT/RIGHT CHANGE");
+    gotoxy(1u, 14u);
     if (adjustment_step == 1u) {
         printf("SELECT STEP: 1");
     } else if (adjustment_step == 5u) {
@@ -627,13 +687,13 @@ static void draw_detail_controls(
     } else {
         printf("SELECT STEP: 10");
     }
-    gotoxy(1u, 14u);
+    gotoxy(1u, 15u);
     if (player_is_eliminated) {
         printf("START RESTORE");
     } else {
         printf("A CMD/TOGGLE");
     }
-    gotoxy(1u, 15u);
+    gotoxy(1u, 16u);
     if (player_is_eliminated) {
         printf("B BACK");
     } else {
@@ -1031,7 +1091,7 @@ void ui_draw_reset_prompt(void) BANKED {
 }
 
 void ui_draw_elimination_prompt(const Player *player) BANKED {
-    clear_help_area();
+    clear_row_range(11u, 16u);
     gotoxy(2u, 12u);
     if (player->eliminated) {
         printf("RESTORE ");

@@ -1,7 +1,7 @@
 # GBC Multiplayer Commander MVP
 
 This iteration supports two through eight players with configurable starting
-life. It tracks independent life and poison values plus commander damage
+life. It tracks independent life, poison, and RAD values plus commander damage
 separated by source commander.
 
 ## Build and verify
@@ -42,14 +42,14 @@ On the setup screen:
   players. Lists scroll four rows at a time.
 - Left / Right: decrease or increase the selected player's life.
 - Select: cycle the life adjustment step through 1, 5, and 10.
-- A: open the selected player's Life/Poison detail screen.
+- A: open the selected player's Life/Poison/RAD detail screen.
 - Start: open the reset confirmation.
 - A: confirm reset while the confirmation is open.
 - B: cancel reset while the confirmation is open.
 
 On the player detail screen:
 
-- Up / Down: select Life, Poison, commander damage, Monarch, or Initiative.
+- Up / Down: select Life, Poison, RAD, commander damage, Monarch, or Initiative.
 - Left / Right: change the selected value using the displayed step.
 - Select: cycle the adjustment step through 1, 5, and 10.
 - A while `CMD MAX` is selected: open commander damage by source.
@@ -250,10 +250,32 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
     tombstone for Graveyard, landscape for Lands, spellbook for Spells, wolf
     crest for Typal, and helmet/sword when selecting Voltron commander Wyleth.
 
+## Test 15: RAD counters and nuclear icon
+
+1. Start a four-player game. Every overview counter line must show the nuclear
+   RAD icon followed by `0`; values must be independent for each player.
+2. Open P2 detail and move from Poison to RAD. The nuclear trefoil must appear
+   beside the `RAD` label and the value must start at 0.
+3. With step 1, press Right five times. RAD must become 5 without changing
+   life, poison, commander damage, or loss status.
+4. Press Select to choose step 5, press Right once, and confirm RAD becomes 10.
+   Press Left twice: it must clamp at 0 rather than wrapping to 255.
+5. Set P2 RAD to 15, return with B, and confirm its overview counter line shows
+   15 while P1, P3, and P4 remain at 0.
+6. Confirm the RAD icon uses its gold nuclear palette in CGB mode and remains a
+   recognizable three-sector trefoil in monochrome mode.
+7. Eliminate P2 and confirm both its overview lines use the eliminated palette;
+   restoring it must preserve its RAD count.
+8. Reset the game. Every RAD value must return to 0.
+
+RAD counters do not inherently cause a loss. The Fallout mill/nonland
+resolution helper is not exposed in this screen yet; life loss from that
+resolution remains a manual life adjustment in this iteration.
+
 ## Full regression checklist
 
-1. Boot in Game Boy Color mode and confirm four rows appear: P1 through P4,
-   each at 40 life, poison `P  0`, and status `OK`.
+1. Boot in Game Boy Color mode and confirm four two-line player blocks appear:
+   P1 through P4, each at 40 life, poison `P  0`, RAD 0, and status `OK`.
 2. Confirm `>` initially marks P1.
 3. Press Down repeatedly and confirm selection moves P1, P2, P3, P4, then
    wraps to P1. Up must wrap in the opposite direction.
@@ -262,7 +284,7 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
    Left and Right must use the displayed step.
 6. Select P2 and press A. Confirm the detail title names P2, Life is selected,
    and Poison starts at 0.
-7. Use Up/Down to move through Life, Poison, CMD MAX, Monarch, and Initiative.
+7. Use Up/Down to move through Life, Poison, RAD, CMD MAX, Monarch, and Initiative.
    Numeric changes must affect only the selected field and only P2.
 8. Attempt to decrease Poison below 0. It must remain at 0.
 9. Set Poison to 8. The poison status and field must show a warning palette.
@@ -272,7 +294,7 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
 11. Set P3 life to 5, then 0 and negative. It must still show `LOW`, then
     `LOSS`, without affecting poison or removing the player.
 12. Press Start, then B. The reset prompt must close without changing values.
-13. Press Start, then A. Every player must return to 40 life and 0 poison,
+13. Press Start, then A. Every player must return to 40 life, 0 poison, and 0 RAD,
     selection to P1, and adjustment step to 1.
 14. In P2 detail, select `CMD MAX` and press A. Confirm the title reads
     `CMD DAMAGE TO P2` and rows list sources P1 through P4.

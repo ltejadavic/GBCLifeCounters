@@ -101,6 +101,10 @@ static void test_navigation_wraps_and_cycles_steps(void) {
     assert(navigation_next_detail_field(DETAIL_FIELD_LIFE) == DETAIL_FIELD_POISON);
     assert(
         navigation_next_detail_field(DETAIL_FIELD_POISON)
+        == DETAIL_FIELD_RAD
+    );
+    assert(
+        navigation_next_detail_field(DETAIL_FIELD_RAD)
         == DETAIL_FIELD_COMMANDER_DAMAGE
     );
     assert(
@@ -155,6 +159,27 @@ static void test_poison_actions_and_rules_are_independent(void) {
     assert(action_change_poison(&game, 1u, 20));
     assert(game.players[1].poison == 255u);
     assert(!action_change_poison(&game, 4u, 1));
+}
+
+static void test_rad_actions_are_independent_and_clamped(void) {
+    GameState game;
+
+    game_state_init(&game, 4u, DEFAULT_STARTING_LIFE);
+    assert(action_change_rad(&game, 1u, 5));
+    assert(game.players[0].rad == 0u);
+    assert(game.players[1].rad == 5u);
+    assert(action_change_rad(&game, 1u, -2));
+    assert(game.players[1].rad == 3u);
+    assert(action_change_rad(&game, 1u, -20));
+    assert(game.players[1].rad == 0u);
+    assert(action_set_rad(&game, 1u, 250u));
+    assert(action_change_rad(&game, 1u, 20));
+    assert(game.players[1].rad == 255u);
+    assert(!action_change_rad(&game, 4u, 1));
+    assert(!action_set_rad(&game, 4u, 1u));
+
+    assert(action_reset_player(&game, 1u));
+    assert(game.players[1].rad == 0u);
 }
 
 static void test_commander_damage_is_separate_by_source_and_slot(void) {
@@ -241,6 +266,7 @@ static void test_eight_player_capacity_and_game_reset(void) {
 
     game.players[3].life = 2;
     game.players[3].poison = 9u;
+    game.players[3].rad = 7u;
     game.players[3].energy = 4u;
     game.players[3].commander_tax[1] = 6u;
     game.players[3].eliminated = 1u;
@@ -252,6 +278,7 @@ static void test_eight_player_capacity_and_game_reset(void) {
 
     assert(game.players[3].life == 30);
     assert(game.players[3].poison == 0u);
+    assert(game.players[3].rad == 0u);
     assert(game.players[3].energy == 0u);
     assert(game.players[3].commander_tax[1] == 0u);
     assert(game.players[3].eliminated == 0u);
@@ -420,6 +447,7 @@ int main(void) {
     test_validation_and_life_bounds();
     test_navigation_wraps_and_cycles_steps();
     test_poison_actions_and_rules_are_independent();
+    test_rad_actions_are_independent_and_clamped();
     test_commander_damage_is_separate_by_source_and_slot();
     test_commander_damage_changes_life_by_applied_delta();
     test_self_commander_damage_is_rejected();
