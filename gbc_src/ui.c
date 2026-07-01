@@ -326,20 +326,18 @@ static void draw_player_row(
     printf(is_selected ? ">" : " ");
     gotoxy(1u, row);
     printf("%s", player->name);
-    gotoxy(3u, row);
-    printf("%s", life_text);
+    gotoxy(4u, row);
+    printf("LIFE");
     gotoxy(9u, row);
-    printf(player->is_monarch ? "M" : " ");
-    gotoxy(10u, row);
-    printf(player->has_initiative ? "I" : " ");
+    printf("%s", life_text);
     gotoxy(1u, counter_row);
-    printf("P");
-    gotoxy(2u, counter_row);
+    printf("PSN");
+    gotoxy(4u, counter_row);
     printf("%s", poison_text);
     {
         uint8_t rad_tile = RAD_COUNTER_TILE;
-        set_bkg_tiles(6u, counter_row, 1u, 1u, &rad_tile);
-        gotoxy(7u, counter_row);
+        set_bkg_tiles(8u, counter_row, 1u, 1u, &rad_tile);
+        gotoxy(9u, counter_row);
         printf("%s", rad_text);
     }
     if (player->commander_id != NO_COMMANDER_ID) {
@@ -348,8 +346,12 @@ static void draw_player_row(
             ARCHETYPE_TILE_FIRST
             + archetype
         );
-        set_bkg_tiles(15u, counter_row, 1u, 1u, &tile);
+        set_bkg_tiles(13u, counter_row, 1u, 1u, &tile);
     }
+    gotoxy(15u, counter_row);
+    printf(player->is_monarch ? "M" : " ");
+    gotoxy(16u, counter_row);
+    printf(player->has_initiative ? "I" : " ");
     gotoxy(16u, row);
     if (player->eliminated) {
         printf("OUT ");
@@ -388,10 +390,10 @@ static void draw_player_row(
         player->eliminated ? ELIMINATED_PALETTE : NORMAL_PALETTE
     );
     if (!player->eliminated) {
-        set_region_palette(6u, counter_row, 1u, 1u, RAD_PALETTE);
+        set_region_palette(8u, counter_row, 1u, 1u, RAD_PALETTE);
         if (archetype < ARCHETYPE_COUNT) {
             set_region_palette(
-                15u,
+                13u,
                 counter_row,
                 1u,
                 1u,
@@ -415,11 +417,11 @@ static void draw_winner(const GameState *game) {
 
 static void draw_overview_controls(uint8_t life_step) {
     clear_help_area();
-    gotoxy(1u, 11u);
-    printf("UP/DOWN SELECT");
     gotoxy(1u, 12u);
-    printf("LEFT/RIGHT CHANGE");
+    printf("UP/DOWN PLAYER");
     gotoxy(1u, 13u);
+    printf("LEFT/RIGHT LIFE");
+    gotoxy(1u, 14u);
     if (life_step == 1u) {
         printf("SELECT STEP: 1");
     } else if (life_step == 5u) {
@@ -427,10 +429,8 @@ static void draw_overview_controls(uint8_t life_step) {
     } else {
         printf("SELECT STEP: 10");
     }
-    gotoxy(1u, 14u);
-    printf("A PLAYER DETAILS");
-    gotoxy(1u, 15u);
-    printf("START RESET GAME");
+    gotoxy(0u, 15u);
+    printf("A DETAIL START RESET");
 }
 
 static void draw_detail_header(const Player *player) {
@@ -675,10 +675,8 @@ static void draw_detail_controls(
     uint8_t player_is_eliminated
 ) {
     clear_row_range(12u, 16u);
-    gotoxy(1u, 12u);
-    printf("UP/DOWN FIELD");
     gotoxy(1u, 13u);
-    printf("LEFT/RIGHT CHANGE");
+    printf("D-PAD EDIT FIELD");
     gotoxy(1u, 14u);
     if (adjustment_step == 1u) {
         printf("SELECT STEP: 1");

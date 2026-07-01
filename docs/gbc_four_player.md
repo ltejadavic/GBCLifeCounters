@@ -275,7 +275,7 @@ resolution remains a manual life adjustment in this iteration.
 ## Full regression checklist
 
 1. Boot in Game Boy Color mode and confirm four two-line player blocks appear:
-   P1 through P4, each at 40 life, poison `P  0`, RAD 0, and status `OK`.
+   P1 through P4, each at 40 life, poison `PSN  0`, RAD 0, and status `OK`.
 2. Confirm `>` initially marks P1.
 3. Press Down repeatedly and confirm selection moves P1, P2, P3, P4, then
    wraps to P1. Up must wrap in the opposite direction.
@@ -288,7 +288,7 @@ resolution remains a manual life adjustment in this iteration.
    Numeric changes must affect only the selected field and only P2.
 8. Attempt to decrease Poison below 0. It must remain at 0.
 9. Set Poison to 8. The poison status and field must show a warning palette.
-   Return with B; P2 must show `P  8` and `PSN` in the overview.
+   Return with B; P2 must show `PSN  8` in the overview.
 10. Reopen P2 detail and set Poison to 10. It must show possible loss without
     eliminating the player. The overview must show `LOSS` for P2.
 11. Set P3 life to 5, then 0 and negative. It must still show `LOW`, then

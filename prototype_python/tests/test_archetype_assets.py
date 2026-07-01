@@ -42,11 +42,12 @@ def test_archetype_tiles_fit_in_background_vram() -> None:
     )
 
 
-def test_rad_icon_is_a_distinct_four_tone_nuclear_trefoil() -> None:
+def test_rad_icon_is_a_distinct_circular_nuclear_trefoil() -> None:
     assert len(RAD_COUNTER_ICON) == 8
     assert all(len(row) == 8 for row in RAD_COUNTER_ICON)
-    assert set("".join(RAD_COUNTER_ICON)) == {".", "1", "2", "3"}
-    assert RAD_COUNTER_ICON[4] == ".32..23."
+    assert set("".join(RAD_COUNTER_ICON)) == {".", "1", "3"}
+    assert RAD_COUNTER_ICON[0] == "..3333.."
+    assert RAD_COUNTER_ICON[-1] == "..3333.."
 
 
 def test_every_visual_archetype_has_a_clear_database_representative() -> None:
