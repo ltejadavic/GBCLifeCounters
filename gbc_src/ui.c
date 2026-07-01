@@ -43,6 +43,26 @@ static const palette_color_t background_palettes[] = {
     RGB8(158, 171, 183),
     RGB8(75, 88, 103),
     RGB8(25, 31, 40),
+    /* Arcane: Control, Enchantments, Spells. */
+    RGB8(245, 239, 224),
+    RGB8(143, 198, 226),
+    RGB8(75, 91, 161),
+    RGB8(38, 29, 76),
+    /* Constructed: Artifacts, Tokens, Voltron. */
+    RGB8(245, 239, 224),
+    RGB8(232, 195, 101),
+    RGB8(145, 91, 60),
+    RGB8(56, 39, 29),
+    /* Necrotic: Graveyard, Sacrifice. */
+    RGB8(245, 239, 224),
+    RGB8(218, 138, 163),
+    RGB8(139, 57, 83),
+    RGB8(48, 25, 42),
+    /* Vital: Counters, Lands, Lifegain, Typal. */
+    RGB8(245, 239, 224),
+    RGB8(165, 211, 105),
+    RGB8(72, 135, 75),
+    RGB8(22, 57, 39),
 };
 
 static const palette_color_t splash_palettes[] = {
@@ -127,10 +147,8 @@ static uint8_t palette_for_status(RuleStatus status) {
 
 static uint8_t palette_for_archetype(uint8_t archetype) {
     static const uint8_t palettes[ARCHETYPE_COUNT] = {
-        ELIMINATED_PALETTE, WARNING_PALETTE, NORMAL_PALETTE,
-        WARNING_PALETTE, ELIMINATED_PALETTE, NORMAL_PALETTE,
-        WARNING_PALETTE, LOSS_PALETTE, LOSS_PALETTE,
-        WARNING_PALETTE, NORMAL_PALETTE, LOSS_PALETTE,
+        4u, 5u, 7u, 4u, 6u, 7u,
+        7u, 6u, 4u, 5u, 7u, 5u,
     };
     return archetype < ARCHETYPE_COUNT
         ? palettes[archetype]
@@ -165,7 +183,7 @@ static void prepare_screen(void) {
 }
 
 static void load_game_palettes(void) {
-    set_bkg_palette(BKGF_CGB_PAL0, 4u, background_palettes);
+    set_bkg_palette(BKGF_CGB_PAL0, 8u, background_palettes);
 }
 
 static void draw_splash_accents(void) {
@@ -390,6 +408,44 @@ static void draw_detail_header(const Player *player) {
     draw_color_diagnostic();
 }
 
+static void draw_archetype_profile(const Player *player) {
+    uint8_t row;
+
+    if (player->commander_id == NO_COMMANDER_ID) {
+        for (row = 2u; row <= 4u; row++) {
+            gotoxy(8u, row);
+            printf("   ");
+        }
+        set_region_palette(8u, 2u, 3u, 3u, NORMAL_PALETTE);
+    } else {
+        uint8_t archetype = commander_db_get_archetype(player->commander_id);
+        uint8_t tile_map[ARCHETYPE_PROFILE_TILES_PER_IMAGE];
+        uint8_t tile = (uint8_t)(
+            ARCHETYPE_PROFILE_TILE_FIRST
+            + (archetype * ARCHETYPE_PROFILE_TILES_PER_IMAGE)
+        );
+        uint8_t index;
+
+        for (index = 0u; index < ARCHETYPE_PROFILE_TILES_PER_IMAGE; index++) {
+            tile_map[index] = (uint8_t)(tile + index);
+        }
+        set_bkg_tiles(
+            8u,
+            2u,
+            ARCHETYPE_PROFILE_WIDTH,
+            ARCHETYPE_PROFILE_HEIGHT,
+            tile_map
+        );
+        set_region_palette(
+            8u,
+            2u,
+            ARCHETYPE_PROFILE_WIDTH,
+            ARCHETYPE_PROFILE_HEIGHT,
+            palette_for_archetype(archetype)
+        );
+    }
+}
+
 static void draw_detail_fields(
     const GameState *game,
     const Player *player,
@@ -419,13 +475,15 @@ static void draw_detail_fields(
         commander_text
     );
 
-    gotoxy(0u, 2u);
+    draw_archetype_profile(player);
+
+    gotoxy(0u, 5u);
     printf("                    ");
-    gotoxy(0u, 2u);
+    gotoxy(0u, 5u);
     printf(selected_field == DETAIL_FIELD_COMMANDER ? ">" : " ");
-    gotoxy(2u, 2u);
+    gotoxy(2u, 5u);
     printf("CMDR");
-    gotoxy(7u, 2u);
+    gotoxy(7u, 5u);
     printf("%s", commander_name);
     if (player->commander_id != NO_COMMANDER_ID) {
         static const char labels[ARCHETYPE_COUNT][4u] = {
@@ -437,21 +495,21 @@ static void draw_detail_fields(
             ARCHETYPE_TILE_FIRST
             + archetype
         );
-        gotoxy(15u, 2u);
+        gotoxy(15u, 5u);
         printf("%s", labels[archetype]);
-        set_bkg_tiles(19u, 2u, 1u, 1u, &tile);
-        set_region_palette(19u, 2u, 1u, 1u, palette_for_archetype(archetype));
+        set_bkg_tiles(19u, 5u, 1u, 1u, &tile);
+        set_region_palette(19u, 5u, 1u, 1u, palette_for_archetype(archetype));
     }
 
-    gotoxy(0u, 3u);
+    gotoxy(0u, 6u);
     printf("                    ");
-    gotoxy(0u, 3u);
+    gotoxy(0u, 6u);
     printf(selected_field == DETAIL_FIELD_LIFE ? ">" : " ");
-    gotoxy(2u, 3u);
+    gotoxy(2u, 6u);
     printf("LIFE");
-    gotoxy(9u, 3u);
+    gotoxy(9u, 6u);
     printf("%s", life_text);
-    gotoxy(16u, 3u);
+    gotoxy(16u, 6u);
     if (player->eliminated) {
         printf("OUT ");
     } else {
@@ -459,7 +517,7 @@ static void draw_detail_fields(
     }
     set_region_palette(
         0u,
-        3u,
+        6u,
         DEVICE_SCREEN_WIDTH,
         1u,
         player->eliminated
@@ -467,15 +525,15 @@ static void draw_detail_fields(
             : palette_for_status(life_status)
     );
 
-    gotoxy(0u, 5u);
+    gotoxy(0u, 7u);
     printf("                    ");
-    gotoxy(0u, 5u);
+    gotoxy(0u, 7u);
     printf(selected_field == DETAIL_FIELD_POISON ? ">" : " ");
-    gotoxy(2u, 5u);
+    gotoxy(2u, 7u);
     printf("POISON");
-    gotoxy(12u, 5u);
+    gotoxy(12u, 7u);
     printf("%s", poison_text);
-    gotoxy(16u, 5u);
+    gotoxy(16u, 7u);
     if (player->eliminated) {
         printf("OUT ");
     } else {
@@ -483,7 +541,7 @@ static void draw_detail_fields(
     }
     set_region_palette(
         0u,
-        5u,
+        7u,
         DEVICE_SCREEN_WIDTH,
         1u,
         player->eliminated
@@ -491,15 +549,15 @@ static void draw_detail_fields(
             : palette_for_status(poison_status)
     );
 
-    gotoxy(0u, 7u);
+    gotoxy(0u, 8u);
     printf("                    ");
-    gotoxy(0u, 7u);
+    gotoxy(0u, 8u);
     printf(selected_field == DETAIL_FIELD_COMMANDER_DAMAGE ? ">" : " ");
-    gotoxy(2u, 7u);
+    gotoxy(2u, 8u);
     printf("CMD MAX");
-    gotoxy(12u, 7u);
+    gotoxy(12u, 8u);
     printf("%s", commander_text);
-    gotoxy(16u, 7u);
+    gotoxy(16u, 8u);
     if (player->eliminated) {
         printf("OUT ");
     } else {
@@ -507,7 +565,7 @@ static void draw_detail_fields(
     }
     set_region_palette(
         0u,
-        7u,
+        8u,
         DEVICE_SCREEN_WIDTH,
         1u,
         player->eliminated
@@ -729,11 +787,7 @@ void ui_show_setup(
 
     load_game_palettes();
     prepare_screen();
-    set_bkg_data(
-        ARCHETYPE_TILE_FIRST,
-        ARCHETYPE_TILE_COUNT,
-        archetype_tiles
-    );
+    archetype_assets_load();
     format_counter_value(player_count, player_count_text);
     format_life_total(starting_life, life_text);
 

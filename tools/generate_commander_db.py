@@ -38,6 +38,15 @@ ARCHETYPES = (
     "VOLTRON",
 )
 
+# Clear representatives whose Aura/Equipment text otherwise matches broader
+# categories before the generator reaches the Voltron rule.
+ARCHETYPE_OVERRIDES = {
+    "dogmeat, ever loyal": "VOLTRON",
+    "galea, kindler of hope": "VOLTRON",
+    "sram, senior edificer": "VOLTRON",
+    "wyleth, soul of steel": "VOLTRON",
+}
+
 SSL_CONTEXT = ssl.create_default_context(
     cafile="/etc/ssl/cert.pem" if Path("/etc/ssl/cert.pem").exists() else None
 )
@@ -177,9 +186,12 @@ def add_card(entries: dict[str, dict], card: dict, source: str) -> None:
         {
             "name": name[:MAX_ROM_NAME],
             "full_name": name,
-            "archetype": classify(
-                card.get("text") or card.get("oracle_text") or "",
-                card.get("type") or card.get("type_line") or "",
+            "archetype": ARCHETYPE_OVERRIDES.get(
+                key,
+                classify(
+                    card.get("text") or card.get("oracle_text") or "",
+                    card.get("type") or card.get("type_line") or "",
+                ),
             ),
             "precon": False,
             "popular": False,
@@ -257,12 +269,20 @@ def write_outputs(entries: dict[str, dict], meta: dict) -> None:
 
 def rebuild_rom_include() -> None:
     payload = json.loads(OUTPUT_JSON.read_text(encoding="utf-8"))
+    for item in payload["commanders"]:
+        override = ARCHETYPE_OVERRIDES.get(item["full_name"].casefold())
+        if override:
+            item["archetype"] = override
     ordered = sorted(
         payload["commanders"],
         key=lambda item: item["name"].casefold(),
     )
     for index, item in enumerate(ordered):
         item["id"] = index
+    OUTPUT_JSON.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=True) + "\n",
+        encoding="utf-8",
+    )
     write_rom_include(ordered)
     print(f"rebuilt ROM index for {len(ordered)} commanders")
 

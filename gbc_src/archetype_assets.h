@@ -1,11 +1,17 @@
 #ifndef COMMANDER_GBC_ARCHETYPE_ASSETS_H
 #define COMMANDER_GBC_ARCHETYPE_ASSETS_H
 
+#include <gbdk/platform.h>
 #include <stdint.h>
 
 #define ARCHETYPE_TILE_FIRST 134u
 #define ARCHETYPE_TILE_COUNT 12u
+#define ARCHETYPE_PROFILE_TILE_FIRST 146u
+#define ARCHETYPE_PROFILE_WIDTH 3u
+#define ARCHETYPE_PROFILE_HEIGHT 3u
+#define ARCHETYPE_PROFILE_TILES_PER_IMAGE 9u
+#define ARCHETYPE_PROFILE_TILE_COUNT 108u
 
-extern const uint8_t archetype_tiles[ARCHETYPE_TILE_COUNT * 16u];
+void archetype_assets_load(void) BANKED;
 
 #endif

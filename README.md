@@ -134,9 +134,22 @@ From player detail, selecting `CMDR` opens an on-screen keyboard with A–Z,
 0–9, punctuation, a twelve-character query, and three live ranked
 suggestions. Queries ignore punctuation and spaces. Commander selection can be
 changed at any time, displays an eight-character name preview, and assigns one
-of twelve 8x8 archetype symbols visible in player detail and the multiplayer
-overview. Detail also shows a three-letter archetype label; icon palettes vary
-by archetype instead of using one shared green treatment.
+of twelve archetypes. Each archetype has a compact 8x8 miniature for the
+multiplayer overview and a separate four-tone 24x24 portrait above the
+commander row in player detail. The portrait stays hidden until a commander is
+selected. Detail also shows a three-letter archetype label; arcane,
+constructed, necrotic, and vital palette families make related archetypes
+coherent without making their silhouettes identical.
+The 120 archetype tiles are stored in ROM bank 3 and occupy background tile IDs
+134–253, leaving the fixed ROM bank and the final two tile IDs available for
+future systems.
+
+Regenerate the checked-in 2bpp archetype assets after editing their source
+drawings:
+
+```text
+python3 tools/generate_archetype_assets.py
+```
 
 Search work is event-driven for GBC performance: D-Pad cursor movement and
 focus changes update only screen markers. Full-name prefixes and internal-word

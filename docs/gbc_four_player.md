@@ -218,8 +218,9 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
 5. While the keyboard is focused, B must delete one query character; with an
    empty query, B must return without changing the commander.
 6. Return to P1 detail. The commander name must be shown using at most eight
-   characters with its `CTR` label and colored 8x8 Counters archetype symbol.
-7. Return to overview. A miniature version of the same archetype symbol must
+   characters with its `CTR` label. A detailed four-tone 24x24 Counters
+   portrait must appear centered above the commander row.
+7. Return to overview. A simpler 8x8 miniature of the same archetype must
    appear in P1's row without covering poison or warning state.
 8. Assign a different commander to P1 and confirm both name and symbol change.
 9. Assign different commanders to P2–P4. Each player must retain an independent
@@ -242,6 +243,12 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
 16. Delete back to `HATH`, then enter a query with no results such as
     `NORESULT999`. Suggestions must clear normally and keyboard movement must
     remain immediate.
+17. Open the detail of a player without an assigned commander. Rows 2–4 above
+    `CMDR --` must remain empty: no default or stale portrait may be visible.
+18. Assign commanders representing several archetypes and verify that the
+    profile image changes materially, not just its color: gear for Artifacts,
+    tombstone for Graveyard, landscape for Lands, spellbook for Spells, wolf
+    crest for Typal, and helmet/sword when selecting Voltron commander Wyleth.
 
 ## Full regression checklist
 

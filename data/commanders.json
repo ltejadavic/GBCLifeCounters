@@ -491,7 +491,7 @@
     {
       "name": "Dogmeat, Ever Loyal",
       "full_name": "Dogmeat, Ever Loyal",
-      "archetype": "ARTIFACTS",
+      "archetype": "VOLTRON",
       "precon": true,
       "popular": false,
       "edhrec_rank": 8902,
@@ -707,7 +707,7 @@
     {
       "name": "Galea, Kindler of Hope",
       "full_name": "Galea, Kindler of Hope",
-      "archetype": "ENCHANTMENTS",
+      "archetype": "VOLTRON",
       "precon": true,
       "popular": false,
       "edhrec_rank": 11953,
@@ -1931,7 +1931,7 @@
     {
       "name": "Sram, Senior Edificer",
       "full_name": "Sram, Senior Edificer",
-      "archetype": "CONTROL",
+      "archetype": "VOLTRON",
       "precon": false,
       "popular": true,
       "edhrec_rank": 460,
@@ -2282,7 +2282,7 @@
     {
       "name": "Wyleth, Soul of Steel",
       "full_name": "Wyleth, Soul of Steel",
-      "archetype": "ENCHANTMENTS",
+      "archetype": "VOLTRON",
       "precon": true,
       "popular": false,
       "edhrec_rank": 6607,
