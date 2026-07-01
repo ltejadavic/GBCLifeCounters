@@ -104,10 +104,18 @@ static void open_commander_search(void) {
 
 static void handle_commander_search_input(uint8_t pressed) {
     static const char keyboard[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '-,";
+    uint8_t previous_keyboard_index = commander_keyboard_index;
 
     if ((pressed & J_SELECT) || (pressed & J_START)) {
         commander_list_focus = (uint8_t)(!commander_list_focus);
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if (commander_list_focus && (pressed & J_UP)) {
         if (commander_match_count > 0u) {
             commander_suggestion = commander_suggestion == 0u
@@ -115,6 +123,13 @@ static void handle_commander_search_input(uint8_t pressed) {
                 : (uint8_t)(commander_suggestion - 1u);
         }
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if (commander_list_focus && (pressed & J_DOWN)) {
         if (commander_match_count > 0u) {
             commander_suggestion = (uint8_t)(
@@ -122,26 +137,61 @@ static void handle_commander_search_input(uint8_t pressed) {
             );
         }
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if (!commander_list_focus && (pressed & J_LEFT)) {
         commander_keyboard_index = commander_keyboard_index == 0u
             ? (COMMANDER_KEY_COUNT - 1u)
             : (uint8_t)(commander_keyboard_index - 1u);
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if (!commander_list_focus && (pressed & J_RIGHT)) {
         commander_keyboard_index = (uint8_t)(
             (commander_keyboard_index + 1u) % COMMANDER_KEY_COUNT
         );
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if (!commander_list_focus && (pressed & J_UP)) {
         commander_keyboard_index = (uint8_t)(
             (commander_keyboard_index + 32u) % COMMANDER_KEY_COUNT
         );
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if (!commander_list_focus && (pressed & J_DOWN)) {
         commander_keyboard_index = (uint8_t)(
             (commander_keyboard_index + 8u) % COMMANDER_KEY_COUNT
         );
         sound_play_effect(SOUND_EFFECT_NAVIGATION);
+        ui_update_commander_search_cursor(
+            previous_keyboard_index,
+            commander_keyboard_index,
+            commander_suggestion,
+            commander_list_focus
+        );
+        return;
     } else if ((pressed & J_A) && !commander_list_focus) {
         if (commander_query_length < COMMANDER_QUERY_MAX) {
             commander_query[commander_query_length] = keyboard[
@@ -153,6 +203,7 @@ static void handle_commander_search_input(uint8_t pressed) {
             sound_play_effect(SOUND_EFFECT_CONFIRM);
         } else {
             sound_play_effect(SOUND_EFFECT_CANCEL);
+            return;
         }
     } else if (
         (pressed & J_A)
@@ -176,6 +227,14 @@ static void handle_commander_search_input(uint8_t pressed) {
     } else if (pressed & J_B) {
         if (commander_list_focus) {
             commander_list_focus = 0u;
+            sound_play_effect(SOUND_EFFECT_CANCEL);
+            ui_update_commander_search_cursor(
+                previous_keyboard_index,
+                commander_keyboard_index,
+                commander_suggestion,
+                commander_list_focus
+            );
+            return;
         } else if (commander_query_length > 0u) {
             commander_query_length--;
             commander_query[commander_query_length] = '\0';

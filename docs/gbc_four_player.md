@@ -230,6 +230,9 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
     contain “the” in the middle.
 12. Reset the game. Every player commander must return to `--` and every
     archetype symbol must disappear.
+13. After entering the first query character, move continuously across the
+    keyboard and suggestion list. Cursor response must remain immediate: the
+    database may be rescanned only after A adds a character or B deletes one.
 
 ## Full regression checklist
 

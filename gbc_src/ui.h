@@ -63,6 +63,12 @@ void ui_show_commander_search(
     uint8_t keyboard_index,
     uint8_t list_focus
 ) BANKED;
+void ui_update_commander_search_cursor(
+    uint8_t previous_keyboard_index,
+    uint8_t keyboard_index,
+    uint8_t selected_suggestion,
+    uint8_t list_focus
+) BANKED;
 void ui_draw_reset_prompt(void) BANKED;
 void ui_draw_elimination_prompt(const Player *player) BANKED;
 

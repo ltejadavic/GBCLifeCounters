@@ -138,6 +138,11 @@ of twelve 8x8 archetype symbols visible in player detail and the multiplayer
 overview. Detail also shows a three-letter archetype label; icon palettes vary
 by archetype instead of using one shared green treatment.
 
+Search work is event-driven for GBC performance: the 269-record database is
+scanned only when query text changes. D-Pad cursor movement and focus changes
+update only screen markers. Commander records live in ROM bank 2, separate from
+the UI bank, leaving both banks with substantial free capacity.
+
 ⸻
 
 Important Technical Note

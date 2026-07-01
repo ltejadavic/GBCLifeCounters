@@ -936,6 +936,36 @@ void ui_show_commander_search(
     draw_color_diagnostic();
 }
 
+void ui_update_commander_search_cursor(
+    uint8_t previous_keyboard_index,
+    uint8_t keyboard_index,
+    uint8_t selected_suggestion,
+    uint8_t list_focus
+) BANKED {
+    uint8_t index;
+    uint8_t x = (uint8_t)(
+        1u + (previous_keyboard_index % 8u) * 2u
+    );
+    uint8_t y = (uint8_t)(8u + (previous_keyboard_index / 8u));
+
+    gotoxy(x, y);
+    printf(" ");
+    if (!list_focus) {
+        x = (uint8_t)(1u + (keyboard_index % 8u) * 2u);
+        y = (uint8_t)(8u + (keyboard_index / 8u));
+        gotoxy(x, y);
+        printf(">");
+    }
+    gotoxy(0u, 2u);
+    printf(list_focus ? " " : ">");
+    for (index = 0u; index < COMMANDER_SUGGESTION_COUNT; index++) {
+        gotoxy(0u, (uint8_t)(4u + index));
+        printf(
+            (list_focus && (index == selected_suggestion)) ? ">" : " "
+        );
+    }
+}
+
 void ui_draw_reset_prompt(void) BANKED {
     clear_help_area();
     gotoxy(1u, 12u);

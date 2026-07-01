@@ -2,7 +2,7 @@
 
 #include "commander_db.h"
 
-#pragma bank 255
+#pragma bank 2
 
 typedef struct CommanderRecord {
     char name[COMMANDER_NAME_MAX + 1u];
@@ -135,6 +135,7 @@ uint8_t commander_db_find_matches(
     uint16_t results[COMMANDER_SUGGESTION_COUNT]
 ) BANKED {
     uint16_t commander_id;
+    uint16_t total = commander_db_count();
     uint8_t count = 0u;
     uint8_t matched_count;
     uint8_t priority;
@@ -142,7 +143,7 @@ uint8_t commander_db_find_matches(
     for (priority = 0u; priority < 3u; priority++) {
         for (
             commander_id = 0u;
-            (commander_id < commander_db_count())
+            (commander_id < total)
             && (count < COMMANDER_SUGGESTION_COUNT);
             commander_id++
         ) {
