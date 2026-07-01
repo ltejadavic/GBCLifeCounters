@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "actions.h"
+#include "commander_db.h"
 #include "constants.h"
 #include "game_state.h"
 #include "navigation.h"
@@ -368,6 +369,50 @@ static void test_counter_text_replaces_the_entire_field(void) {
     assert(strcmp(output, "255") == 0);
 }
 
+static void assert_commander_result_starts_with(
+    uint16_t commander_id,
+    const char *expected
+) {
+    char name[COMMANDER_NAME_MAX + 1u];
+
+    commander_db_copy_name(commander_id, name, COMMANDER_NAME_MAX);
+    assert(strncmp(name, expected, strlen(expected)) == 0);
+}
+
+static void test_commander_search_indexes_and_ranking(void) {
+    uint16_t results[COMMANDER_SUGGESTION_COUNT];
+    uint8_t count;
+
+    assert(commander_db_count() == 269u);
+
+    count = commander_db_find_matches("ATRAXA", results);
+    assert(count > 0u);
+    assert_commander_result_starts_with(results[0], "Atraxa");
+
+    count = commander_db_find_matches("TCHALLA", results);
+    assert(count > 0u);
+    assert_commander_result_starts_with(results[0], "T'Challa");
+
+    count = commander_db_find_matches("THE", results);
+    assert(count == COMMANDER_SUGGESTION_COUNT);
+    assert_commander_result_starts_with(results[0], "The ");
+
+    count = commander_db_find_matches("PAINTER", results);
+    assert(count > 0u);
+    assert_commander_result_starts_with(results[0], "Anhelo, the Painter");
+
+    count = commander_db_find_matches("HATH", results);
+    assert(count > 0u);
+    assert_commander_result_starts_with(results[0], "Captain N'ghathrod");
+    count = commander_db_find_matches("HATHR", results);
+    assert(count > 0u);
+    assert_commander_result_starts_with(results[0], "Captain N'ghathrod");
+
+    count = commander_db_find_matches("NORESULT999", results);
+    assert(count == 0u);
+    assert(results[0] == NO_COMMANDER_ID);
+}
+
 int main(void) {
     test_four_player_initial_state();
     test_player_count_is_clamped_to_supported_range();
@@ -383,6 +428,7 @@ int main(void) {
     test_unique_player_statuses();
     test_life_text_replaces_the_entire_field();
     test_counter_text_replaces_the_entire_field();
+    test_commander_search_indexes_and_ranking();
     printf("GBC core tests passed.\n");
     return 0;
 }

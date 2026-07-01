@@ -131,17 +131,28 @@ compact primary-archetype ID. Regeneration requires internet access, but the ROM
 itself remains fully offline.
 
 From player detail, selecting `CMDR` opens an on-screen keyboard with A–Z,
-0–9, punctuation, a twelve-character query, and three live substring
+0–9, punctuation, a twelve-character query, and three live ranked
 suggestions. Queries ignore punctuation and spaces. Commander selection can be
 changed at any time, displays an eight-character name preview, and assigns one
 of twelve 8x8 archetype symbols visible in player detail and the multiplayer
 overview. Detail also shows a three-letter archetype label; icon palettes vary
 by archetype instead of using one shared green treatment.
 
-Search work is event-driven for GBC performance: the 269-record database is
-scanned only when query text changes. D-Pad cursor movement and focus changes
-update only screen markers. Commander records live in ROM bank 2, separate from
-the UI bank, leaving both banks with substantial free capacity.
+Search work is event-driven for GBC performance: D-Pad cursor movement and
+focus changes update only screen markers. Full-name prefixes and internal-word
+prefixes use offline-generated sorted indexes and binary search. A normalized
+substring pass runs only as a fallback when fewer than three indexed results
+exist, and extending that query filters its previous candidate cache instead
+of scanning all records again. Names use a compact string pool rather than
+fixed-width records. Commander data and indexes live in ROM bank 2, separate
+from the UI bank.
+
+Rebuild only the checked-in ROM indexes from the existing JSON database without
+network access:
+
+```text
+python3 tools/generate_commander_db.py --from-json
+```
 
 ⸻
 

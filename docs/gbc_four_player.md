@@ -233,6 +233,15 @@ Use an emulator with Game Boy audio enabled and a moderate output volume.
 13. After entering the first query character, move continuously across the
     keyboard and suggestion list. Cursor response must remain immediate: the
     database may be rescanned only after A adds a character or B deletes one.
+14. Search `PAINTER`. `Anhelo, the Painter` must be suggested through the
+    internal-word index even though the commander name does not begin with the
+    query.
+15. Search `HATH`, then extend it to `HATHR`. `Captain N'ghathrod` must remain
+    suggested, and adding the final letter must not cause a noticeable pause;
+    this exercises the cached substring fallback.
+16. Delete back to `HATH`, then enter a query with no results such as
+    `NORESULT999`. Suggestions must clear normally and keyboard movement must
+    remain immediate.
 
 ## Full regression checklist
 

@@ -1,8 +1,13 @@
 #ifndef COMMANDER_GBC_COMMANDER_DB_H
 #define COMMANDER_GBC_COMMANDER_DB_H
 
-#include <gbdk/platform.h>
 #include <stdint.h>
+
+#ifdef __SDCC
+#include <gbdk/platform.h>
+#else
+#define BANKED
+#endif
 
 #include "constants.h"
 

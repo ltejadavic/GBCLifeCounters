@@ -2,16 +2,21 @@
 
 #include "commander_db.h"
 
+#ifdef __SDCC
 #pragma bank 2
+#endif
 
-typedef struct CommanderRecord {
-    char name[COMMANDER_NAME_MAX + 1u];
-    uint8_t archetype;
-} CommanderRecord;
+typedef struct CommanderWordIndex {
+    uint16_t commander_id;
+    uint8_t name_start;
+} CommanderWordIndex;
 
-static const CommanderRecord commander_records[] = {
 #include "commander_data.inc"
-};
+
+static char cached_substring_query[COMMANDER_QUERY_MAX + 1u];
+static uint16_t substring_candidates[COMMANDER_RECORD_COUNT];
+static uint16_t substring_candidate_count = 0u;
+static uint8_t substring_cache_valid = 0u;
 
 static char upper_ascii(char value) {
     if ((value >= 'a') && (value <= 'z')) {
@@ -28,7 +33,25 @@ static uint8_t is_search_character(char value) {
     );
 }
 
-static uint8_t query_matches_at(
+static const char *commander_name(uint16_t commander_id) {
+    return &commander_name_pool[commander_name_offsets[commander_id]];
+}
+
+static uint8_t normalize_query(const char *query, char *normalized) {
+    uint8_t length = 0u;
+
+    while ((*query != '\0') && (length < COMMANDER_QUERY_MAX)) {
+        if (is_search_character(*query)) {
+            normalized[length] = upper_ascii(*query);
+            length++;
+        }
+        query++;
+    }
+    normalized[length] = '\0';
+    return length;
+}
+
+static int8_t compare_segment_to_query(
     const char *name,
     const char *query,
     uint8_t name_start
@@ -43,61 +66,130 @@ static uint8_t query_matches_at(
         ) {
             name_index++;
         }
-        while (
-            (query[query_index] != '\0')
-            && !is_search_character(query[query_index])
-        ) {
-            query_index++;
+        if (name[name_index] == '\0') {
+            return -1;
         }
-        if (query[query_index] == '\0') {
-            return 1u;
+        if (upper_ascii(name[name_index]) < query[query_index]) {
+            return -1;
         }
-        if (
-            (name[name_index] == '\0')
-            || (
-                upper_ascii(name[name_index])
-                != upper_ascii(query[query_index])
-            )
-        ) {
-            return 0u;
+        if (upper_ascii(name[name_index]) > query[query_index]) {
+            return 1;
         }
         name_index++;
         query_index++;
     }
-    return 1u;
+    return 0;
 }
 
-static uint8_t match_priority(const char *name, const char *query) {
+static uint8_t substring_matches(const char *name, const char *query) {
     uint8_t name_start;
 
-    if (query[0] == '\0') {
-        return 0u;
-    }
-    if (query_matches_at(name, query, 0u)) {
-        return 0u;
-    }
-    for (name_start = 1u; name[name_start] != '\0'; name_start++) {
+    for (name_start = 0u; name[name_start] != '\0'; name_start++) {
         if (
             is_search_character(name[name_start])
-            && !is_search_character(name[(uint8_t)(name_start - 1u)])
-            && query_matches_at(name, query, name_start)
+            && (compare_segment_to_query(name, query, name_start) == 0)
         ) {
             return 1u;
         }
     }
-    for (name_start = 1u; name[name_start] != '\0'; name_start++) {
-        if (
-            is_search_character(name[name_start])
-            && query_matches_at(name, query, name_start)
-        ) {
-            return 2u;
+    return 0u;
+}
+
+static uint8_t result_contains(
+    const uint16_t results[COMMANDER_SUGGESTION_COUNT],
+    uint8_t count,
+    uint16_t commander_id
+) {
+    uint8_t index;
+    for (index = 0u; index < count; index++) {
+        if (results[index] == commander_id) {
+            return 1u;
         }
     }
-    return 255u;
+    return 0u;
+}
+
+static uint16_t prefix_lower_bound(const char *query) {
+    uint16_t low = 0u;
+    uint16_t high = COMMANDER_RECORD_COUNT;
+
+    while (low < high) {
+        uint16_t middle = (uint16_t)(low + ((high - low) / 2u));
+        uint16_t commander_id = commander_prefix_order[middle];
+        if (compare_segment_to_query(commander_name(commander_id), query, 0u) < 0) {
+            low = (uint16_t)(middle + 1u);
+        } else {
+            high = middle;
+        }
+    }
+    return low;
+}
+
+static uint16_t word_lower_bound(const char *query) {
+    uint16_t low = 0u;
+    uint16_t high = COMMANDER_WORD_INDEX_COUNT;
+
+    while (low < high) {
+        uint16_t middle = (uint16_t)(low + ((high - low) / 2u));
+        const CommanderWordIndex *entry = &commander_word_index[middle];
+        if (
+            compare_segment_to_query(
+                commander_name(entry->commander_id),
+                query,
+                entry->name_start
+            ) < 0
+        ) {
+            low = (uint16_t)(middle + 1u);
+        } else {
+            high = middle;
+        }
+    }
+    return low;
+}
+
+static uint8_t query_extends_cached_query(const char *query) {
+    uint8_t index = 0u;
+
+    if (!substring_cache_valid) {
+        return 0u;
+    }
+    while (cached_substring_query[index] != '\0') {
+        if (cached_substring_query[index] != query[index]) {
+            return 0u;
+        }
+        index++;
+    }
+    return query[index] != '\0';
+}
+
+static void cache_substring_matches(const char *query) {
+    uint16_t read_index;
+    uint16_t write_index = 0u;
+    uint16_t source_count = COMMANDER_RECORD_COUNT;
+    uint8_t filter_previous = query_extends_cached_query(query);
+
+    if (filter_previous) {
+        source_count = substring_candidate_count;
+    }
+    for (read_index = 0u; read_index < source_count; read_index++) {
+        uint16_t commander_id = filter_previous
+            ? substring_candidates[read_index]
+            : read_index;
+        if (substring_matches(commander_name(commander_id), query)) {
+            substring_candidates[write_index] = commander_id;
+            write_index++;
+        }
+    }
+    substring_candidate_count = write_index;
+    for (read_index = 0u; query[read_index] != '\0'; read_index++) {
+        cached_substring_query[read_index] = query[read_index];
+    }
+    cached_substring_query[read_index] = '\0';
+    substring_cache_valid = 1u;
 }
 
 uint16_t commander_db_count(void) BANKED {
-    return (uint16_t)(sizeof(commander_records) / sizeof(CommanderRecord));
+    return COMMANDER_RECORD_COUNT;
 }
 
 void commander_db_copy_name(
@@ -115,9 +207,9 @@ void commander_db_copy_name(
     }
     while (
         (index < maximum_characters)
-        && (commander_records[commander_id].name[index] != '\0')
+        && (commander_name(commander_id)[index] != '\0')
     ) {
-        output[index] = commander_records[commander_id].name[index];
+        output[index] = commander_name(commander_id)[index];
         index++;
     }
     output[index] = '\0';
@@ -127,39 +219,69 @@ uint8_t commander_db_get_archetype(uint16_t commander_id) BANKED {
     if (commander_id >= commander_db_count()) {
         return ARCHETYPE_CONTROL;
     }
-    return commander_records[commander_id].archetype;
+    return commander_archetypes[commander_id];
 }
 
 uint8_t commander_db_find_matches(
     const char *query,
     uint16_t results[COMMANDER_SUGGESTION_COUNT]
 ) BANKED {
-    uint16_t commander_id;
-    uint16_t total = commander_db_count();
+    char normalized_query[COMMANDER_QUERY_MAX + 1u];
+    uint16_t index;
     uint8_t count = 0u;
-    uint8_t matched_count;
-    uint8_t priority;
+    uint8_t normalized_length = normalize_query(query, normalized_query);
 
-    for (priority = 0u; priority < 3u; priority++) {
-        for (
-            commander_id = 0u;
-            (commander_id < total)
-            && (count < COMMANDER_SUGGESTION_COUNT);
-            commander_id++
-        ) {
+    index = prefix_lower_bound(normalized_query);
+    while ((index < COMMANDER_RECORD_COUNT) && (count < COMMANDER_SUGGESTION_COUNT)) {
+        uint16_t commander_id = commander_prefix_order[index];
+        if (compare_segment_to_query(commander_name(commander_id), normalized_query, 0u) != 0) {
+            break;
+        }
+        results[count] = commander_id;
+        count++;
+        index++;
+    }
+
+    if ((count < COMMANDER_SUGGESTION_COUNT) && (normalized_length > 0u)) {
+        index = word_lower_bound(normalized_query);
+        while ((index < COMMANDER_WORD_INDEX_COUNT) && (count < COMMANDER_SUGGESTION_COUNT)) {
+            const CommanderWordIndex *entry = &commander_word_index[index];
             if (
-                match_priority(commander_records[commander_id].name, query)
-                == priority
+                compare_segment_to_query(
+                    commander_name(entry->commander_id),
+                    normalized_query,
+                    entry->name_start
+                ) != 0
             ) {
-                results[count] = commander_id;
+                break;
+            }
+            if (!result_contains(results, count, entry->commander_id)) {
+                results[count] = entry->commander_id;
+                count++;
+            }
+            index++;
+        }
+    }
+
+    if ((count < COMMANDER_SUGGESTION_COUNT) && (normalized_length >= 2u)) {
+        cache_substring_matches(normalized_query);
+        for (
+            index = 0u;
+            (index < substring_candidate_count)
+            && (count < COMMANDER_SUGGESTION_COUNT);
+            index++
+        ) {
+            if (!result_contains(results, count, substring_candidates[index])) {
+                results[count] = substring_candidates[index];
                 count++;
             }
         }
     }
-    matched_count = count;
+
+    normalized_length = count;
     while (count < COMMANDER_SUGGESTION_COUNT) {
         results[count] = NO_COMMANDER_ID;
         count++;
     }
-    return matched_count;
+    return normalized_length;
 }

@@ -23,6 +23,7 @@ CORE_SOURCES := \
 	gbc_src/player.c \
 	gbc_src/game_state.c \
 	gbc_src/actions.c \
+	gbc_src/commander_db.c \
 	gbc_src/navigation.c \
 	gbc_src/rules.c \
 	gbc_src/text_format.c
